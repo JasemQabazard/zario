@@ -1,0 +1,5 @@
+node_modules/
+ng-zario/node_modules/
+public/
+server.log
+npm-debug.log

@@ -4,7 +4,8 @@
   "description": "zario.io coin and the black diamond loyalty program",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "cd ng-zario && ng build --prod && cd.. && node index.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,7 @@
   },
   "homepage": "https://github.com/JasemQabazard/zario#readme",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "express": "^4.16.3",
     "mongoose": "^5.0.14"
   }
