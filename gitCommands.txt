@@ -64,7 +64,8 @@ git push -u origin master
 4b- DO THIS STEP ON REPEATED DEVELOPMENT AFTER THE FIRST TIME 
    - git checkout -b newbranch-name
 5- After completing the development step for the created git branch 
-and to prepare for pushing the b ranch to github, do the following:
+and to prepare for pushing the b ranch to github, 
+do the following:
    - git branch to make sure you are on the branch created "branch-name"
    - git status -------- checks what have not been commited
    - git add . ------------ will add everything to be commited next

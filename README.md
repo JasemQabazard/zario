@@ -8,3 +8,7 @@
    - add server.log file and console.log for server activities 
    - change the angular build to produce public folder on server 
       level with all trhe directions to the new index.js file
+==========add-nav-routes=======git branch============
+   - create app Route module
+   - nav bar logo menues 
+   - build components related to menues and main routes
