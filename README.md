@@ -12,3 +12,15 @@
    - create app Route module
    - nav bar logo menues 
    - build components related to menues and main routes
+==========add-security=======git branch============
+   - Registration
+   - Log in
+   - Log out
+   - Password Change
+   - Forget Password
+   - email notifications for any activity on security (1-confirm email on registration by sendinga code. 2- password change notification. 3-Forget Password and Reset notifications.)
+   - Route authentication for each user type:{Administrator, Customer, Merchant}. Display correct menu for each type. 
+   - use email and phone for double factor authentication.
+==========add-db-Modes=======git branch============
+   - add all db structures and models for your data
+==========add-design-home=======git branch============
