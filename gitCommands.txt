@@ -1,0 +1,78 @@
+***List Config***
+git config --list
+*** change user name and nemail ***
+$ git config --global user.name "John Doe"
+$ git config --global user.email johndoe@example.com
+***setup code edditor*** Currently set to ms code 
+$ git config --global core.editor "'C:/Program Files/Notepad++/notepad++.exe' -multiInst -nosession" 
+***get hep***
+$ git help <verb>
+$ man git-<verb>
+
+***to initialize a local dir for git***
+$ cd /c/user/my_project
+git init
+
+***to clone a github directory***
+$ git clone https://github.com/libgit2/libgit2
+***or take a special directory from same address***
+$ git clone https://github.com/libgit2/libgit2 mylibgit
+***to add a changed file for the next commit***
+git add (*.* or file name or etc...)
+***to check the status of your dir***
+git status
+****to know changes that are still unstaged***
+git diff
+git diff --staged *** to see what is staged to be commited next
+***to commit***
+git commit
+git commit -m "MyMessage"
+***to check the remotes you are working with***
+git remote -v *** type in the directory of the application
+***to add a remote name or location to your list ***
+ git remote add saPro https://github.com/JasemQabazard/SuccessArchitecture.com
+ 
+ ***removing a remote***
+ git remote remove origin
+
+git remote add origin https://github.com/JasemQabazard/r1p.git
+git push -u origin master
+
+============ Procedure 4zario===============
+============================================
+=========      DO 1-4 once    ==============
+============================================
+1- make a new repository at github = "gyh ============DONE
+2- then run these instructions one after one
+   - creat a new directory: "gyh"
+   - echo "# ghy" >> README.md
+   - git init
+   - git add README.md
+   - git commit -m "first commit"
+   - git remote add origin https://github.com/JasemQabazard/ghy.git
+   - git push -u origin master
+3- create a new BRANCH in your directory 
+   - git checkout -b branch-name
+   - run "git branch" to check your where-abouts in the directory
+4- npm init 
+   - in the directory
+   - accept most defaults except can enter KEYWORDS & AUTHOR & DESCRIPTION
+============================================
+=========   DO 4b-6 REPEATIDLY   ===========
+=========   WHILE DEVELOPING     ===========
+============================================  
+4b- DO THIS STEP ON REPEATED DEVELOPMENT AFTER THE FIRST TIME 
+   - git checkout -b newbranch-name
+5- After completing the development step for the created git branch 
+and to prepare for pushing the b ranch to github, 
+do the following:
+   - git branch to make sure you are on the branch created "branch-name"
+   - git status -------- checks what have not been commited
+   - git add . ------------ will add everything to be commited next
+   - git commit -m "branch-name"
+   - git push --all origin ------ now you have a master and the branch in github
+6- To merge the branch with the master
+   - git checkout master ------- now you are on the master branch
+   - git merge branch-name
+   - git push ----- will push the branch to the masetr reporsitory in github
+
