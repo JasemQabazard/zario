@@ -9,12 +9,17 @@ const config = require('./config');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const profilesRouter = require('./routes/profilesRouter');
+const customersRouter = require('./routes/customersRouter');
+const achievementsRouter = require('./routes/achievementsRouter');
+const groupsRouter = require('./routes/groupsRouter');
+const merchantsRouter = require('./routes/merchantsRouter');
+const promotionsRouter = require('./routes/promotionsRouter');
+const settingsRouter = require('./routes/settingsRouter');
+const socialsRouter = require('./routes/socialsRouter');
+const transRouter = require('./routes/transRouter');
 
 const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
-
-const Profiles = require('./models/profiles');
 
 // Connection URL
 const url = config.mongoUrl;
@@ -43,7 +48,13 @@ app.use(passport.initialize());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/profiles', profilesRouter);
+app.use('/customers', customersRouter);
+app.use('/groups', groupsRouter);
+app.use('/merchants', merchantsRouter);
+app.use('/promotions', promotionsRouter);
+app.use('/settings', settingsRouter);
+app.use('/socials', socialsRouter);
+app.use('/trans', transRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

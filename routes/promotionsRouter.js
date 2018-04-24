@@ -1,39 +1,39 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mogoose = require('mongoose');
-const Profiles = require('../models/profiles');
+const Promotions = require('../models/promotions');
 const authenticate = require('../authenticate');
 
-const profilesRouter = express.Router();
+const promotionsRouter = express.Router();
 
-profilesRouter.use(bodyParser.json());
+promotionsRouter.use(bodyParser.json());
 
-profilesRouter.route('/') 
+promotionsRouter.route('/') 
 .get((req, res, next) => {
-   Profiles.find({})
-   .then((profiles) => {
+   Promotions.find({})
+   .then((promotions) => {
          res.statusCode = 200;
          res.setHeader('Content-Type', 'application/json');
-         res.json(profiles);
+         res.json(promotions);
    }, (err) => next(err))
    .catch((err) => next(err));
 })
 .post(authenticate.verifyUser, (req, res, next) => {
-   Profiles.create(req.body)
-   .then((profile) => {
-         console.log('Profile Created', profile);
+   Promotions.create(req.body)
+   .then((promotion) => {
+         console.log('Promotion Created', promotion);
          res.statusCode = 200;
          res.setHeader('Content-Type', 'application/json');
-         res.json(profile);
+         res.json(promotion);
    }, (err) => next(err))
    .catch((err) => next(err));
 })
 .put(authenticate.verifyUser, (req, res, next) => {
    res.statusCode = 403;
-   res.end('PUT operation not supported on / profi1les');
+   res.end('PUT operation not supported on / promotions');
 })
 .delete(authenticate.verifyUser, (req, res, next) => {
-   Profiles.remove({})
+   Promotions.remove({})
    .then((resp) => {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
@@ -42,33 +42,33 @@ profilesRouter.route('/')
    .catch((err) => next(err));
 });
 
-profilesRouter.route('/:profileId')
+promotionsRouter.route('/:promotionId')
 .get((req,res,next) => {
-    Profiles.findById(req.params.profileId)
-    .then((profile) => {
+   Promotions.findById(req.params.promotionId)
+    .then((promotion) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(profile);
+        res.json(promotion);
     }, (err) => next(err))
     .catch((err) => next(err));
 })
 .post(authenticate.verifyUser, (req, res, next) => {
     res.statusCode = 403;
-    res.end('POST operation not supported on /profiles/'+ req.params.profileId);
+    res.end('POST operation not supported on /promotion/'+ req.params.promotionId);
 })
 .put(authenticate.verifyUser, (req, res, next) => {
-    Profiles.findByIdAndUpdate(req.params.profileId, {
+   Promotions.findByIdAndUpdate(req.params.promotionId, {
         $set: req.body
     }, { new: true })
-    .then((profile) => {
+    .then((promotion) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(profile);
+        res.json(promotion);
     }, (err) => next(err))
     .catch((err) => next(err));
 })
 .delete(authenticate.verifyUser, (req, res, next) => {
-    Profiles.findByIdAndRemove(req.params.profileId)
+   Promotions.findByIdAndRemove(req.params.promotionId)
     .then((resp) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -77,4 +77,4 @@ profilesRouter.route('/:profileId')
     .catch((err) => next(err));
 });
 
-module.exports = profilesRouter;
+module.exports = promotionsRouter;

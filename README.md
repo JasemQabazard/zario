@@ -16,19 +16,30 @@
    - Registration
    - Log in
    - Log out
-==========express-gen-secure=======git branch=========================================
+==========express-gen-secure=======git branch=====Completed: 18April 2018========
    - Express generator then add-security
    - Registration -------------------security to be done again as to new passport at coursera
    - Log in -------------------------
    - Log out
-==========add-db-Models=======git branch=========================================
+=================================================================================
+=== branchName:add-db-models== start:19April2018== Completed: 24April2018  ====
+=================================================================================
    - add all db structures and models for your data
+   - add all Routers 
+=================================================================================
+=====branchName===add-https-cors===== start:24April2018== Completed:   ====
+=================================================================================
+   - add https route
+   - add CORS
 ==========more-security=======git branch=========================================   
    - Password Change
    - Forget Password
    - email notifications for any activity on security (1-confirm email on registration by sendinga code. 2- password change notification. 3-Forget Password and Reset notifications.)
    - Route authentication for each user type:{Administrator, Customer, Merchant}. Display correct menu for each type. 
    - use email and phone for double factor authentication.
+
+
+   
 ==========add-db-Models=======git branch============
    - add all db structures and models for your data
 ==========add-design-home=======git branch============

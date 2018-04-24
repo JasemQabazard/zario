@@ -2,17 +2,15 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var passportLocalMongoose = require('passport-local-mongoose');
 
+// password and user name are not mentioned explicitly since passport module takes care of them and imbeds them in the user table automatically  
+
 var User = new Schema({
-    firstname: { type: String, default: '', trim: true, lowercase:true  },
-    lastname: { type: String, default: '', trim: true, lowercase:true  },
-    mobile:{type: String, default:'+96599742695'},
-    role:   {type: String,default: 'customer'}
-    // username: { type: String, required:true, unique:true, lowercase:true},
-    // password: {type: String, required:true, minlength: 8},
-    // emailid: { type: String, unique: true, trim:true, required:true, lowercase:true },
-    // firstname: { type: String, default: '', trim: true, lowercase:true  },
-    // lastname: { type: String, default: '', trim: true, lowercase:true  },
-    // admin:   {type: String,default: ''}
+    recruitingmerchant: { type: String, default: '', trim: true, lowercase:true  },
+    // set if there is a recruiting merchant for the user
+    twofactorauth:{type: Boolean, default:false},
+    // set if the user selects to authenticate with two factor authentication
+    role:   {type: String,default: 'CUSTOMER'}
+    // set by ADMIN---> permitted values:(ADMIN, CUSTOMER, MER%CHANT).
 }, {timestamps: true});
 
 User.plugin(passportLocalMongoose);
