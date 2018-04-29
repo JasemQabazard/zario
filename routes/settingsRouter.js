@@ -3,13 +3,15 @@ const bodyParser = require('body-parser');
 const mogoose = require('mongoose');
 const Settings = require('../models/settings');
 const authenticate = require('../authenticate');
+const cors = require('./cors');
 
 const settingsRouter = express.Router();
 
 settingsRouter.use(bodyParser.json());
 
 settingsRouter.route('/') 
-.get((req, res, next) => {
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+.get(cors.cors, (req, res, next) => {
    Settings.find({})
    .then((settings) => {
          res.statusCode = 200;
@@ -18,7 +20,7 @@ settingsRouter.route('/')
    }, (err) => next(err))
    .catch((err) => next(err));
 })
-.post(authenticate.verifyUser, (req, res, next) => {
+.post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Settings.create(req.body)
    .then((setting) => {
          console.log('Setting Created', setting);
@@ -28,11 +30,11 @@ settingsRouter.route('/')
    }, (err) => next(err))
    .catch((err) => next(err));
 })
-.put(authenticate.verifyUser, (req, res, next) => {
+.put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    res.statusCode = 403;
    res.end('PUT operation not supported on / setting');
 })
-.delete(authenticate.verifyUser, (req, res, next) => {
+.delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Settings.remove({})
    .then((resp) => {
       res.statusCode = 200;
@@ -43,7 +45,8 @@ settingsRouter.route('/')
 });
 
 settingsRouter.route('/:settingId')
-.get((req,res,next) => {
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+.get(cors.cors, (req,res,next) => {
    Settings.findById(req.params.settingId)
     .then((setting) => {
         res.statusCode = 200;
@@ -52,11 +55,11 @@ settingsRouter.route('/:settingId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.post(authenticate.verifyUser, (req, res, next) => {
+.post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
     res.statusCode = 403;
     res.end('POST operation not supported on /setting/'+ req.params.settingId);
 })
-.put(authenticate.verifyUser, (req, res, next) => {
+.put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Settings.findByIdAndUpdate(req.params.settingId, {
         $set: req.body
     }, { new: true })
@@ -67,7 +70,7 @@ settingsRouter.route('/:settingId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.delete(authenticate.verifyUser, (req, res, next) => {
+.delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Settings.findByIdAndRemove(req.params.settingId)
     .then((resp) => {
         res.statusCode = 200;

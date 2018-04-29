@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 require('mongoose-currency').loadType(mongoose);
 const Currency = mongoose.Types.Currency;
 
-// merchants schema
+// comments schema
 var commentsSchema = new Schema({
       user_id: { type: mongoose.Schema.Types.ObjectId, required: true},
       hearted:  {type: Boolean,default: false},

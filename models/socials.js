@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-// merchants schema
+// comments schema
 var commentsSchema = new Schema({
       user_id: { type: mongoose.Schema.Types.ObjectId, required: true},
       hearted:  {type: Boolean,default: false},

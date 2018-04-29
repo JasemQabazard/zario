@@ -3,13 +3,15 @@ const bodyParser = require('body-parser');
 const mogoose = require('mongoose');
 const Achievements = require('../models/achievements');
 const authenticate = require('../authenticate');
+const cors = require('./cors');
 
 const achievementsRouter = express.Router();
 
 achievementsRouter.use(bodyParser.json());
 
-achievementsRouter.route('/') 
-.get((req, res, next) => {
+achievementsRouter.route('/')
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+.get(cors.cors, (req, res, next) => {
    Achievements.find({})
    .then((achievements) => {
          res.statusCode = 200;
@@ -18,7 +20,7 @@ achievementsRouter.route('/')
    }, (err) => next(err))
    .catch((err) => next(err));
 })
-.post(authenticate.verifyUser, (req, res, next) => {
+.post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Achievements.create(req.body)
    .then((achievement) => {
          console.log('Achievement Created', achievement);
@@ -28,11 +30,11 @@ achievementsRouter.route('/')
    }, (err) => next(err))
    .catch((err) => next(err));
 })
-.put(authenticate.verifyUser, (req, res, next) => {
+.put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    res.statusCode = 403;
    res.end('PUT operation not supported on / Achievements');
 })
-.delete(authenticate.verifyUser, (req, res, next) => {
+.delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Achievements.remove({})
    .then((resp) => {
       res.statusCode = 200;
@@ -43,7 +45,8 @@ achievementsRouter.route('/')
 });
 
 achievementsRouter.route('/:achievementId')
-.get((req,res,next) => {
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+.get(cors.cors, (req,res,next) => {
    Achievements.findById(req.params.achievementId)
     .then((achievement) => {
         res.statusCode = 200;
@@ -52,11 +55,11 @@ achievementsRouter.route('/:achievementId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.post(authenticate.verifyUser, (req, res, next) => {
+.post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
     res.statusCode = 403;
     res.end('POST operation not supported on /achievement/'+ req.params.achievementId);
 })
-.put(authenticate.verifyUser, (req, res, next) => {
+.put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Achievements.findByIdAndUpdate(req.params.achievementId, {
         $set: req.body
     }, { new: true })
@@ -67,7 +70,7 @@ achievementsRouter.route('/:achievementId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.delete(authenticate.verifyUser, (req, res, next) => {
+.delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Achievements.findByIdAndRemove(req.params.achievementId)
     .then((resp) => {
         res.statusCode = 200;

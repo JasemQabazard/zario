@@ -27,11 +27,14 @@
    - add all db structures and models for your data
    - add all Routers 
 =================================================================================
-=====branchName===add-https-cors===== start:24April2018== Completed:   ====
+===  branchName:add-https-cors== start:24April2018== Completed: 29April 2018 ====
 =================================================================================
    - add https route
    - add CORS
-==========more-security=======git branch=========================================   
+   - upload imade with multer
+=================================================================================
+===  branchName:more-security== start:29April2018== Completed: 99May 2018 ====
+================================================================================= 
    - Password Change
    - Forget Password
    - email notifications for any activity on security (1-confirm email on registration by sendinga code. 2- password change notification. 3-Forget Password and Reset notifications.)

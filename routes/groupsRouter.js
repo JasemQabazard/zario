@@ -3,13 +3,15 @@ const bodyParser = require('body-parser');
 const mogoose = require('mongoose');
 const Groups = require('../models/groups');
 const authenticate = require('../authenticate');
+const cors = require('./cors');
 
 const groupsRouter = express.Router();
 
 groupsRouter.use(bodyParser.json());
 
 groupsRouter.route('/') 
-.get((req, res, next) => {
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+.get(cors.cors, (req, res, next) => {
    Groups.find({})
    .then((groups) => {
          res.statusCode = 200;
@@ -18,7 +20,7 @@ groupsRouter.route('/')
    }, (err) => next(err))
    .catch((err) => next(err));
 })
-.post(authenticate.verifyUser, (req, res, next) => {
+.post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Groups.create(req.body)
    .then((group) => {
          console.log('Group Created', group);
@@ -28,11 +30,11 @@ groupsRouter.route('/')
    }, (err) => next(err))
    .catch((err) => next(err));
 })
-.put(authenticate.verifyUser, (req, res, next) => {
+.put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    res.statusCode = 403;
    res.end('PUT operation not supported on / groups');
 })
-.delete(authenticate.verifyUser, (req, res, next) => {
+.delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Groups.remove({})
    .then((resp) => {
       res.statusCode = 200;
@@ -43,7 +45,8 @@ groupsRouter.route('/')
 });
 
 groupsRouter.route('/:groupId')
-.get((req,res,next) => {
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+.get(cors.cors, (req,res,next) => {
    Groups.findById(req.params.groupId)
     .then((group) => {
         res.statusCode = 200;
@@ -52,11 +55,11 @@ groupsRouter.route('/:groupId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.post(authenticate.verifyUser, (req, res, next) => {
+.post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
     res.statusCode = 403;
     res.end('POST operation not supported on /group/'+ req.params.groupId);
 })
-.put(authenticate.verifyUser, (req, res, next) => {
+.put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Groups.findByIdAndUpdate(req.params.groupId, {
         $set: req.body
     }, { new: true })
@@ -67,7 +70,7 @@ groupsRouter.route('/:groupId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.delete(authenticate.verifyUser, (req, res, next) => {
+.delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Groups.findByIdAndRemove(req.params.groupId)
     .then((resp) => {
         res.statusCode = 200;

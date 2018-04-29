@@ -17,6 +17,7 @@ const promotionsRouter = require('./routes/promotionsRouter');
 const settingsRouter = require('./routes/settingsRouter');
 const socialsRouter = require('./routes/socialsRouter');
 const transRouter = require('./routes/transRouter');
+const uploadRouter = require('./routes/uploadRouter');
 
 const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
@@ -33,6 +34,16 @@ connect.then((db) => {
 }, (err) => { console.log(err); });
 
 var app = express();
+
+// Secure traffic only
+app.all('*', (req, res, next) => {
+  if (req.secure) {
+    return next();
+  }
+  else {
+    res.redirect(307, 'https://' + req.hostname + ':' + app.get('secPort') + req.url);
+  }
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -55,6 +66,7 @@ app.use('/promotions', promotionsRouter);
 app.use('/settings', settingsRouter);
 app.use('/socials', socialsRouter);
 app.use('/trans', transRouter);
+app.use('/imageUpload',uploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

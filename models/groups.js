@@ -1,21 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-// mobile schema
-var mobileSchema = new Schema({
-      countrycode:  {type: String,default: ''},
-      mobile:  {type: String,default: ''}
-  }, {timestamps: true});
-//
-
-// merchants schema
-var merchantsSchema = new Schema({
-      _id:   mongoose.Schema.Types.ObjectId,
-      name:  {type: String,default: ''},
-      zarios:  {type: Number,default: null}
-  }, {timestamps: true});
-//
-
 var Groups = new Schema({
       user_id: { 
             type: mongoose.Schema.Types.ObjectId,
@@ -61,17 +46,19 @@ var Groups = new Schema({
             type: String,
             default: 0
       },
-      zarios: {
-            type: Number,
-            defaults: null
-      },
       referral: {
             type: Boolean,
             default: true
       },
-      mobile: [mobileSchema],
-      phone: [mobileSchema],
-      merchants: [merchantsSchema]
+      mobile: {
+            countrycode: {type: Number, required: true},
+            number:{type: Number, required: true}
+      },
+      phone: {
+            countrycode: {type: Number, required: true},
+            number:{type: Number, required: true}
+      },
+      merchants: [mongoose.Schema.Types.ObjectId]
 },{
    timestamps: true
 });

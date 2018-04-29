@@ -3,13 +3,15 @@ const bodyParser = require('body-parser');
 const mogoose = require('mongoose');
 const Merchants = require('../models/merchants');
 const authenticate = require('../authenticate');
+const cors = require('./cors');
 
 const merchantsRouter = express.Router();
 
 merchantsRouter.use(bodyParser.json());
 
 merchantsRouter.route('/') 
-.get((req, res, next) => {
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+.get(cors.cors, (req, res, next) => {
    Merchants.find({})
    .then((merchants) => {
          res.statusCode = 200;
@@ -18,7 +20,7 @@ merchantsRouter.route('/')
    }, (err) => next(err))
    .catch((err) => next(err));
 })
-.post(authenticate.verifyUser, (req, res, next) => {
+.post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Merchants.create(req.body)
    .then((merchant) => {
          console.log('Merchants Created', merchant);
@@ -28,11 +30,11 @@ merchantsRouter.route('/')
    }, (err) => next(err))
    .catch((err) => next(err));
 })
-.put(authenticate.verifyUser, (req, res, next) => {
+.put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    res.statusCode = 403;
    res.end('PUT operation not supported on / merchants');
 })
-.delete(authenticate.verifyUser, (req, res, next) => {
+.delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Merchants.remove({})
    .then((resp) => {
       res.statusCode = 200;
@@ -43,7 +45,8 @@ merchantsRouter.route('/')
 });
 
 merchantsRouter.route('/:customerId')
-.get((req,res,next) => {
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+.get(cors.cors, (req,res,next) => {
    Merchants.findById(req.params.merchantId)
     .then((merchant) => {
         res.statusCode = 200;
@@ -52,11 +55,11 @@ merchantsRouter.route('/:customerId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.post(authenticate.verifyUser, (req, res, next) => {
+.post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
     res.statusCode = 403;
     res.end('POST operation not supported on /merchant/'+ req.params.merchantId);
 })
-.put(authenticate.verifyUser, (req, res, next) => {
+.put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Merchants.findByIdAndUpdate(req.params.merchantId, {
         $set: req.body
     }, { new: true })
@@ -67,7 +70,7 @@ merchantsRouter.route('/:customerId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.delete(authenticate.verifyUser, (req, res, next) => {
+.delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Merchants.findByIdAndRemove(req.params.merchantId)
     .then((resp) => {
         res.statusCode = 200;

@@ -1,21 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-// mobile schema
-var mobileSchema = new Schema({
-      countrycode:  {type: String,default: ''},
-      mobile:  {type: String,default: ''}
-  }, {timestamps: true});
-//
-// zario schema
-var zarioSchema = new Schema({
-      zarios:  {type: Number,default: null},
-      ukey:  {type: String,default: ''},
-      rkey:  {type: String,default: ''}
-  }, {timestamps: true});
-//
-
-
 var Settings = new Schema({
       user_id: { 
             type: mongoose.Schema.Types.ObjectId,
@@ -89,9 +74,26 @@ var Settings = new Schema({
          type: Number,
          default: null
       },
-      mobile: [mobileSchema],
-      phone: [mobileSchema],
-      zario: [zarioSchema]
+      mobile: {
+            countrycode: {type: Number, required: true},
+            number:{type: Number, required: true}
+      },
+      phone: {
+            countrycode: {type: Number, required: true},
+            number:{type: Number, required: true}
+      },
+      zarios:  {
+            type: Number,
+            default: null
+      },
+      ukey:  {
+            type: String,
+            default: ''
+      },
+      rkey:  {
+            type: String,
+            default: ''
+      }
 },{
    timestamps: true
 });

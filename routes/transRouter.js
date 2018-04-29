@@ -3,13 +3,15 @@ const bodyParser = require('body-parser');
 const mogoose = require('mongoose');
 const Trans = require('../models/trans');
 const authenticate = require('../authenticate');
+const cors = require('./cors');
 
 const transRouter = express.Router();
 
 transRouter.use(bodyParser.json());
 
 transRouter.route('/') 
-.get((req, res, next) => {
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+.get(cors.cors, (req, res, next) => {
    Trans.find({})
    .then((trans) => {
          res.statusCode = 200;
@@ -18,7 +20,7 @@ transRouter.route('/')
    }, (err) => next(err))
    .catch((err) => next(err));
 })
-.post(authenticate.verifyUser, (req, res, next) => {
+.post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Trans.create(req.body)
    .then((tran) => {
          console.log('Tran Created', tran);
@@ -28,11 +30,11 @@ transRouter.route('/')
    }, (err) => next(err))
    .catch((err) => next(err));
 })
-.put(authenticate.verifyUser, (req, res, next) => {
+.put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    res.statusCode = 403;
    res.end('PUT operation not supported on / trans');
 })
-.delete(authenticate.verifyUser, (req, res, next) => {
+.delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Trans.remove({})
    .then((resp) => {
       res.statusCode = 200;
@@ -43,7 +45,8 @@ transRouter.route('/')
 });
 
 transRouter.route('/:tranId')
-.get((req,res,next) => {
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+.get(cors.cors, (req,res,next) => {
    Trans.findById(req.params.tranId)
     .then((tran) => {
         res.statusCode = 200;
@@ -52,11 +55,11 @@ transRouter.route('/:tranId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.post(authenticate.verifyUser, (req, res, next) => {
+.post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
     res.statusCode = 403;
     res.end('POST operation not supported on /tran/'+ req.params.tranId);
 })
-.put(authenticate.verifyUser, (req, res, next) => {
+.put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Trans.findByIdAndUpdate(req.params.tranId, {
         $set: req.body
     }, { new: true })
@@ -67,7 +70,7 @@ transRouter.route('/:tranId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.delete(authenticate.verifyUser, (req, res, next) => {
+.delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Trans.findByIdAndRemove(req.params.tranId)
     .then((resp) => {
         res.statusCode = 200;
