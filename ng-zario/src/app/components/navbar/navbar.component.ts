@@ -7,6 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
+  ADMIN: Boolean = false;
+  CUSTOMER: Boolean = false;
+  MERCHANT: Boolean = false;
+  USER: Boolean = true;
+
   constructor() { }
 
   ngOnInit() {

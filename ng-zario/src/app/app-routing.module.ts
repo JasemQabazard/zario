@@ -11,6 +11,9 @@ import { PromotionsComponent } from './components/promotions/promotions.componen
 import { RegisterComponent } from './components/register/register.component';
 import { SocialComponent } from './components/social/social.component';
 import { PasswordchangeComponent } from './components/passwordchange/passwordchange.component';
+import { PasswordforgetComponent } from './components/passwordforget/passwordforget.component';
+import { ContactusComponent } from './components/contactus/contactus.component';
+import { LocationsComponent } from './components/locations/locations.component';
 
 
 const routes: Routes = [
@@ -24,6 +27,9 @@ const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'social', component: SocialComponent},
   {path: 'passwordchange', component: PasswordchangeComponent},
+  {path: 'passwordforget', component: PasswordforgetComponent},
+  {path: 'contactus', component: ContactusComponent},
+  {path: 'locations', component: LocationsComponent},
   {path: '**', component: HomeComponent}
 ];
 

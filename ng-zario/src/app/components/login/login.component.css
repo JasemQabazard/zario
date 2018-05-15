@@ -1,0 +1,6 @@
+.box-link {
+   color:rgb(108, 117, 201);
+ }
+ input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}

@@ -1,49 +1,70 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark p-3">
-  <div class="container">
-    <a routerLink="/" class="navbar-brand"><h1>Zario</h1></a>
+  <div class="container-fluid">
+    <a routerLink="/" class="navbar-brand">
+      <img src="assets/img/z.png" width="50" height="50" alt="z logo">
+      <h1 class="d-inline align-middle">Zario</h1>
+    </a>
     <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item px-0" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}">
-            <a routerLink="/" class="nav-link">Home</a>
-        </li>
-        <li class="nav-item px-0" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}">
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="CUSTOMER">
           <a routerLink="/profile" class="nav-link">Profile</a>
         </li>
         <li class="nav-item px-0" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}">
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="CUSTOMER">
           <a routerLink="/promotions" class="nav-link">Promotions</a>
         </li>
         <li class="nav-item px-0" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}">
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="CUSTOMER">
           <a routerLink="/social" class="nav-link">Social</a>
         </li>
         <li class="nav-item px-0" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}">
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="CUSTOMER">
           <a routerLink="/dashboard" class="nav-link">Dashboard</a>
         </li>
         <li class="nav-item px-0" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}">
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="CUSTOMER">
           <a routerLink="/investor" class="nav-link">Investor</a>
-        </li>
-        <li class="nav-item px-0" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}">
-          <a routerLink="/blog" class="nav-link"> Blog</a>
         </li>
       </ul>
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a routerLink="/register" class="nav-link small">
-            <i class="fa fa-user"></i> Register
+        <li class="nav-item px-0" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+            <a routerLink="/" class="nav-link">
+              <i class="fas fa-home"></i> Home
+            </a>
+        </li>
+        <li class="nav-item" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+          <a routerLink="/register" class="nav-link">
+            <i class="fas fa-user"></i> Register
           </a>
         </li>
-        <li class="nav-item">
-          <a routerLink="/login" class="nav-link small">
-            <i class="fa fa-arrow-circle-right"></i> Log in
+        <li class="nav-item" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+          <a routerLink="/login" class="nav-link">
+            <i class="far fa-arrow-alt-circle-right"></i> Log in
+          </a>
+        </li>
+        <li class="nav-item" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+          <a routerLink="/contactus" class="nav-link">
+            <i class="fas fa-bullhorn"></i> Contact us
+          </a>
+        </li>
+        <li class="nav-item" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+          <a routerLink="/blog" class="nav-link"> 
+            <i class="fab fa-blogger"></i> Blog
+          </a>
+        </li>
+        <li class="nav-item" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+          <a routerLink="/locations" class="nav-link"> 
+            <i class="fas fa-map-marker-alt"></i> Locations
           </a>
         </li>
       </ul>

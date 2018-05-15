@@ -1,6 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { HttpModule } from '@angular/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from './services/auth.service';
+import { baseURL } from './shared/baseurl';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './/app-routing.module';
@@ -15,6 +18,10 @@ import { BlogComponent } from './components/blog/blog.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { PasswordchangeComponent } from './components/passwordchange/passwordchange.component';
+import { ContactusComponent } from './components/contactus/contactus.component';
+import { LocationsComponent } from './components/locations/locations.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { PasswordforgetComponent } from './components/passwordforget/passwordforget.component';
 
 
 @NgModule({
@@ -30,13 +37,22 @@ import { PasswordchangeComponent } from './components/passwordchange/passwordcha
     BlogComponent,
     RegisterComponent,
     LoginComponent,
-    PasswordchangeComponent
+    PasswordchangeComponent,
+    ContactusComponent,
+    LocationsComponent,
+    FooterComponent,
+    PasswordforgetComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule,
+    HttpModule
   ],
-  providers: [],
+  providers: [
+    AuthService,
+    { provide: 'BaseURL', useValue: baseURL }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

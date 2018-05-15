@@ -1,3 +1,64 @@
-<p>
-  login works!
-</p>
+
+<div class="row mt-5">
+   <div class="col-md-5 mx-auto">
+     <div class="card card-form border-warning mb-5">
+       <div class="card-header">
+           <h3 class="text-center">Please Log In</h3>
+       </div>
+       <div class="card-body">
+         <form [formGroup]="form" (submit)="loginSubmit()">
+           <div class="form-group">
+             <label for="username">User Name</label>
+             <div [ngClass]="{'has-error':(form.controls.username.errors && form.controls.username.dirty), 'has-success': !form.controls.username.errors}">
+               <input type="text" name="username" class="form-control"
+               formControlName="username">
+               <div class="help-block text-danger small" *ngIf="form.controls.username.errors && form.controls.username.dirty">
+                 <div *ngIf="form.controls.username.errors?.required">
+                   UserName field is required
+                 </div>
+                 <div *ngIf="form.controls.username.errors?.minlength || form.controls.username.errors?.maxlength">
+                     UserName minimum characters: 3, Maximum characters: 15
+                 </div>
+                 <div *ngIf="form.controls.username.errors?.validateUsername">
+                     Valid User Name must not have special characters
+                 </div>
+               </div>
+             </div>
+           </div>
+           <div class="form-group">
+             <label for="password">Password</label>
+             <div [ngClass]="{'has-error':(form.controls.password.errors && form.controls.password.dirty), 'has-success': !form.controls.password.errors}">
+               <input type="password" name="password" class="form-control"
+               formControlName="password">
+               <div class="help-block text-danger small" *ngIf="form.controls.password.errors && form.controls.password.dirty">
+                   <div *ngIf="form.controls.password.errors?.required">
+                     Password field is required
+                   </div>
+                   <div *ngIf="form.controls.password.errors?.minlength || form.controls.password.errors?.maxlength">
+                       Password minimum characters: 8, Maximum characters: 35
+                   </div>
+                   <div *ngIf="form.controls.password.errors?.validatePassword">
+                       Password must have At least one uppercase letter, one lowercase letter and one number
+                   </div>
+               </div>
+             </div>
+           </div>
+           <button [disabled]="!form.valid" type="submit" class="btn btn-primary btn-block">Log in</button>
+         </form>
+       </div>
+       <hr>
+       <div class="card-footer">
+         <div class="col-md-6">
+             <a routerLink="/passwordforget" class="box-link small"> 
+               <i class="fas fa-angle-double-right"></i>Forget Password
+             </a>
+         </div>
+         <div class="col-md-6 mt-2">
+             <a routerLink="/passwordchange" class="box-link small"> 
+               <i class="fas fa-angle-double-right"></i>Change Password
+             </a>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>

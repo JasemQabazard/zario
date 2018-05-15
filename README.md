@@ -33,10 +33,10 @@
    - add CORS
    - upload imade with multer
 =================================================================================
-===  branchName:more-security== start:29April2018== Completed: 99May 2018 ====
+===  branchName: added-security== start:29April2018== Completed: 99May 2018 ====
 ================================================================================= 
-   - Password Change
-   - Forget Password
+   - start working on the client side in  order to make testing simpler and easier for server security checks
+   - on clients do register + sign in / out + Password Change + Forget Password with mailer
    - email notifications for any activity on security (1-confirm email on registration by sendinga code. 2- password change notification. 3-Forget Password and Reset notifications.)
    - Route authentication for each user type:{Administrator, Customer, Merchant}. Display correct menu for each type. 
    - use email and phone for double factor authentication.

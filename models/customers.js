@@ -29,13 +29,6 @@ var Customers = new Schema({
             type: String,
             default: ''
       },
-      emailid: { 
-            type: String, 
-            unique: true, 
-            trim:true, 
-            required:true, 
-            lowercase:true 
-      },
       city: {
             type: String,
             required: true,
@@ -55,10 +48,6 @@ var Customers = new Schema({
       initialflag: {
             type: Boolean,
             default: false
-      },
-      mobile: {
-            countrycode: {type: Number, required: true},
-            number:{type: Number, required: true}
       },
       zarios:  {
             type: Number,

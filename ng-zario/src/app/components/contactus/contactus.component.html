@@ -1,0 +1,62 @@
+
+<div class="row mt-5">
+   <div class="col-md-5 mx-auto">
+     <div class="card card-form border-warning mb-5">
+       <div class="card-header">
+           <h3 class="text-center">Contact Us Form</h3>
+       </div>
+       <div class="card-body">
+         <form [formGroup]="form" (submit)="contactSubmit()">
+           <div class="form-group">
+             <label for="name">Name</label>
+             <div [ngClass]="{'has-error':(form.controls.name.errors && form.controls.name.dirty), 'has-success': !form.controls.name.errors}">
+               <input type="text" name="name" class="form-control"
+               formControlName="name">
+               <div class="help-block text-danger small" *ngIf="form.controls.name.errors && form.controls.name.dirty">
+                 <div *ngIf="form.controls.name.errors?.required">
+                     Name field is required
+                 </div>
+                 <div *ngIf="form.controls.name.errors?.minlength || form.controls.name.errors?.maxlength">
+                     Name minimum characters: 5, Maximum characters: 30
+                 </div>
+                 <div *ngIf="form.controls.name.errors?.validateName">
+                     Valid Name must not have special characters
+                 </div>
+               </div>
+             </div>
+           </div>
+           <div class="form-group">
+             <label for="email">Email</label>
+             <div [ngClass]="{'has-error':(form.controls.email.errors && form.controls.email.dirty), 'has-success': !form.controls.email.errors}">
+               <input type="email" name="email" class="form-control"
+               formControlName="email">
+               <div class="help-block text-danger small" *ngIf="form.controls.email.errors && form.controls.email.dirty">
+                   <div *ngIf="form.controls.email.errors?.required">
+                     Email field is required
+                   </div>
+                   <div *ngIf="form.controls.email.errors?.minlength || form.controls.email.errors?.maxlength">
+                       Email minimum characters: 5, Maximum characters: 30
+                   </div>
+                   <div *ngIf="form.controls.email.errors?.validateEmail">
+                       Email must be in a valid format
+                   </div>
+               </div>
+             </div>
+           </div>
+           <div class="form-group">
+             <label for="message">Message</label>
+             <div [ngClass]="{'has-error':(form.controls.message.errors && form.controls.message.dirty), 'has-success': !form.controls.message.errors}">
+               <textarea name="message" class="form-control" rows="5" formControlName="message"></textarea>
+               <div class="help-block text-danger small" *ngIf="form.controls.message.errors && form.controls.message.dirty">
+                 <div *ngIf="form.controls.message.errors?.required">
+                   Message field is required
+                 </div>
+               </div>
+             </div>
+           </div>
+           <button [disabled]="!form.valid" type="submit" class="btn btn-primary btn-block">Submit</button>
+         </form>
+       </div>
+     </div>
+   </div>
+ </div>
