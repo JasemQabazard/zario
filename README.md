@@ -41,7 +41,8 @@
    - Route authentication for each user type:{Administrator, Customer, Merchant}. Display correct menu for each type. 
    - use email and phone for double factor authentication.
 
-
+500 - Internal Server Error {"err":"MongoError: E11000 duplicate key error collection: zario.users index: email_1 dup key: { : \"jasemqabazard@gmail.com\" } user save error"}
+500 - Internal Server Error {"err":{"name":"UserExistsError","message":"A user with the given username is already registered"}}
    
 ==========add-db-Models=======git branch============
    - add all db structures and models for your data

@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
 import { AuthService } from '../../services/auth.service';
 import { User, Codes } from '../../shared/security';
 
@@ -13,13 +15,18 @@ export class RegisterComponent implements OnInit {
   form: FormGroup;
   codes: Codes[];
   user: User;
-  message;
-  messageClass;
-
+  message: string;
+  messageClass: string;
+  emailValid: boolean = true;
+  emailMessage: string;
+  usernameValid: boolean = true;
+  usernameMessage: string;
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
+    @Inject('BaseURL') private BaseURL
   ) {
     this.createForm();
    }
@@ -143,17 +150,59 @@ export class RegisterComponent implements OnInit {
   onRegisterSubmit() {
     this.user = this.form.value;
     console.log(this.user);
-    this.form.reset();
-    this.form.controls['countrycode'].setValue('+965 Kuwait');
-    this.authService.registerUser(this.user).subscribe(data => {
-      console.log(data);
-      if (!data.success) {
-        this.messageClass= "alert alert-danger";
-        this.message=data.message;
-      } else {
+    this.authService.registerUser(this.user).subscribe(
+      data => {
         this.messageClass= "alert alert-success";
-        this.message=data.status;
+        this.message="User Log Successfull";
+        this.form.reset();
+        this.form.controls['countrycode'].setValue('+965 Kuwait');
+        setTimeout(() => {
+          this.router.navigate(['/login']); // Redirect to login page
+        }, 2000);
+      }, 
+      errormessage => {
+        this.message = <any>errormessage;
+        this.messageClass= "alert alert-danger";
       }
-    });
+    );
+  }
+  // Function to check if e-mail is taken
+  checkEmail() {
+    // Function from authentication file to check if e-mail is taken
+    this.authService.checkEmail(this.form.get('email').value).subscribe(
+      data => {
+        // Check if success true or false was returned from API
+        if (!data.success) {
+          this.emailValid = false; // Return email as invalid
+          this.emailMessage = data.message; // Return error message
+        } else {
+          this.emailValid = true; // Return email as valid
+        }
+      }, 
+      errormessage => {
+        this.message = <any>errormessage;
+        this.messageClass= "alert alert-danger";
+      }
+    );
+  }
+
+  // Function to check if username is available
+  checkUsername() {
+    // Function from authentication file to check if username is taken
+    this.authService.checkUsername(this.form.get('username').value).subscribe(
+      data => {
+      // Check if success true or success false was returned from API
+        if (!data.success) {
+          this.usernameValid = false; // Return username as invalid
+          this.usernameMessage = data.message; // Return error message
+        } else {
+          this.usernameValid = true; // Return username as valid
+        }
+      }, 
+      errormessage => {
+        this.message = <any>errormessage;
+        this.messageClass= "alert alert-danger";
+      }
+    );
   }
 }

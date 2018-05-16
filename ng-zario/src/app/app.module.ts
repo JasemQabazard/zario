@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
+import { ProcessHttpmsgService } from './services/process-httpmsg.service';
+
 import { baseURL } from './shared/baseurl';
 
 import { AppComponent } from './app.component';
@@ -51,7 +53,8 @@ import { PasswordforgetComponent } from './components/passwordforget/passwordfor
   ],
   providers: [
     AuthService,
-    { provide: 'BaseURL', useValue: baseURL }
+    { provide: 'BaseURL', useValue: baseURL },
+    ProcessHttpmsgService
   ],
   bootstrap: [AppComponent]
 })
