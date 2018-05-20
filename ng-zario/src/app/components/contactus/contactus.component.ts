@@ -1,5 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { AuthService } from '../../services/auth.service';
+
+import { Contact } from '../../shared/contact';
 
 @Component({
   selector: 'app-contactus',
@@ -9,9 +14,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class ContactusComponent implements OnInit {
 
   form: FormGroup;
+  contact: Contact;
+  message: string;
+  messageClass: string;
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    @Inject('BaseURL') private BaseURL
   ) {
     this.createForm();
    }
@@ -33,8 +44,14 @@ export class ContactusComponent implements OnInit {
         Validators.maxLength(30),
         this.validateEmail // Custom validation
       ])],
+      subject: ['', Validators.compose([
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(50)
+      ])],
       message: ['', Validators.compose([
-        Validators.required
+        Validators.required,
+        Validators.minLength(50)
       ])]
     })
   }
@@ -62,8 +79,23 @@ export class ContactusComponent implements OnInit {
       return { 'validateName': true } // Return as invalid name
     }
   }
-  contactSubmit() {
-    console.log('Contact form Submitted');
+  onContactSubmit() {
+    this.contact = this.form.value;
+    this.authService.contactSupport(this.contact).subscribe(
+      data => {
+        console.log("data", data);
+        this.messageClass= "alert alert-success";
+        this.message="Your information has been received successfull";
+        this.form.reset();
+        setTimeout(() => {
+          this.router.navigate(['/home']); // Redirect to home page
+        }, 2000);
+      }, 
+      errormessage => {
+        this.message = <any>errormessage;
+        this.messageClass= "alert alert-danger";
+      }
+    );
   }
 
 }

@@ -4,6 +4,7 @@ const User = require('../models/user');
 const passport = require('passport');
 const authenticate = require('../authenticate');
 const cors = require('./cors');
+var nodemailer = require('nodemailer');
 
 var router = express.Router();
 router.use(bodyParser.json());
@@ -72,6 +73,38 @@ router.route('/register')
     }
   });
 });
+
+/* ============================================================
+     Route to send user email with the verification code 
+  ============================================================ */
+router.post('/mailer', function (req, res, next) {
+      var transporter = nodemailer.createTransport({
+          service: 'Gmail',
+          auth: {
+              user: 'successarchitecture@gmail.com',
+              pass: 'pbdqtlxogbdjonru'
+          }
+      });
+      var mailOptions = {
+          from: 'successarchitecture@gmail.com',
+          to: req.body.email,
+          subject: 'Your Registration Code is: ' + req.body.vcode,
+          text: 'You have received this email because you attempted to register to zario.io and the black diamond loyalty program. Please enter your registration code in the application to continue with the registration process. Your Registration Code is: ' + req.body.vcode,
+          html: '<p>You have received this email because you attempted to register to zario.io and the black diamond loyalty program. Please enter your registration code in the application to continue with the registration process. Your Registration Code is: </p>' + req.body.vcode 
+      };
+      transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+              next(err);
+          } else {
+              res.status(200).json({
+                  status: 'Registration Code Message Sent' + info.response,
+                  success: true
+              });
+          }
+      });
+});
+
+
 
   /* ============================================================
      Route to check if user's email is available for registration

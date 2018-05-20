@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../services/auth.service';
+import { CommonRoutinesService } from '../../services/common-routines.service';
 import { User, Codes } from '../../shared/security';
 
 @Component({
@@ -13,6 +14,7 @@ import { User, Codes } from '../../shared/security';
 export class RegisterComponent implements OnInit {
 
   form: FormGroup;
+  vrifyemailform: FormGroup;
   codes: Codes[];
   user: User;
   message: string;
@@ -21,14 +23,20 @@ export class RegisterComponent implements OnInit {
   emailMessage: string;
   usernameValid: boolean = true;
   usernameMessage: string;
+  timeleft: number;
+  showverifyemail: boolean = false;
+  processing: boolean = false;
+  verifycode: string = this.commonRoutinesService.codeGen();
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private commonRoutinesService: CommonRoutinesService,
     private router: Router,
     @Inject('BaseURL') private BaseURL
   ) {
     this.createForm();
+    this.createForm2();
    }
 
   ngOnInit() {
@@ -42,6 +50,29 @@ export class RegisterComponent implements OnInit {
       {countryCode:"+971 UAE"},
       {countryCode:"+1 USA"}
     ];
+  }
+
+  createForm2() {
+    this.vrifyemailform = this.formBuilder.group({
+      verifyInput: ['', Validators.compose([
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(6)])]
+      }, {
+        validator: this.emailVerification(this.verifycode, 'verifyInput')
+      }
+    )
+  }
+
+  emailVerification(vcode, verifyInput) {
+    console.log(vcode, verifyInput);
+    return (group: FormGroup) => {
+      if (vcode === group.controls[verifyInput].value) {
+        return null; // Return as valid Verification Code { 'emailVerification': false }
+      } else {
+        return { 'emailVerification': true } // Return as invalid Verification Code
+      }
+    }
   }
 
   createForm() {
@@ -148,6 +179,37 @@ export class RegisterComponent implements OnInit {
     }
 
   onRegisterSubmit() {
+    const codeData = {
+      email: '',
+      vcode: ''
+    }
+    codeData.email= this.form.get('email').value;
+    codeData.vcode=this.verifycode;
+    this.authService.mailVerification(codeData).subscribe(
+      data => {
+        this.processing = true;
+        this.disableForm();
+        this.showverifyemail = true;
+        this.timeleft = 90;
+        var x = setInterval(() => {
+                --this.timeleft;
+                if (this.timeleft === 0) {
+                  clearInterval(x);
+                  this.processing = false;
+                  this.showverifyemail = false;
+                  this.enableForm();
+                }
+              }, 1000);
+      }, 
+      errormessage => {
+        this.message = <any>errormessage;
+        this.messageClass= "alert alert-danger";
+      }
+    );
+  }
+
+  onVerifyClick() {
+    this.enableForm();
     this.user = this.form.value;
     console.log(this.user);
     this.authService.registerUser(this.user).subscribe(
@@ -163,12 +225,37 @@ export class RegisterComponent implements OnInit {
       errormessage => {
         this.message = <any>errormessage;
         this.messageClass= "alert alert-danger";
+        this.processing = false;
+        this.showverifyemail = false;
       }
     );
   }
+
+  enableForm() {
+    this.form.controls['username'].enable();
+    this.form.controls['password'].enable();
+    this.form.controls['email'].enable();
+    this.form.controls['firstname'].enable();
+    this.form.controls['lastname'].enable();
+    this.form.controls['countrycode'].enable();
+    this.form.controls['mobile'].enable();
+  }
+
+  disableForm() {
+    this.form.controls['username'].disable();
+    this.form.controls['password'].disable();
+    this.form.controls['email'].disable();
+    this.form.controls['firstname'].disable();
+    this.form.controls['lastname'].disable();
+    this.form.controls['countrycode'].disable();
+    this.form.controls['mobile'].disable();
+  }
+
+
   // Function to check if e-mail is taken
   checkEmail() {
     // Function from authentication file to check if e-mail is taken
+    if (this.form.get('email').value === "") return;
     this.authService.checkEmail(this.form.get('email').value).subscribe(
       data => {
         // Check if success true or false was returned from API
@@ -189,6 +276,7 @@ export class RegisterComponent implements OnInit {
   // Function to check if username is available
   checkUsername() {
     // Function from authentication file to check if username is taken
+    if (this.form.get('username').value === "") return;
     this.authService.checkUsername(this.form.get('username').value).subscribe(
       data => {
       // Check if success true or success false was returned from API

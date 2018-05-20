@@ -2,8 +2,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { ProcessHttpmsgService } from './services/process-httpmsg.service';
+import { CommonRoutinesService } from './services/common-routines.service';
 
 import { baseURL } from './shared/baseurl';
 
@@ -49,12 +51,14 @@ import { PasswordforgetComponent } from './components/passwordforget/passwordfor
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    FormsModule,
     HttpModule
   ],
   providers: [
     AuthService,
     { provide: 'BaseURL', useValue: baseURL },
-    ProcessHttpmsgService
+    ProcessHttpmsgService,
+    CommonRoutinesService
   ],
   bootstrap: [AppComponent]
 })

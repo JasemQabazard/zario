@@ -24,6 +24,16 @@ export class AuthService {
       .catch(error => {return this.processHttpmsgService.handleError(error)});
   }
 
+  // send email to successarchitecture@gmail.com from user 
+  contactSupport(contact) {
+    return this.http.post(baseURL + '/contact/', contact).map(res => res.json());
+  }
+
+  // emails verification code to user email 
+  mailVerification(codeData) {
+    return this.http.post(baseURL + '/users/mailer', codeData).map(res => res.json());
+  }
+
   // Function to check if username is taken
   checkUsername(username) {
     return this.http.get(baseURL + '/users/checkUsername/' + username).map(res => res.json());

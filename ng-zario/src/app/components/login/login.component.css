@@ -4,3 +4,7 @@
  input.ng-invalid.ng-touched {
   border: 1px solid red;
 }
+
+input, select, textarea {
+background-color : #f1f7fc;
+}

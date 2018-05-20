@@ -9,6 +9,8 @@ const config = require('./config');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const contactRouter = require('./routes/contact');
+
 const customersRouter = require('./routes/customersRouter');
 const achievementsRouter = require('./routes/achievementsRouter');
 const groupsRouter = require('./routes/groupsRouter');
@@ -59,6 +61,8 @@ app.use(passport.initialize());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/contact', contactRouter);
+
 app.use('/customers', customersRouter);
 app.use('/groups', groupsRouter);
 app.use('/merchants', merchantsRouter);

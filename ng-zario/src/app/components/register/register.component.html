@@ -139,8 +139,38 @@
                 </div>
             </div><!--/form-group-->
           </div>
-          <button [disabled]="!form.valid || !usernameValid || !emailValid" type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
+          <button [disabled]="!form.valid || !usernameValid || !emailValid || processing" type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
         </form>
+        <hr>
+        <div class="row">
+          <div class="col-sm-8 mx-auto">
+            <form [formGroup]="vrifyemailform" (submit)="onVerifyClick()">
+              <div class="form-group mt-3" *ngIf="showverifyemail">
+                <h1 class="text-danger text-center m-2">{{timeleft}}</h1>
+                <div [ngClass]="{'has-error':(vrifyemailform.controls.verifyInput.errors && vrifyemailform.controls.verifyInput.dirty) || (vrifyemailform.errors?.emailVerification && vrifyemailform.controls.verifyInput.dirty), 'has-success': !vrifyemailform.controls.verifyInput.errors && !vrifyemailform.errors?.emailVerification}">
+                    <input type="text" name="verifyInput" class="form-control mt-2"
+                    formControlName="verifyInput">
+                    <div class="help-block text-light small bg-danger pl-2" *ngIf="(vrifyemailform.controls.verifyInput.errors && vrifyemailform.controls.verifyInput.dirty) ||(vrifyemailform.errors?.emailVerification && vrifyemailform.controls.verifyInput.dirty)">
+                        <div *ngIf="vrifyemailform.controls.verifyInput.errors?.required">
+                          Email Verification Code is required! Please check your email
+                        </div>
+                        <div *ngIf="vrifyemailform.controls.verifyInput.errors?.minlength || vrifyemailform.controls.verifyInput.errors?.maxlength">
+                            Email Verification Code is ONLY 6 characters
+                        </div>
+                        <div *ngIf="vrifyemailform.errors?.emailVerification">
+                            Email Verification Code must be EXACTLY what you received in your email
+                        </div>
+                    </div>
+                  </div>
+                <button [disabled]="!vrifyemailform.valid" type="submit" class="btn btn-danger btn-block mt-2">Verify Email</button>
+                <div class="text-center mt-2">
+                    <h3>Enter 6 Digit Verification Code</h3>
+                    <h3>Please check your Email</h3>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   </div>
