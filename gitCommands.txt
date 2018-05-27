@@ -76,3 +76,7 @@ do the following:
    - git merge branch-name
    - git push ----- will push the branch to the masetr reporsitory in github
 
+============================================
+=========   for cloning a git repository 
+============================================  
+git clone https:/github.com/JasemQabazard/repository

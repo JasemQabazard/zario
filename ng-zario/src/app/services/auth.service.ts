@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { User } from '../shared/security';
 
 import { Observable } from 'rxjs/Observable';
@@ -7,6 +7,7 @@ import { ProcessHttpmsgService } from './process-httpmsg.service';
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/delay';
 
 import { baseURL } from '../shared/baseurl';
 
@@ -14,33 +15,33 @@ import { baseURL } from '../shared/baseurl';
 export class AuthService {
 
   constructor(
-    private http: Http,
+    private http: HttpClient,
     private processHttpmsgService: ProcessHttpmsgService
   ) { }
 
+  // main user registration communication with the server
   registerUser(user): Observable<User> {
     return this.http.post(baseURL + '/users/register', user)
-      .map(res => {return this.processHttpmsgService.extractData(res); })
       .catch(error => {return this.processHttpmsgService.handleError(error)});
   }
 
-  // send email to successarchitecture@gmail.com from user 
+  // send email to successarchitecture@gmail.com from user in contact support type environment
   contactSupport(contact) {
-    return this.http.post(baseURL + '/contact/', contact).map(res => res.json());
+    return this.http.post(baseURL + '/contact/', contact);
   }
 
-  // emails verification code to user email 
+  // emails verification code to user email used in registration and lost password recovery  
   mailVerification(codeData) {
-    return this.http.post(baseURL + '/users/mailer', codeData).map(res => res.json());
+    return this.http.post(baseURL + '/users/mailer', codeData);
   }
 
-  // Function to check if username is taken
-  checkUsername(username) {
-    return this.http.get(baseURL + '/users/checkUsername/' + username).map(res => res.json());
+  // Function to check if username is taken, used in registration
+  checkUsername(username): Observable<any> {
+    return this.http.get(baseURL + '/users/checkUsername/' + username);
   }
 
-  // Function to check if e-mail is taken
-  checkEmail(email) {
-    return this.http.get(baseURL + '/users/checkEmail/' + email).map(res => res.json());
+  // Function to check if e-mail is taken, used in registration
+  checkEmail(email): Observable<any> {
+    return this.http.get(baseURL + '/users/checkEmail/' + email);
   }
 }

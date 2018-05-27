@@ -1,12 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+
 import { AuthService } from './services/auth.service';
+import { LoginService } from './services/login.service';
 import { ProcessHttpmsgService } from './services/process-httpmsg.service';
 import { CommonRoutinesService } from './services/common-routines.service';
-
+import { AuthInterceptor } from './services/auth.interceptor';
 import { baseURL } from './shared/baseurl';
 
 import { AppComponent } from './app.component';
@@ -52,13 +55,19 @@ import { PasswordforgetComponent } from './components/passwordforget/passwordfor
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpModule
+    HttpClientModule
   ],
   providers: [
     AuthService,
+    LoginService,
     { provide: 'BaseURL', useValue: baseURL },
     ProcessHttpmsgService,
-    CommonRoutinesService
+    CommonRoutinesService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

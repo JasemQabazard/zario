@@ -10,28 +10,6 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item px-0" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}" *ngIf="CUSTOMER">
-          <a routerLink="/profile" class="nav-link">Profile</a>
-        </li>
-        <li class="nav-item px-0" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}" *ngIf="CUSTOMER">
-          <a routerLink="/promotions" class="nav-link">Promotions</a>
-        </li>
-        <li class="nav-item px-0" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}" *ngIf="CUSTOMER">
-          <a routerLink="/social" class="nav-link">Social</a>
-        </li>
-        <li class="nav-item px-0" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}" *ngIf="CUSTOMER">
-          <a routerLink="/dashboard" class="nav-link">Dashboard</a>
-        </li>
-        <li class="nav-item px-0" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}" *ngIf="CUSTOMER">
-          <a routerLink="/investor" class="nav-link">Investor</a>
-        </li>
-      </ul>
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item px-0" [routerLinkActive]="['active']"
         [routerLinkActiveOptions]="{exact: true}">
             <a routerLink="/" class="nav-link">
               <i class="fas fa-home"></i> Home
@@ -39,14 +17,40 @@
         </li>
         <li class="nav-item" [routerLinkActive]="['active']"
         [routerLinkActiveOptions]="{exact: true}">
+          <a routerLink="/blog" class="nav-link"> 
+            <i class="fab fa-blogger"></i> Blog
+          </a>
+        </li>
+        <li class="nav-item px-0" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="!USER">
+          <a routerLink="/promotions" class="nav-link">
+            <i class="fas fa-child"></i> Promotions
+          </a>
+        </li>
+        <li class="nav-item px-0" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="!USER">
+          <a routerLink="/dashboard" class="nav-link">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="USER">
           <a routerLink="/register" class="nav-link">
             <i class="fas fa-user"></i> Register
           </a>
         </li>
         <li class="nav-item" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}">
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="USER">
           <a routerLink="/login" class="nav-link">
             <i class="far fa-arrow-alt-circle-right"></i> Log in
+          </a>
+        </li>
+        <li class="nav-item px-0" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="!USER">
+          <a routerLink="/profile" class="nav-link">
+            <i class="fas fa-user-circle"></i> Welcome {{username}}
           </a>
         </li>
         <li class="nav-item" [routerLinkActive]="['active']"
@@ -55,17 +59,20 @@
             <i class="fas fa-bullhorn"></i> Contact us
           </a>
         </li>
-        <li class="nav-item" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}">
-          <a routerLink="/blog" class="nav-link"> 
-            <i class="fab fa-blogger"></i> Blog
-          </a>
-        </li>
-        <li class="nav-item" [routerLinkActive]="['active']"
+        <!-- <li class="nav-item" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="!USER">
+          <a routerLink="/social" class="nav-link">Social</a>
+        </li> -->
+        <!-- <li class="nav-item" [routerLinkActive]="['active']"
         [routerLinkActiveOptions]="{exact: true}">
           <a routerLink="/locations" class="nav-link"> 
             <i class="fas fa-map-marker-alt"></i> Locations
           </a>
+        </li> -->
+        <li class="nav-item px-0" *ngIf="!USER">
+            <a (click)="logOut()" class="nav-link">
+                <i class="fas fa-sign-out-alt"></i>LogOut
+            </a>
         </li>
       </ul>
     </div>

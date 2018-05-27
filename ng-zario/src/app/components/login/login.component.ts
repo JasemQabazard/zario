@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -9,9 +12,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class LoginComponent implements OnInit {
 
   form: FormGroup;
+  message: string;
+  messageClass: string;
+  user = {username: '', password: ''};
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private loginService: LoginService,
+    private router: Router,
   ) {
     this.createForm();
    }
@@ -62,7 +70,22 @@ export class LoginComponent implements OnInit {
   }
 
   loginSubmit() {
-    console.log('login form Submitted');
+    this.user = this.form.value;
+    console.log("User: ", this.user);
+    this.loginService.logIn(this.user).subscribe(
+        data => {
+          this.messageClass= "alert alert-success";
+          this.message="Log In Successfull";
+          this.form.reset();
+          setTimeout(() => {
+            this.router.navigate(['/']); // Redirect to Home page
+          }, 2000);
+      },
+      error => {
+        this.messageClass = "alert alert-danger";
+        this.message = error;
+        // "Unatherized User, Please use correct user name/ password";
+      }
+    );
   }
-
 }

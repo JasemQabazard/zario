@@ -9,12 +9,9 @@ var nodemailer = require('nodemailer');
 var router = express.Router();
 router.use(bodyParser.json());
 
-/* GET users listing. */
-// router.get('/', function(req, res, next) {
-//   res.send('respond with a resource');
-// });
+router.options('*', cors.corsWithOptions, (req, res) => { res.sendStatus(200); } )
+
 router.route('/') 
-.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
 .get(cors.corsWithOptions, (req, res, next) => {
    User.find({})
    .then((users) => {
@@ -26,7 +23,6 @@ router.route('/')
 })
 
 router.route('/register') 
-.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
 .post(cors.corsWithOptions, (req, res, next) => {
   User.register(new User({username: req.body.username}), 
   req.body.password, (err, user) => {
@@ -161,21 +157,46 @@ router.post('/mailer', function (req, res, next) {
     }
   });
 
-router.route('/login') 
-.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
-.post(cors.corsWithOptions, passport.authenticate('local'), (req, res) => {
-  var token = authenticate.getToken({_id:req.user._id});
-    res.statusCode  = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.json({success: true, token: token, status: 'Login Successful!'});
-});
+  router.post('/login', cors.corsWithOptions, (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+          if (err)
+            {return next(err);}
+          if (!user) {
+            return res.status(401).json({success: false, status: 'Login Unsuccessful!', err: info});
+          } 
+          req.logIn(user, (err) => {
+          if (err) {
+            return res.status(401).json({success: false, status: 'Login Unsuccessful!', 
+              err: 'Could not log in User'});
+          }   
+            var token = authenticate.getToken({_id: req.user._id});
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json({success: true, message: 'Login Successful!', token: token, role: user.role});
+        }); 
+    }) (req, res, next);
+  });
 
 router.route('/logout') 
-.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
 .post(cors.corsWithOptions, (req, res) => {
   req.logOut();
   res.redirect('/');
   // res.send(200).json({status: 'Bye!'});
+});
+
+router.get('/checkJWTToken', cors.corsWithOptions, (req, res) => {
+  passport.authenticate('jwt', {session: false}, (err, user, info) => {
+    if (err)
+      return next(err);
+    if (!user) {
+      return res.status(401).json({success: false, status: 'JWT invalid!', err: info});
+    }
+    else {
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      return res.json({status: 'JWT valid!', success: true, user: user});
+    }
+  }) (req, res); 
 });
 
 module.exports = router;
