@@ -19,9 +19,9 @@ export class RegisterComponent implements OnInit {
   user: User;
   message: string;
   messageClass: string;
-  emailValid: boolean = true;
+  emailValid: boolean = false;
   emailMessage: string;
-  usernameValid: boolean = true;
+  usernameValid: boolean = false;
   usernameMessage: string;
   timeleft: number;
   showverifyemail: boolean = false;

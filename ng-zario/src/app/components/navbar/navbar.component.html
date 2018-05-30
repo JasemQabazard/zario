@@ -33,6 +33,16 @@
             <i class="fas fa-tachometer-alt"></i> Dashboard
           </a>
         </li>
+        <li class="nav-item px-0" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="!USER">
+          <a routerLink="/transactions" class="nav-link">
+            <i class="fas fa-globe"></i> Wallet</a>
+        </li>
+        <li class="nav-item px-0" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="!USER">
+          <a routerLink="/cart" class="nav-link">
+            <i class="fas fa-cart-plus"></i> Cart</a>
+        </li>
       </ul>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item" [routerLinkActive]="['active']"
@@ -59,18 +69,8 @@
             <i class="fas fa-bullhorn"></i> Contact us
           </a>
         </li>
-        <!-- <li class="nav-item" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}" *ngIf="!USER">
-          <a routerLink="/social" class="nav-link">Social</a>
-        </li> -->
-        <!-- <li class="nav-item" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}">
-          <a routerLink="/locations" class="nav-link"> 
-            <i class="fas fa-map-marker-alt"></i> Locations
-          </a>
-        </li> -->
         <li class="nav-item px-0" *ngIf="!USER">
-            <a (click)="logOut()" class="nav-link">
+            <a (click)="logOut()" class="nav-link" href="#">
                 <i class="fas fa-sign-out-alt"></i>LogOut
             </a>
         </li>

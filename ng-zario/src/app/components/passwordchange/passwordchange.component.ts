@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { Subscription } from 'rxjs/Subscription';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-passwordchange',
@@ -9,14 +12,26 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class PasswordchangeComponent implements OnInit {
 
   form: FormGroup;
+  message: string;
+  messageClass: string;
+  oldPasswordValid: boolean = false;
+  oldPasswordMessage: string;
+  username: string = undefined;
+  user = {username: '', password: ''};
+  subscription: Subscription;
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private router: Router
   ) {
     this.createForm();
    }
 
   ngOnInit() {
+    this.authService.loadUserCredentials();
+    this.subscription = this.authService.getUsername()
+      .subscribe(name => { console.log(name); this.username = name; });
   }
 
   createForm() {
@@ -50,7 +65,49 @@ export class PasswordchangeComponent implements OnInit {
     }
   
     passwordChangeSubmit() {
-      console.log('Password Change form Submitted');
+      this.user.username = this.username;
+      this.user.password = this.form.get('npassword').value;
+      this.authService.passwordChange(this.user).subscribe(
+        data => {
+          this.messageClass= "alert alert-success";
+          this.message="Password Change Successfull";
+          this.form.reset();
+          this.username = undefined;
+          this.authService.logOut();
+          setTimeout(() => {
+            this.router.navigate(['/login']); // Redirect to Home page
+          }, 2000);
+      },
+        error => {
+          this.messageClass = "alert alert-danger";
+          this.message = error;
+          // "Unatherized User, Please use correct user name/ password";
+        }
+      );
     }
+
+      // Function to check if username is available
+  checkOldPassword() {
+    this.user.username = this.username;
+    this.user.password = this.form.get('opassword').value;
+    console.log("user sent for old pass check", this.user);
+    this.authService.checkOldPassword(this.user).subscribe(
+      data => {
+        this.messageClass= "";
+        this.message=null;
+      // Check if success true or success false was returned from API
+        if (!data.success) {
+          this.oldPasswordValid = false; // Return username as invalid
+          this.oldPasswordMessage = data.message; // Return error message
+        } else {
+          this.oldPasswordValid = true; // Return username as valid
+        }
+      }, 
+      errormessage => {
+        this.message = <any>errormessage;
+        this.messageClass= "alert alert-danger";
+      }
+    );
+  }
 
 }

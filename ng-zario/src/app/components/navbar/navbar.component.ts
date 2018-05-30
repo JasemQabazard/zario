@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { LoginService } from '../../services/login.service';
+import { AuthService } from '../../services/auth.service';
 
 import { Subscription } from 'rxjs/Subscription';
 
@@ -20,16 +20,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   constructor(
-    private loginService: LoginService
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
-    console.log("init-1");
-    this.loginService.loadUserCredentials();
-    console.log("init-2");
-    this.subscription = this.loginService.getUsername()
+    this.authService.loadUserCredentials();
+    this.subscription = this.authService.getUsername()
       .subscribe(name => { console.log(name); this.username = name; });
-    this.subscription = this.loginService.getUserrole()
+    this.subscription = this.authService.getUserrole()
       .subscribe(role => { 
         console.log(role); this.userrole = role; 
         this.ADMIN = false;
@@ -56,7 +54,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   logOut() {
     this.username = undefined;
     this.userrole = undefined;
-    this.loginService.logOut();
+    this.authService.logOut();
   }
 
 }

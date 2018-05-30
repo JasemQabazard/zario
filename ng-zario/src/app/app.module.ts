@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 
 import { AuthService } from './services/auth.service';
-import { LoginService } from './services/login.service';
 import { ProcessHttpmsgService } from './services/process-httpmsg.service';
 import { CommonRoutinesService } from './services/common-routines.service';
 import { AuthInterceptor } from './services/auth.interceptor';
@@ -18,17 +17,16 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { PromotionsComponent } from './components/promotions/promotions.component';
-import { SocialComponent } from './components/social/social.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { InvestorComponent } from './components/investor/investor.component';
 import { BlogComponent } from './components/blog/blog.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { PasswordchangeComponent } from './components/passwordchange/passwordchange.component';
 import { ContactusComponent } from './components/contactus/contactus.component';
-import { LocationsComponent } from './components/locations/locations.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { PasswordforgetComponent } from './components/passwordforget/passwordforget.component';
+import { TransactionsComponent } from './components/transactions/transactions.component';
+import { CartComponent } from './components/cart/cart.component';
 
 
 @NgModule({
@@ -38,17 +36,16 @@ import { PasswordforgetComponent } from './components/passwordforget/passwordfor
     HomeComponent,
     ProfileComponent,
     PromotionsComponent,
-    SocialComponent,
     DashboardComponent,
-    InvestorComponent,
     BlogComponent,
     RegisterComponent,
     LoginComponent,
     PasswordchangeComponent,
     ContactusComponent,
-    LocationsComponent,
     FooterComponent,
-    PasswordforgetComponent
+    PasswordforgetComponent,
+    TransactionsComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +56,6 @@ import { PasswordforgetComponent } from './components/passwordforget/passwordfor
   ],
   providers: [
     AuthService,
-    LoginService,
     { provide: 'BaseURL', useValue: baseURL },
     ProcessHttpmsgService,
     CommonRoutinesService,

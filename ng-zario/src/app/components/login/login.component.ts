@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { LoginService } from '../../services/login.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private loginService: LoginService,
+    private authService: AuthService,
     private router: Router,
   ) {
     this.createForm();
@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit {
   loginSubmit() {
     this.user = this.form.value;
     console.log("User: ", this.user);
-    this.loginService.logIn(this.user).subscribe(
+    this.authService.logIn(this.user).subscribe(
         data => {
           this.messageClass= "alert alert-success";
           this.message="Log In Successfull";

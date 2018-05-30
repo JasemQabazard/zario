@@ -22,6 +22,59 @@ router.route('/')
    .catch((err) => next(err));
 })
 
+/* ============================================================
+     Route user password change does not require mailer
+     requires sending teh user name and the new password 
+  ============================================================ */
+router.post('/passwordchange', (req, res, next) => {
+  User.findByUsername(req.body.username).then(
+    (user) => {
+      if (user)
+      {
+          user.setPassword(req.body.password, 
+            (err) => {
+              if (err) return next(err);
+              user.save(
+                (err) => {
+                  console.log(err);
+                  if (err) return next(err);
+                  res.status(200).json({ status: 'password change Successful!' });
+              });
+          });
+      } 
+  }, (err) => {
+      next(err);
+  });
+});
+
+/* ============================================================
+     Route for resetting user password 
+     requires mailing the OTP to the user first from the angular 
+     front end and when receiving correct code 
+     call this server post to do the reset
+     requiures sending email id and the new password
+  ============================================================ */
+router.post('/passwordreset', (req, res, next) => {
+  User.findOne({ email: req.body.email }, 
+    (err, user) => {
+      if (user) {
+          user.setPassword(req.body.password, 
+            (err) => {
+              if (err) return next(err);
+              user.save(
+                (err) => {
+                  console.log(err);
+                  if (err) return next(err);
+                  res.status(200).json({ status: 'password reset Successful!' });
+              });
+          });
+      }
+  });
+});
+
+/* ============================================================
+     Route to user's registration to application
+  ============================================================ */
 router.route('/register') 
 .post(cors.corsWithOptions, (req, res, next) => {
   User.register(new User({username: req.body.username}), 
@@ -90,7 +143,7 @@ router.post('/mailer', function (req, res, next) {
       };
       transporter.sendMail(mailOptions, function (error, info) {
           if (error) {
-              next(err);
+              next(error);
           } else {
               res.status(200).json({
                   status: 'Registration Code Message Sent' + info.response,
@@ -100,6 +153,39 @@ router.post('/mailer', function (req, res, next) {
       });
 });
 
+/* ============================================================
+     Route send email for forget the password requires the email id 
+     and the password generated OTP-ONE TIME PASSWORD
+  ============================================================ */
+router.post('/passwordcodemailer', function (req, res, next) {
+  console.log(req.body);
+    var transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'successarchitecture@gmail.com',
+            pass: 'pbdqtlxogbdjonru'
+        }
+    });
+    var mailOptions = {
+        from: 'successarchitecture@gmail.com',
+        to: req.body.email,
+        subject: 'Your Forget Password Code is: ' + req.body.vcode,
+        text: 'You received this email because you are attempting to reset your Forgotten Password. If you wish to continue with this process please enter the following verification code in the allowed field in the application: ' + req.body.vcode,
+        html: '<p>You received this email because you are attempting to reset your Forgotten Password.</p><br><p> If you wish to continue with the process please enter the following verification code in the allowed field in the application: </p><strong>' + req.body.vcode +'</strong>'
+    };
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+            next(error);
+        } else {
+            console.log('password forget code email sent');
+            res.status(200).json({
+                status: 'password forget Code Message Sent' + info.response,
+                success: true
+            });
+        }
+    });
+});
 
 
   /* ============================================================
@@ -177,6 +263,21 @@ router.post('/mailer', function (req, res, next) {
     }) (req, res, next);
   });
 
+  // checks the old password for the password change function 
+  // this is done in line with the data entry of the form
+  //
+  router.post('/checkOldPassword', (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+      if (err)
+        {return next(err);}
+      if (!user) {
+        return res.status(200).json({success: false, message: 'Old Password not Correct!'});
+      } else {
+        return res.status(200).json({success: true, message: 'Old Password Correct'});
+      }
+    }) (req, res, next);
+  });
+
 router.route('/logout') 
 .post(cors.corsWithOptions, (req, res) => {
   req.logOut();
@@ -184,7 +285,7 @@ router.route('/logout')
   // res.send(200).json({status: 'Bye!'});
 });
 
-router.get('/checkJWTToken', cors.corsWithOptions, (req, res) => {
+router.get('/checkJWTToken', (req, res) => {
   passport.authenticate('jwt', {session: false}, (err, user, info) => {
     if (err)
       return next(err);

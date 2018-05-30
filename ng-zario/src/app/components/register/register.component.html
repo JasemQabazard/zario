@@ -7,8 +7,8 @@
       </div>
       <div class="card-body">
         <div class="row show-hide-message">
-            <div [ngClass]="messageClass" class="col-sm-9 pl-2 border-warning h-50 mx-auto">
-              <strong class="text-center">{{message}}</strong>
+            <div [ngClass]="messageClass" class="col-sm-9 border-warning h-50 mx-auto text-center">
+              <strong>{{message}}</strong>
             </div>
         </div>
         <form [formGroup]="form" (submit)="onRegisterSubmit()">
@@ -171,6 +171,9 @@
             </form>
           </div>
         </div>
+
+
+        
       </div>
     </div>
   </div>

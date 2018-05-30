@@ -7,8 +7,8 @@
        </div>
        <div class="card-body">
           <div class="row show-hide-message">
-              <div [ngClass]="messageClass" class="col-sm-9 pl-2 border-warning h-50 mx-auto">
-                <strong class="text-center">{{message}}</strong>
+              <div [ngClass]="messageClass" class="col-sm-9 border-warning h-50 mx-auto text-center">
+                <strong>{{message}}</strong>
               </div>
           </div>
          <form [formGroup]="form" (submit)="loginSubmit()">
@@ -56,11 +56,6 @@
          <div class="col-md-6">
              <a routerLink="/passwordforget" class="box-link small"> 
                <i class="fas fa-angle-double-right"></i>Forget Password
-             </a>
-         </div>
-         <div class="col-md-6 mt-2">
-             <a routerLink="/passwordchange" class="box-link small"> 
-               <i class="fas fa-angle-double-right"></i>Change Password
              </a>
          </div>
        </div>
