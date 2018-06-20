@@ -17,7 +17,7 @@
              <div [ngClass]="{'has-error':(form.controls.username.errors && form.controls.username.dirty), 'has-success': !form.controls.username.errors}">
                <input type="text" name="username" class="form-control"
                formControlName="username">
-               <div class="help-block text-danger small" *ngIf="form.controls.username.errors && form.controls.username.dirty">
+               <div class="help-block text-light small bg-danger pl-2" *ngIf="form.controls.username.errors && form.controls.username.dirty">
                  <div *ngIf="form.controls.username.errors?.required">
                    UserName field is required
                  </div>
@@ -35,7 +35,7 @@
              <div [ngClass]="{'has-error':(form.controls.password.errors && form.controls.password.dirty), 'has-success': !form.controls.password.errors}">
                <input type="password" name="password" class="form-control"
                formControlName="password">
-               <div class="help-block text-danger small" *ngIf="form.controls.password.errors && form.controls.password.dirty">
+               <div class="help-block text-light small bg-danger pl-2" *ngIf="form.controls.password.errors && form.controls.password.dirty">
                    <div *ngIf="form.controls.password.errors?.required">
                      Password field is required
                    </div>

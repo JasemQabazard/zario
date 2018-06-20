@@ -9,7 +9,7 @@ const merchantsRouter = express.Router();
 
 merchantsRouter.use(bodyParser.json());
 
-merchantsRouter.route('/') 
+merchantsRouter.route('/')
 .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
 .get(cors.cors, (req, res, next) => {
    Merchants.find({})
@@ -21,6 +21,7 @@ merchantsRouter.route('/')
    .catch((err) => next(err));
 })
 .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+    console.log("req.body : ", req.body);
    Merchants.create(req.body)
    .then((merchant) => {
          console.log('Merchants Created', merchant);
@@ -43,8 +44,23 @@ merchantsRouter.route('/')
    }, (err) => next(err))
    .catch((err) => next(err));
 });
+  /* ===============================================================
+     Route to get and check if merchant record exists by username provided
+  =============================================================== */
+  merchantsRouter.route('/byuser/:username')
+  .get(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+    // Look for username in database
+    console.log("username : ", req.params.username);
+    Merchants.find({ username: req.params.username })
+    .then((merchants) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(merchants);
+    }, (err) => next(err))
+    .catch((err) => next(err));
+});
 
-merchantsRouter.route('/:customerId')
+merchantsRouter.route('/:merchantId')
 .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
 .get(cors.cors, (req,res,next) => {
    Merchants.findById(req.params.merchantId)
@@ -60,6 +76,8 @@ merchantsRouter.route('/:customerId')
     res.end('POST operation not supported on /merchant/'+ req.params.merchantId);
 })
 .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+    console.log("req.params.merchantId : ", req.params.merchantId);
+    console.log("req.body : ", req.body);
    Merchants.findByIdAndUpdate(req.params.merchantId, {
         $set: req.body
     }, { new: true })

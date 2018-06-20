@@ -79,7 +79,7 @@ export class LoginComponent implements OnInit {
           this.form.reset();
           setTimeout(() => {
             this.router.navigate(['/']); // Redirect to Home page
-          }, 2000);
+          }, 1500);
       },
       error => {
         this.messageClass = "alert alert-danger";

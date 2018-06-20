@@ -32,6 +32,7 @@ export class PasswordchangeComponent implements OnInit {
     this.authService.loadUserCredentials();
     this.subscription = this.authService.getUsername()
       .subscribe(name => { console.log(name); this.username = name; });
+    console.log("user name: ", this.username);
   }
 
   createForm() {

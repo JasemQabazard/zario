@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Customers = new Schema({
-      user_id: { 
-            type: mongoose.Schema.Types.ObjectId,
+      username: { 
+            type: String,
             required: true,
             unique: true
       },

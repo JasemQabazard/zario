@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Groups = new Schema({
-      user_id: { 
-            type: mongoose.Schema.Types.ObjectId,
+      username: { 
+            type: String,
             required: true,
             unique: true
       },
@@ -21,17 +21,8 @@ var Groups = new Schema({
             lowercase: true,
             minlength: 1
       },
-      startdate: {
-            type: Date,
-            default: Date.now
-      },
-      avatar: { 
-            type: String,
-            default: ''
-      },
-      emailid: { 
+      email: { 
             type: String, 
-            unique: true, 
             trim:true, 
             required:true, 
             lowercase:true 
@@ -42,21 +33,17 @@ var Groups = new Schema({
             trim: true,
             lowercase: true
             },
-      country: {
-            type: String,
-            default: 0
+      countrycode: {
+            type: String, 
+            required: true
       },
-      referral: {
-            type: Boolean,
-            default: true
-      },
-      mobile: {
-            countrycode: {type: Number, required: true},
-            number:{type: Number, required: true}
+      mobile:{
+            type: String, 
+            required: true
       },
       phone: {
-            countrycode: {type: Number, required: true},
-            number:{type: Number, required: true}
+            type: String, 
+            required: true
       },
       merchants: [mongoose.Schema.Types.ObjectId]
 },{

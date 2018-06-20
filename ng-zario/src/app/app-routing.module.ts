@@ -5,7 +5,7 @@ import { HomeComponent } from './components/home/home.component';
 import { BlogComponent } from './components/blog/blog.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
-import { ProfileComponent } from './components/profile/profile.component';
+import { MProfileComponent } from './components/mprofile/mprofile.component';
 import { PromotionsComponent } from './components/promotions/promotions.component';
 import { RegisterComponent } from './components/register/register.component';
 import { PasswordchangeComponent } from './components/passwordchange/passwordchange.component';
@@ -13,13 +13,14 @@ import { PasswordforgetComponent } from './components/passwordforget/passwordfor
 import { ContactusComponent } from './components/contactus/contactus.component';
 import { TransactionsComponent } from './components/transactions/transactions.component';
 import { CartComponent } from './components/cart/cart.component';
+import { GroupComponent } from './components/group/group.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'blog', component: BlogComponent},
   {path: 'dashboard', component: DashboardComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'profile', component: ProfileComponent},
+  {path: 'mprofile', component: MProfileComponent},
   {path: 'promotions', component: PromotionsComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'passwordchange', component: PasswordchangeComponent},
@@ -27,6 +28,7 @@ const routes: Routes = [
   {path: 'contactus', component: ContactusComponent},
   {path: 'transactions', component: TransactionsComponent},
   {path: 'cart', component: CartComponent},
+  {path: 'group', component: GroupComponent},
   {path: '**', component: HomeComponent}
 ];
 

@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Merchants = new Schema({
-      user_id: { 
-            type: mongoose.Schema.Types.ObjectId,
+      username: { 
+            type: String,
             required: true
       },
       name: {
@@ -30,7 +30,7 @@ var Merchants = new Schema({
          type: String,
          default: ''
       },
-      emailid: { 
+      email: { 
             type: String, 
             trim:true, 
             required:true, 
@@ -41,18 +41,14 @@ var Merchants = new Schema({
             required: true,
             trim: true,
             lowercase: true
-            },
-      country: {
-            type: String,
-            required: true,
-            trim: true,
-            lowercase: true
       },
+      // merchant score with the application that determines his band at application level
       score: {
             type: Number,
-            default: null
+            default: 0
       },
-      // VALUE: is for calculating band/ levels/ reputations by amounts where as NUMBER is calculating it by the number of certain items purchased like the way coffee shops do it
+      // VALUE: is for calculating band/ levels/ reputations by amounts where as 
+      // NUMBER is calculating it by the number of certain items purchased like the way coffee shops do it
       strategy: {
             type: String,
             default: "VALUE"
@@ -81,13 +77,17 @@ var Merchants = new Schema({
          type: Number,
          default: null
       },
-      mobile: {
-            countrycode: {type: Number, required: true},
-            number:{type: Number, required: true}
+      countrycode: {
+            type: String, 
+            required: true
+      },
+      mobile:{
+            type: String, 
+            required: true
       },
       phone: {
-            countrycode: {type: Number, required: true},
-            number:{type: Number, required: true}
+            type: String, 
+            required: true
       },
       longitude:  {
             type: String,
@@ -99,7 +99,7 @@ var Merchants = new Schema({
       },
       zarios:  {
             type: Number,
-            default: null
+            default: 0
       },
       ukey:  {
             type: String,

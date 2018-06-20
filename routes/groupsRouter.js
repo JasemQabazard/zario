@@ -21,14 +21,15 @@ groupsRouter.route('/')
    .catch((err) => next(err));
 })
 .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
-   Groups.create(req.body)
-   .then((group) => {
+    console.log("posting group: ", req.body);
+    Groups.create(req.body)
+    .then((group) => {
          console.log('Group Created', group);
          res.statusCode = 200;
          res.setHeader('Content-Type', 'application/json');
          res.json(group);
-   }, (err) => next(err))
-   .catch((err) => next(err));
+    }, (err) => next(err))
+    .catch((err) => next(err));
 })
 .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    res.statusCode = 403;
@@ -42,6 +43,21 @@ groupsRouter.route('/')
       res.json(resp);
    }, (err) => next(err))
    .catch((err) => next(err));
+});
+
+  /* ===============================================================
+     Route to get and check if group record exists by username provided
+  =============================================================== */
+  groupsRouter.route('/byuser/:username')
+  .get(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+    // Use username to look for groups table belonging to the user 
+    Groups.findOne({ username: req.params.username })
+    .then((group) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(group);
+    }, (err) => next(err))
+    .catch((err) => next(err));
 });
 
 groupsRouter.route('/:groupId')

@@ -10,8 +10,8 @@ var commentsSchema = new Schema({
 //
 
 var Socials = new Schema({
-      user_id: { 
-            type: mongoose.Schema.Types.ObjectId,
+      username: { 
+            type: String,
             required: true
       },
       medialink: {

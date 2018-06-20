@@ -57,13 +57,24 @@
             <i class="far fa-arrow-alt-circle-right"></i> Log in
           </a>
         </li>
-        <li class="nav-item px-0" [routerLinkActive]="['active']"
+        <li class="nav-item dropdown px-0" [routerLinkActive]="['active']"
         [routerLinkActiveOptions]="{exact: true}" *ngIf="!USER">
-          <a routerLink="/profile" class="nav-link">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
             <i class="fas fa-user-circle"></i> Welcome {{username}}
           </a>
+          <div class="dropdown-menu">
+            <a routerLink="/group" class="dropdown-item" *ngIf="MERCHANT">
+              <i class="fas fa-building"></i> Group
+            </a>
+            <a routerLink="/mprofile" class="dropdown-item">
+              <i class="fas fa-user"></i> Profile
+            </a>
+            <a routerLink="/passwordchange" class="dropdown-item">
+              <i class="fas fa-angle-double-right"></i> Change Password
+            </a>              
+          </div>
         </li>
-        <li class="nav-item" [routerLinkActive]="['active']"
+        <li class="nav-item px-0" [routerLinkActive]="['active']"
         [routerLinkActiveOptions]="{exact: true}">
           <a routerLink="/contactus" class="nav-link">
             <i class="fas fa-bullhorn"></i> Contact us

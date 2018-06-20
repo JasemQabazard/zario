@@ -9,13 +9,14 @@ import { AuthService } from './services/auth.service';
 import { ProcessHttpmsgService } from './services/process-httpmsg.service';
 import { CommonRoutinesService } from './services/common-routines.service';
 import { AuthInterceptor } from './services/auth.interceptor';
+import { MprofileService } from './services/mprofile.service';
 import { baseURL } from './shared/baseurl';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
-import { ProfileComponent } from './components/profile/profile.component';
+import { MProfileComponent } from './components/mprofile/mprofile.component';
 import { PromotionsComponent } from './components/promotions/promotions.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { BlogComponent } from './components/blog/blog.component';
@@ -27,6 +28,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { PasswordforgetComponent } from './components/passwordforget/passwordforget.component';
 import { TransactionsComponent } from './components/transactions/transactions.component';
 import { CartComponent } from './components/cart/cart.component';
+import { GroupComponent } from './components/group/group.component';
 
 
 @NgModule({
@@ -34,7 +36,7 @@ import { CartComponent } from './components/cart/cart.component';
     AppComponent,
     NavbarComponent,
     HomeComponent,
-    ProfileComponent,
+    MProfileComponent,
     PromotionsComponent,
     DashboardComponent,
     BlogComponent,
@@ -45,7 +47,8 @@ import { CartComponent } from './components/cart/cart.component';
     FooterComponent,
     PasswordforgetComponent,
     TransactionsComponent,
-    CartComponent
+    CartComponent,
+    GroupComponent
   ],
   imports: [
     BrowserModule,
@@ -59,6 +62,7 @@ import { CartComponent } from './components/cart/cart.component';
     { provide: 'BaseURL', useValue: baseURL },
     ProcessHttpmsgService,
     CommonRoutinesService,
+    MprofileService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

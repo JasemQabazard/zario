@@ -70,7 +70,7 @@ app.use('/promotions', promotionsRouter);
 app.use('/settings', settingsRouter);
 app.use('/socials', socialsRouter);
 app.use('/trans', transRouter);
-app.use('/imageUpload',uploadRouter);
+app.use('/images',uploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
