@@ -60,4 +60,10 @@ export class MprofileService {
       return this.http.put(baseURL + '/merchants/' + pid , profile)
         .catch(error => { return this.processHttpmsgService.handleError(error); });
     }
+
+    // adding new group tp database on the server
+    imageUpload(form): Observable<any> {
+      return this.http.post(baseURL + '/upload', form)
+        .catch(error => {return this.processHttpmsgService.handleError(error)});
+    }
 }

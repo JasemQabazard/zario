@@ -25,11 +25,23 @@
                                     <button class="btn btn-success btn-block" (click)="addMerchant()">Add A New Profile </button>
                                 </form> 
                             </div>
+                            <hr>
+                            <h5>Avatar Section</h5>
+                            <hr>
+                            <div class="p-5" *ngIf="avatarShow">
+                                <div class="row imageContainer mx-auto">
+                                    <img class="mb-3 border-warning img-fluid mx-auto imagePreview" [src]="avatarPath" alt="default Avatar">
+                                </div>
+                                <div class="row">
+                                    <label class="center-block text-light bg-danger mx-auto">
+                                            <strong>{{selectedImageFileName}}</strong>
+                                    </label>
+                                </div>
+                                <input type="file" name="imageFile" style="display:none" (change)="imageFileSelected($event)" #imageFile>
+                                <button class="btn btn-primary btn-block mt-3" (click)="imageFile.click()">Select Image Avatar</button>
+                            </div>
                             <form [formGroup]="fp" (submit)="onfpSubmit()">
-                                <hr>
-                                <h5>Avatar Section</h5>
-                                <hr>
-                                <hr class="mt-5">
+                                <hr class="mt-3">
                                 <h5>Details Section</h5>
                                 <hr>
                                 <div class="form-group">

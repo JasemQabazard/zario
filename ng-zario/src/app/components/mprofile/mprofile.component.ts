@@ -33,12 +33,17 @@ export class MProfileComponent implements OnInit {
   profileBox: boolean = false;
   _pid: string = "";
   _gid: string = "";
+  selectedImageFile: File =null;
+  selectedImageFileName: string = "No New Image Selected";
+  avatarPath: string ="../../../assets/img/avatardefault.png";
+  avatarShow: boolean = false;
+  avatarChanged: boolean = false;
+  
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private mprofileService: MprofileService,
-    private commonRoutinesService: CommonRoutinesService,
     private router: Router
   ) { 
     this.createfp();
@@ -90,6 +95,12 @@ export class MProfileComponent implements OnInit {
             } else {
               this._pid = mprofiles[0]._id;
               this.profileBox = true;
+              this.avatarShow = true;
+              if (this.mprofiles[0].avatar) {
+                this.avatarPath = `avatars/${this.mprofiles[0].avatar}`;
+              } else {
+                this.avatarPath = "../../../assets/img/avatardefault.png";
+              }
               this.fp.setValue({
                 username: this.username, 
                 name: this.mprofiles[0].name,
@@ -99,7 +110,14 @@ export class MProfileComponent implements OnInit {
                 city: this.mprofiles[0].city,
                 countrycode: this.mprofiles[0].countrycode,
                 mobile: this.mprofiles[0].mobile,
-                phone: this.mprofiles[0].phone
+                phone: this.mprofiles[0].phone,
+                strategy: this.mprofiles[0].strategy,
+                bronze: this.mprofiles[0].bronze,
+                silver: this.mprofiles[0].silver,
+                gold: this.mprofiles[0].gold,
+                platinum: this.mprofiles[0].platinum,
+                pearl: this.mprofiles[0].pearl,
+                blackdiamond: this.mprofiles[0].blackdiamond
               });
               this.NOPROFILE = 0;
               this.notUpdated = true;
@@ -173,27 +191,27 @@ export class MProfileComponent implements OnInit {
         this.validateMobile
       ])],
       strategy: 'value',
-      bronze: ['', Validators.compose([
+      bronze: [0, Validators.compose([
         Validators.required,
         this.validateValue
       ])],
-      silver: ['', Validators.compose([
+      silver: [0, Validators.compose([
         Validators.required,
         this.validateValue
       ])],
-      gold: ['', Validators.compose([
+      gold: [0, Validators.compose([
         Validators.required,
         this.validateValue
       ])],
-      platinum: ['', Validators.compose([
+      platinum: [0, Validators.compose([
         Validators.required,
         this.validateValue
       ])],
-      pearl: ['', Validators.compose([
+      pearl: [0, Validators.compose([
         Validators.required,
         this.validateValue
       ])],
-      blackdiamond: ['', Validators.compose([
+      blackdiamond: [0, Validators.compose([
         Validators.required,
         this.validateValue
       ])],
@@ -213,17 +231,34 @@ export class MProfileComponent implements OnInit {
     })
   }
 
+  imageFileSelected(event: any) {
+    if (event.target.files && event.target.files[0]) {
+      this.selectedImageFile = <File>event.target.files[0];
+      this.selectedImageFileName = `Selected Image: ${this.selectedImageFile.name}`;
+      this.avatarChanged = true;
+      this.notUpdated = false;
+      
+      var reader = new FileReader();
+  
+      reader.onload = (event:any) => {
+        this.avatarPath = event.target.result;
+      }
+  
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  }
+
   bandSync(bronze, silver, gold, platinum, pearl, blackdiamond) {
     return (group: FormGroup) => {
-      if (group.controls[silver].value <= group.controls[bronze].value) {
+      if (Number(group.controls[silver].value) <= Number(group.controls[bronze].value)) {
         return { 'bandSync': true };
-      } else if (group.controls[gold].value <= group.controls[silver].value) {
+      } else if (Number(group.controls[gold].value) <= Number(group.controls[silver].value)) {
         return { 'bandSync': true };
-      } else if (group.controls[platinum].value <= group.controls[gold].value) {
+      } else if (Number(group.controls[platinum].value) <= Number(group.controls[gold].value)) {
         return { 'bandSync': true };
-      } else if (group.controls[pearl].value <= group.controls[platinum].value) {
+      } else if (Number(group.controls[pearl].value) <= Number(group.controls[platinum].value)) {
         return { 'bandSync': true };
-      } else if (group.controls[blackdiamond].value <= group.controls[pearl].value) {
+      } else if (Number(group.controls[blackdiamond].value) <= Number(group.controls[pearl].value)) {
         return { 'bandSync': true };
       } else {
         return null;
@@ -283,6 +318,11 @@ export class MProfileComponent implements OnInit {
     }
     this._pid = this.mprofiles[ndx]._id;
     this.profileBox = true;
+    if (this.mprofiles[ndx].avatar) {
+      this.avatarPath = `avatars/${this.mprofiles[ndx].avatar}`;
+    } else {
+      this.avatarPath = "../../../assets/img/avatardefault.png";
+    }
     this.fp.setValue({
       username: this.username, 
       name: this.mprofiles[ndx].name,
@@ -293,10 +333,17 @@ export class MProfileComponent implements OnInit {
       countrycode: this.mprofiles[ndx].countrycode,
       mobile: this.mprofiles[ndx].mobile,
       phone: this.mprofiles[ndx].phone,
-      strategy: this.mprofiles[ndx].strategy
+      strategy: this.mprofiles[ndx].strategy,
+      bronze: this.mprofiles[ndx].bronze,
+      silver: this.mprofiles[ndx].silver,
+      gold: this.mprofiles[ndx].gold,
+      platinum: this.mprofiles[ndx].platinum,
+      pearl: this.mprofiles[ndx].pearl,
+      blackdiamond: this.mprofiles[ndx].blackdiamond
     });
     this.NOPROFILE = ndx;
     this.notUpdated = true;
+    this.avatarShow = true;
     this.fpSelect.controls['merchant'].setValue(this.merchants[ndx].name);
   }
 
@@ -318,10 +365,17 @@ export class MProfileComponent implements OnInit {
           countrycode: '+965 Kuwait', 
           mobile: "",
           phone: "",
-          strategy: "value"
+          strategy: "value",
+          bronze: 0,
+          silver: 0,
+          gold: 0,
+          platinum: 0,
+          pearl: 0,
+          blackdiamond: 0
         });
         this.NOPROFILE = null;
         this.notUpdated = false;
+        this.avatarShow = false;
         this._pid = "";
         this.message = "";
         this.messageClass = "";
@@ -349,22 +403,38 @@ export class MProfileComponent implements OnInit {
         }
       );
     } else {
-      this.mprofileService.updateProfile(this._pid, this.profile).subscribe(
-        data => {
-          console.log("data : ", data);
-          this.messageClass= "alert alert-success";
-          this.message="Profile Update Successfull";
-          setTimeout(() => {
-            this.router.navigate(['/']); 
-          }, 1500);
-        }, 
-        errormessage => {
-          this.message = <any>errormessage;
-          this.messageClass= "alert alert-danger";
-        }
-      );
+      if (this.avatarChanged) {
+        const fd = new FormData();
+        fd.append('imageFile', this.selectedImageFile);
+        this.mprofileService.imageUpload(fd).subscribe(
+          imageData => {
+            this.profile.avatar = imageData.filename;
+            this.mprofileService.updateProfile(this._pid, this.profile).subscribe(
+              data => {
+                console.log("data : ", data);
+                this.messageClass= "alert alert-success";
+                this.message="Profile Update Successfull";
+                setTimeout(() => {
+                  this.router.navigate(['/']); 
+                }, 1500);
+              }, 
+              errormessage => {
+                this.message = <any>errormessage;
+                this.messageClass= "alert alert-danger";
+              }
+            );
+          }, 
+          errormessage => {
+            this.message = "Accepts image files less than 500KB ONLY, Please try another image";
+            this.messageClass= "alert alert-danger";
+          }
+        );
+      }
     }
   }
+
+  // AIzaSyBQZFTAbfC2foRcTVmLLCL4RxeXdc4Z4Is ========== Google api key
+
   // _id: string;
   // username: string;
 
