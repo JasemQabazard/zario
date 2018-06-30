@@ -279,43 +279,40 @@
                                 <hr class="mt-5">
                                 <h5>Location Section</h5>
                                 <hr>
+                                <div class="container agm">
+                                    <agm-map 
+                                            [latitude]="position.lat" 
+                                            [longitude]="position.lng"
+                                            [zoom]="15"
+                                            (mapClick)="mapClicked($event)"
+                                        >
+                                        <agm-marker [latitude]="position.lat" [longitude]="position.lng">
+                                          <agm-info-window>
+                                            <h3><strong>Your current location</strong></h3>
+                                            <p>You are here!</p>
+                                          </agm-info-window>
+                                        </agm-marker>
+                                        <agm-marker *ngIf="clickedPosition.lat && clickedPosition.lng"
+                                            [latitude]="clickedPosition.lat" [longitude]="clickedPosition.lng">
+                                            <agm-info-window>
+                                              <h3><strong>Your Selected location</strong></h3>
+                                              <p>You want to be here!</p>
+                                            </agm-info-window>
+                                          </agm-marker>                                        
+                                      </agm-map>
+                                </div>
                                 <div class="form-group">
-                                    <div class="row">
+                                    <div class="row mt-3">
                                         <div class="col-sm-6">
-                                            <label for="mobile">Mobile Number</label>
-                                            <div [ngClass]="{'has-error':(fp.controls.mobile.errors && fp.controls.mobile.dirty), 'has-success': !fp.controls.mobile.errors}">
-                                                <input type="mobile" name="mobile" class="form-control"
-                                                formControlName="mobile" placeholder="9xx-xxx-xxxx">
-                                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fp.controls.mobile.errors && fp.controls.mobile.dirty">
-                                                    <div *ngIf="fp.controls.mobile.errors?.required">
-                                                        Mobile Number field is required
-                                                    </div>
-                                                    <div *ngIf="fp.controls.mobile.errors?.minlength || fp.controls.mobile.errors?.maxlength">
-                                                        Mobile Number characters: 8, Maximum characters: 10
-                                                    </div>
-                                                    <div *ngIf="fp.controls.mobile.errors?.validateMobile">
-                                                        Mobile Number must be in a valid format
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <label for="longitude">Merchant Location Longitude</label>
+                                            <input type="longitude" name="longitude" class="form-control" readonly
+                                                formControlName="longitude">
+                                            <button type="button" class=" mt-3" (click)="setLocation2Current()">Set to your current location</button>
                                         </div>       
                                         <div class="col-sm-6">
-                                            <label for="phone">Phone Number</label>
-                                            <div [ngClass]="{'has-error':(fp.controls.phone.errors && fp.controls.phone.dirty), 'has-success': !fp.controls.phone.errors}">
-                                                <input type="phone" name="phone" class="form-control"
-                                                formControlName="phone" placeholder="9xx-xxx-xxxx">
-                                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fp.controls.phone.errors && fp.controls.phone.dirty">
-                                                    <div *ngIf="fp.controls.phone.errors?.required">
-                                                        Phone Number field is required
-                                                    </div>
-                                                    <div *ngIf="fp.controls.phone.errors?.minlength || fp.controls.phone.errors?.maxlength">
-                                                        Phone Number characters: 8, Maximum characters: 10
-                                                    </div>
-                                                    <div *ngIf="fp.controls.phone.errors?.validateMobile">
-                                                        Phone Number must be in a valid format
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <label for="latitude">Mewrchant Location Latitude</label>
+                                            <input type="latitude" name="latitude" class="form-control" readonly
+                                                formControlName="latitude">
                                         </div>
                                     </div>
                                 </div><!--/form-group-->

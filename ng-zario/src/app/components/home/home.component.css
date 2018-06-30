@@ -45,14 +45,3 @@ background-size: cover;
 .box-link {
   color:rgb(209, 189, 7);
 }
-
-#home-heading {
-  position: relative;
-  min-height: 300px;
-  background: url('../../../assets/img/printemps.jpg');
-  background-attachment: fixed;
-  background-repeat:no-repeat;
-  background-size: cover;
-  text-align:center;
-  color:rgb(133, 10, 10);
-}

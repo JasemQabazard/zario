@@ -5,6 +5,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 
+import { AgmCoreModule } from '@agm/core';
+import { environment } from '../environments/environment';
+
 import { AuthService } from './services/auth.service';
 import { ProcessHttpmsgService } from './services/process-httpmsg.service';
 import { CommonRoutinesService } from './services/common-routines.service';
@@ -55,6 +58,9 @@ import { GroupComponent } from './components/group/group.component';
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    AgmCoreModule.forRoot({
+      apiKey: environment.googleMaps_api_key
+    }),
     HttpClientModule
   ],
   providers: [

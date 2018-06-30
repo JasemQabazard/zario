@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { AgmCoreModule } from '@agm/core';
+
 import { AuthService } from '../../services/auth.service';
-import { CommonRoutinesService } from '../../services/common-routines.service';
 import { MprofileService } from '../../services/mprofile.service';
-import { MProfile, Codes, Categories, Merchant, Strategy } from '../../shared/mprofile';
+import { MProfile, Codes, Categories, Merchant, Strategy, Position } from '../../shared/mprofile';
 
 import { Subscription } from 'rxjs/Subscription';
 
@@ -38,6 +39,8 @@ export class MProfileComponent implements OnInit {
   avatarPath: string ="../../../assets/img/avatardefault.png";
   avatarShow: boolean = false;
   avatarChanged: boolean = false;
+  position: Position;
+  clickedPosition: Position;
   
 
   constructor(
@@ -48,6 +51,14 @@ export class MProfileComponent implements OnInit {
   ) { 
     this.createfp();
     this.createfpSelect();
+    this.position = {
+      lat:0,
+      lng:0
+    };
+    this.clickedPosition = {
+      lat:0,
+      lng:0
+    };
   }
 
   ngOnInit() { 
@@ -79,6 +90,7 @@ export class MProfileComponent implements OnInit {
       {strategyName:"number"},
       {strategyName:"value"}
     ];
+    this.getUserPosition();
     this.authService.loadUserCredentials();
     this.subscription = this.authService.getUsername()
       .subscribe(
@@ -92,6 +104,10 @@ export class MProfileComponent implements OnInit {
             console.log("profiles : ", this.mprofiles);
             if (mprofiles.length === 0) {
               this.notUpdated = false;
+              this.fp.patchValue({
+                longitude:this.position.lat,
+                latitude:this.position.lng
+              });
             } else {
               this._pid = mprofiles[0]._id;
               this.profileBox = true;
@@ -117,7 +133,9 @@ export class MProfileComponent implements OnInit {
                 gold: this.mprofiles[0].gold,
                 platinum: this.mprofiles[0].platinum,
                 pearl: this.mprofiles[0].pearl,
-                blackdiamond: this.mprofiles[0].blackdiamond
+                blackdiamond: this.mprofiles[0].blackdiamond,
+                longitude: this.mprofiles[0].longitude,
+                latitude: this.mprofiles[0].latitude
               });
               this.NOPROFILE = 0;
               this.notUpdated = true;
@@ -154,6 +172,36 @@ export class MProfileComponent implements OnInit {
           });
       });
   }
+  getUserPosition() {
+    /// locate the user
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(pos => {
+        this.position.lat = pos.coords.latitude;
+        this.position.lng = pos.coords.longitude;
+        // console.log(pos.coords.latitude, pos.coords.longitude);
+        console.log("my GPS Position ", this.position);
+      });
+    }
+  }
+
+  setLocation2Current() {
+    this.clickedPosition.lat = 0;
+    this.clickedPosition.lng = 0;
+    this.fp.patchValue({
+      longitude:this.position.lat,
+      latitude:this.position.lng
+    });
+  }
+
+  mapClicked($event:any) {
+    this.clickedPosition.lat = $event.coords.lat;
+    this.clickedPosition.lng = $event.coords.lng;
+    this.fp.patchValue({
+      longitude:this.clickedPosition.lat,
+      latitude:this.clickedPosition.lng
+    });
+  }
+
   createfp() {
     this.fp= this.formBuilder.group({
       username: this.username, 
@@ -211,6 +259,8 @@ export class MProfileComponent implements OnInit {
         Validators.required,
         this.validateValue
       ])],
+      longitude:0,
+      latitude: 0,
       blackdiamond: [0, Validators.compose([
         Validators.required,
         this.validateValue
@@ -339,7 +389,9 @@ export class MProfileComponent implements OnInit {
       gold: this.mprofiles[ndx].gold,
       platinum: this.mprofiles[ndx].platinum,
       pearl: this.mprofiles[ndx].pearl,
-      blackdiamond: this.mprofiles[ndx].blackdiamond
+      blackdiamond: this.mprofiles[ndx].blackdiamond,
+      longitude: this.mprofiles[ndx].longitude,
+      latitude: this.mprofiles[ndx].latitude
     });
     this.NOPROFILE = ndx;
     this.notUpdated = true;
@@ -371,7 +423,9 @@ export class MProfileComponent implements OnInit {
           gold: 0,
           platinum: 0,
           pearl: 0,
-          blackdiamond: 0
+          blackdiamond: 0,
+          longitude:this.position.lat,
+          latitude:this.position.lng
         });
         this.NOPROFILE = null;
         this.notUpdated = false;
@@ -426,6 +480,21 @@ export class MProfileComponent implements OnInit {
           }, 
           errormessage => {
             this.message = "Accepts image files less than 500KB ONLY, Please try another image";
+            this.messageClass= "alert alert-danger";
+          }
+        );
+      } else {
+        this.mprofileService.updateProfile(this._pid, this.profile).subscribe(
+          data => {
+            console.log("data : ", data);
+            this.messageClass= "alert alert-success";
+            this.message="Profile Update Successfull";
+            setTimeout(() => {
+              this.router.navigate(['/']); 
+            }, 1500);
+          }, 
+          errormessage => {
+            this.message = <any>errormessage;
             this.messageClass= "alert alert-danger";
           }
         );

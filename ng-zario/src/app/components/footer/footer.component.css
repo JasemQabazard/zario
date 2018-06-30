@@ -2,3 +2,9 @@
    background: #000;
    color: rgb(124, 119, 119);
  }
+
+ #home-heading {
+  min-height: 400px;
+  background: url('../../../assets/img/printemps.jpg') no-repeat center center fixed;
+  background-size: cover;
+} 
