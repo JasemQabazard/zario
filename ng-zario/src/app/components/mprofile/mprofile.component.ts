@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
 import { AgmCoreModule } from '@agm/core';
 
 import { AuthService } from '../../services/auth.service';
-import { MprofileService } from '../../services/mprofile.service';
-import { MProfile, Codes, Categories, Merchant, Strategy, Position } from '../../shared/mprofile';
+import { ProfileService } from '../../services/profile.service';
+import { MProfile, Codes, Categories, Merchant, Strategy, Position } from '../../shared/profile';
 
 import { Subscription } from 'rxjs/Subscription';
 
@@ -46,7 +46,7 @@ export class MProfileComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private mprofileService: MprofileService,
+    private profileService: ProfileService,
     private router: Router
   ) { 
     this.createfp();
@@ -98,7 +98,7 @@ export class MProfileComponent implements OnInit {
           this.username = name;
           console.log("name: ", name);
           console.log("user name: ", this.username); 
-          this.mprofileService.getMProfile(this.username)
+          this.profileService.getMProfile(this.username)
           .subscribe(mprofiles => {
             this.mprofiles = mprofiles;
             console.log("profiles : ", this.mprofiles);
@@ -155,7 +155,7 @@ export class MProfileComponent implements OnInit {
           });
           // group access code
           console.log("group access code");
-          this.mprofileService.getGroup(this.username)
+          this.profileService.getGroup(this.username)
           .subscribe(gp => {
             console.log("group in profile component ", gp);
             if (gp === null) {
@@ -443,7 +443,7 @@ export class MProfileComponent implements OnInit {
     this.profile.group_id = this._gid;
     console.log("profile ", this.profile);
     if (this.NOPROFILE === null) {
-      this.mprofileService.addProfile(this.profile).subscribe(
+      this.profileService.addMProfile(this.profile).subscribe(
         data => {
           this.messageClass= "alert alert-success";
           this.message="Profile Add Successfull";
@@ -460,10 +460,10 @@ export class MProfileComponent implements OnInit {
       if (this.avatarChanged) {
         const fd = new FormData();
         fd.append('imageFile', this.selectedImageFile);
-        this.mprofileService.imageUpload(fd).subscribe(
+        this.profileService.imageUpload(fd).subscribe(
           imageData => {
             this.profile.avatar = imageData.filename;
-            this.mprofileService.updateProfile(this._pid, this.profile).subscribe(
+            this.profileService.updateMProfile(this._pid, this.profile).subscribe(
               data => {
                 console.log("data : ", data);
                 this.messageClass= "alert alert-success";
@@ -484,7 +484,7 @@ export class MProfileComponent implements OnInit {
           }
         );
       } else {
-        this.mprofileService.updateProfile(this._pid, this.profile).subscribe(
+        this.profileService.updateMProfile(this._pid, this.profile).subscribe(
           data => {
             console.log("data : ", data);
             this.messageClass= "alert alert-success";

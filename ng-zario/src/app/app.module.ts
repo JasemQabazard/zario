@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 import { AgmCoreModule } from '@agm/core';
 import { environment } from '../environments/environment';
@@ -12,7 +13,7 @@ import { AuthService } from './services/auth.service';
 import { ProcessHttpmsgService } from './services/process-httpmsg.service';
 import { CommonRoutinesService } from './services/common-routines.service';
 import { AuthInterceptor } from './services/auth.interceptor';
-import { MprofileService } from './services/mprofile.service';
+import { ProfileService } from './services/profile.service';
 import { baseURL } from './shared/baseurl';
 
 import { AppComponent } from './app.component';
@@ -32,6 +33,7 @@ import { PasswordforgetComponent } from './components/passwordforget/passwordfor
 import { TransactionsComponent } from './components/transactions/transactions.component';
 import { CartComponent } from './components/cart/cart.component';
 import { GroupComponent } from './components/group/group.component';
+import { CProfileComponent } from './components/cprofile/cprofile.component';
 
 
 @NgModule({
@@ -51,13 +53,15 @@ import { GroupComponent } from './components/group/group.component';
     PasswordforgetComponent,
     TransactionsComponent,
     CartComponent,
-    GroupComponent
+    GroupComponent,
+    CProfileComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    BsDatepickerModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: environment.googleMaps_api_key
     }),
@@ -68,7 +72,7 @@ import { GroupComponent } from './components/group/group.component';
     { provide: 'BaseURL', useValue: baseURL },
     ProcessHttpmsgService,
     CommonRoutinesService,
-    MprofileService,
+    ProfileService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

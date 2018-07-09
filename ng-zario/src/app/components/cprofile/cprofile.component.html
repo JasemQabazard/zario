@@ -1,0 +1,110 @@
+<div class="row m-5">
+  <div class="col-md-8 mx-auto">
+    <section id="tabs">
+      <div class="container">
+        <h6 class="section-title h2">Customer Profile Data</h6>
+        <div class="py-3 px-3 px-sm-0">
+            PROFILE: The profile page is the main customer record. Customers will receive bonus points and zarios as they keep their complete information updated on record.
+            <div class="card card-form border-warning p-0 ml-0 mr-0 mt-5 col-md-9 mx-auto">
+              <div class="card-header">
+                  <h4 class="text-center">Add or Maintain Profile Main Data</h4>
+                  <h4 class="text-center">For user: {{username}}</h4>
+              </div>
+              <div class="card-body">
+                <div class="row show-hide-message">
+                    <div [ngClass]="messageClass" class="col-sm-9 border-warning h-50 mx-auto text-center">
+                        <strong>{{message}}</strong>
+                    </div>
+                </div>
+                <hr>
+                <h5>Avatar Section</h5>
+                <hr>
+                <div class="p-5">
+                    <div class="row imageContainer mx-auto">
+                        <img class="mb-3 border-warning img-fluid mx-auto imagePreview" [src]="avatarPath" alt="default Avatar">
+                    </div>
+                    <div class="row">
+                        <label class="center-block text-light bg-danger mx-auto">
+                                <strong>{{selectedImageFileName}}</strong>
+                        </label>
+                    </div>
+                    <input type="file" name="imageFile" style="display:none" (change)="imageFileSelected($event)" #imageFile>
+                    <button class="btn btn-primary btn-block mt-3" (click)="imageFile.click()">Select Image Avatar</button>
+                </div>
+                <form [formGroup]="fp" (submit)="onfpSubmit()">
+                  <hr class="mt-3">
+                  <h5>Details Section</h5>
+                  <hr>
+                  <div class="row">
+                    <div class="form-group col-sm-7">
+                        <label for="birthdate">Date of Birth</label>
+                        <input type="text" id="birthdate" name="birthdate" formControlName="birthdate"  class="form-control" bsDatepicker [bsConfig]="datePickerConfig" placeholder="Pick Your Birthdate"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender" class="form-control" formControlName="gender">
+                    <option *ngFor="let gender of genders" [value]="gender.genderCode">{{gender.genderCode}}</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="social">Social</label>
+                    <select id="social" class="form-control" formControlName="social">
+                    <option *ngFor="let social of socials" [value]="social.socialCode">{{social.socialCode}}</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="occupation">Occupation Description</label>
+                    <div [ngClass]="{'has-error':(fp.controls.occupation.errors && fp.controls.occupation.dirty), 'has-success': !fp.controls.occupation.errors}">
+                        <textarea name="occupation" class="form-control" rows="2" formControlName="occupation">
+                        </textarea>
+                        <div class="help-block text-light small bg-danger pl-2" *ngIf="fp.controls.occupation.errors && fp.controls.occupation.dirty">
+                            <div *ngIf="fp.controls.occupation.errors?.required">
+                              Occupation Description field is required
+                            </div>
+                            <div *ngIf="fp.controls.occupation.errors?.minlength ">
+                              Occupation Description minimum characters: 30
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="education">Education Description</label>
+                    <div [ngClass]="{'has-error':(fp.controls.education.errors && fp.controls.education.dirty), 'has-success': !fp.controls.education.errors}">
+                        <textarea name="education" class="form-control" rows="2" formControlName="education">
+                        </textarea>
+                        <div class="help-block text-light small bg-danger pl-2" *ngIf="fp.controls.education.errors && fp.controls.education.dirty">
+                            <div *ngIf="fp.controls.education.errors?.required">
+                              Education Description field is required
+                            </div>
+                            <div *ngIf="fp.controls.education.errors?.minlength ">
+                              Education Description minimum characters: 30
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="work">Work Description</label>
+                    <div [ngClass]="{'has-error':(fp.controls.work.errors && fp.controls.work.dirty), 'has-success': !fp.controls.work.errors}">
+                        <textarea name="work" class="form-control" rows="2" formControlName="work">
+                        </textarea>
+                        <div class="help-block text-light small bg-danger pl-2" *ngIf="fp.controls.work.errors && fp.controls.work.dirty">
+                            <div *ngIf="fp.controls.work.errors?.required">
+                              Work Description field is required
+                            </div>
+                            <div *ngIf="fp.controls.work.errors?.minlength ">
+                              Work Description minimum characters: 30
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <button [disabled]="!fp.valid || notUpdated" type="submit" class="btn btn-primary btn-block mt-5">Submit Main Profile Data</button>
+                </form>
+              </div>
+            </div>
+        </div>
+      </div>
+    </section>
+  </div>      
+</div>

@@ -6,6 +6,7 @@ import { BlogComponent } from './components/blog/blog.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
 import { MProfileComponent } from './components/mprofile/mprofile.component';
+import { CProfileComponent } from './components/cprofile/cprofile.component';
 import { PromotionsComponent } from './components/promotions/promotions.component';
 import { RegisterComponent } from './components/register/register.component';
 import { PasswordchangeComponent } from './components/passwordchange/passwordchange.component';
@@ -21,6 +22,7 @@ const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent},
   {path: 'login', component: LoginComponent},
   {path: 'mprofile', component: MProfileComponent},
+  {path: 'cprofile', component: CProfileComponent},
   {path: 'promotions', component: PromotionsComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'passwordchange', component: PasswordchangeComponent},

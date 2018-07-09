@@ -26,6 +26,23 @@ export class MProfile {
    rkey: string;
 };
 
+export class CProfile {
+   _id: string;
+   username: string;
+   birthdate: Date;
+   gender: string;
+   social: string;
+   occupation: string;
+   education: string;
+   work: string;
+   avatar: string;
+   score: Number;
+   zarios: Number;
+   ukey: string;
+   rkey: string;
+   merchants: [string];
+};
+
 export class Group {
    _id: string;
    username: string;
@@ -41,6 +58,14 @@ export class Group {
 
 export class Codes {
    countryCode: string;
+};
+
+export class Genders {
+   genderCode: string;
+};
+
+export class Socials {
+   socialCode: string;
 };
 
 export class Categories {

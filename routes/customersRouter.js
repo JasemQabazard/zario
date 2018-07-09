@@ -44,6 +44,22 @@ customersRouter.route('/')
    .catch((err) => next(err));
 });
 
+  /* ===============================================================
+     Route to get and check if merchant record exists by username provided
+  =============================================================== */
+  customersRouter.route('/byuser/:username')
+  .get(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+    // Look for username in database
+    console.log("username : ", req.params.username);
+    Customers.findOne({ username: req.params.username })
+    .then((customer) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(customer);
+    }, (err) => next(err))
+    .catch((err) => next(err));
+});
+
 customersRouter.route('/:customerId')
 .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
 .get(cors.cors, (req,res,next) => {

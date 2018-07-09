@@ -7,43 +7,37 @@ var Customers = new Schema({
             required: true,
             unique: true
       },
-      firstname: {
-            type: String,
-            required: true,
-            trim: true,
-            lowercase: true,
-            minlength: 1
-      },
-      lastname: {
-            type: String,
-            required: true,
-            trim: true,
-            lowercase: true,
-            minlength: 1
-      },
       birthdate: {
             type: Date,
             default: Date.now
+      },
+      gender: {
+            type: String,
+            required: true
+      },
+      social: {
+            type: String,
+            default: ""
+      },
+      occupation: {
+            type: String,
+            default: ""
+      },
+      education: {
+            type: String,
+            default: ""
+      },
+      work: {
+            type: String,
+            default: ""
       },
       avatar: { 
             type: String,
             default: ''
       },
-      city: {
-            type: String,
-            required: true,
-            trim: true,
-            lowercase: true
-            },
-      country: {
-            type: String,
-            required: true,
-            trim: true,
-            lowercase: true
-      },
       score: {
             type: Number,
-            default: null
+            default: 0
       },
       initialflag: {
             type: Boolean,
@@ -51,7 +45,7 @@ var Customers = new Schema({
       },
       zarios:  {
             type: Number,
-            default: null
+            default: 0
       },
       ukey:  {
             type: String,

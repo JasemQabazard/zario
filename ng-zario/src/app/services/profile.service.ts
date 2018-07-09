@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MProfile, Group } from '../shared/mprofile';
+import { MProfile, Group, CProfile } from '../shared/profile';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
@@ -10,7 +10,7 @@ import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/catch';
 
 @Injectable()
-export class MprofileService {
+export class ProfileService {
 
   constructor(
     private http: HttpClient,
@@ -39,6 +39,12 @@ export class MprofileService {
                     .catch(error => { return this.processHttpmsgService.handleError(error); });
   }
 
+  getCProfile(username: string): Observable<CProfile> {
+    console.log("profile service username: ", username);
+    return  this.http.get(baseURL + '/customers/byuser/'+ username)
+                    .catch(error => { return this.processHttpmsgService.handleError(error); });
+  }
+
     // adding new group tp database on the server
     addGroup(group): Observable<Group> {
       return this.http.post(baseURL + '/groups', group)
@@ -50,14 +56,25 @@ export class MprofileService {
         .catch(error => { return this.processHttpmsgService.handleError(error); });
       
     }
-    // adding new group tp database on the server
-    addProfile(profile): Observable<MProfile> {
+    // adding new merchant to database on the server
+    addMProfile(profile): Observable<MProfile> {
       return this.http.post(baseURL + '/merchants', profile)
         .catch(error => {return this.processHttpmsgService.handleError(error)});
     }
 
-    updateProfile(pid: string, profile: any) {
+    updateMProfile(pid: string, profile: any) {
       return this.http.put(baseURL + '/merchants/' + pid , profile)
+        .catch(error => { return this.processHttpmsgService.handleError(error); });
+    }
+
+    // adding new merchant to database on the server
+    addCProfile(profile): Observable<CProfile> {
+      return this.http.post(baseURL + '/customers', profile)
+        .catch(error => {return this.processHttpmsgService.handleError(error)});
+    }
+
+    updateCProfile(pid: string, profile: any) {
+      return this.http.put(baseURL + '/customers/' + pid , profile)
         .catch(error => { return this.processHttpmsgService.handleError(error); });
     }
 

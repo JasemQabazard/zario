@@ -3,9 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../services/auth.service';
-import { CommonRoutinesService } from '../../services/common-routines.service';
-import { MprofileService } from '../../services/mprofile.service';
-import { MProfile, Group, Codes } from '../../shared/mprofile';
+import { ProfileService } from '../../services/profile.service';
+import { MProfile, Group, Codes } from '../../shared/profile';
 
 import { Subscription } from 'rxjs/Subscription';
 
@@ -31,8 +30,7 @@ export class GroupComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private mprofileService: MprofileService,
-    private commonRoutinesService: CommonRoutinesService,
+    private profileService: ProfileService,
     private router: Router
   ) { 
     this.createfg();
@@ -56,7 +54,7 @@ export class GroupComponent implements OnInit {
           this.username = name;
           console.log("name: ", name);
           console.log("user name: ", this.username); 
-          this.mprofileService.getGroup(this.username)
+          this.profileService.getGroup(this.username)
           .subscribe(gp => {
             console.log("group : ", gp);
             if (gp === null) {
@@ -123,7 +121,7 @@ export class GroupComponent implements OnInit {
         Validators.maxLength(10),
         this.validateMobile
       ])]
-    })
+    });
     this.onChanges();
   }
   onChanges(): void {
@@ -173,12 +171,12 @@ export class GroupComponent implements OnInit {
     if (this.nogroup) {
       console.log("there is no group");
       // this.group.merchants = [];
-      this.mprofileService.addGroup(this.group).subscribe(
+      this.profileService.addGroup(this.group).subscribe(
         data => {
           this.messageClass= "alert alert-success";
           this.message="Group Add Successfull";
           console.log("Group Data Added : ", data);
-          this.mprofileService.getMProfile(this.username)
+          this.profileService.getMProfile(this.username)
           .subscribe(mprofiles => {
             this.profile = mprofiles[0];
             console.log("mprofiles[0] : ", this.profile);
@@ -189,7 +187,7 @@ export class GroupComponent implements OnInit {
             } else {
               this.profile.group_id = data._id;
               this._pid = mprofiles[0]._id;
-              this.mprofileService.updateProfile(this._pid, this.profile).subscribe(
+              this.profileService.updateMProfile(this._pid, this.profile).subscribe(
                 mp => {
                   setTimeout(() => {
                     this.router.navigate(['/']); 
@@ -212,7 +210,7 @@ export class GroupComponent implements OnInit {
         }
       );
     } else {
-      this.mprofileService.updateGroup(this._gid, this.group).subscribe(
+      this.profileService.updateGroup(this._gid, this.group).subscribe(
         data => {
           this.messageClass= "alert alert-success";
           this.message="Group Update Successfull";
