@@ -43,6 +43,30 @@ export class CProfile {
    merchants: [string];
 };
 
+export class Settings {
+      _id: string;
+      username: string;
+      name: string;
+      avatar: string;
+      email: string;
+      city: string;
+      countrycode: string;
+      mobile:string;
+      phone: string;
+      bronze: Number;
+      silver: Number;
+      gold: Number;
+      platinum: Number;
+      pearl: Number;
+      blackdiamond: Number;
+      nobronze: Number;
+      nosilver: Number;
+      nogold: Number;
+      noplatinum: Number;
+      nopearl: Number;
+      noblackdiamond: Number;
+}
+
 export class Group {
    _id: string;
    username: string;

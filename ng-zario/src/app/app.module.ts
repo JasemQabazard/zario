@@ -34,6 +34,7 @@ import { TransactionsComponent } from './components/transactions/transactions.co
 import { CartComponent } from './components/cart/cart.component';
 import { GroupComponent } from './components/group/group.component';
 import { CProfileComponent } from './components/cprofile/cprofile.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { CProfileComponent } from './components/cprofile/cprofile.component';
     TransactionsComponent,
     CartComponent,
     GroupComponent,
-    CProfileComponent
+    CProfileComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,

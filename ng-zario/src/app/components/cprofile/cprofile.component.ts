@@ -72,8 +72,6 @@ export class CProfileComponent implements OnInit {
       .subscribe(
         name => { 
           this.username = name;
-          console.log("name: ", name);
-          console.log("user name: ", this.username); 
           this.profileService.getCProfile(this.username)
           .subscribe(cprofile => {
             this.cprofile = cprofile;

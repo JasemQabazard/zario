@@ -15,6 +15,7 @@ import { ContactusComponent } from './components/contactus/contactus.component';
 import { TransactionsComponent } from './components/transactions/transactions.component';
 import { CartComponent } from './components/cart/cart.component';
 import { GroupComponent } from './components/group/group.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -31,6 +32,7 @@ const routes: Routes = [
   {path: 'transactions', component: TransactionsComponent},
   {path: 'cart', component: CartComponent},
   {path: 'group', component: GroupComponent},
+  {path: 'settings', component: SettingsComponent},
   {path: '**', component: HomeComponent}
 ];
 

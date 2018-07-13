@@ -96,8 +96,6 @@ export class MProfileComponent implements OnInit {
       .subscribe(
         name => { 
           this.username = name;
-          console.log("name: ", name);
-          console.log("user name: ", this.username); 
           this.profileService.getMProfile(this.username)
           .subscribe(mprofiles => {
             this.mprofiles = mprofiles;
@@ -264,7 +262,7 @@ export class MProfileComponent implements OnInit {
       blackdiamond: [0, Validators.compose([
         Validators.required,
         this.validateValue
-      ])],
+      ])]
     }, {validator: this.bandSync('bronze', 'silver', 'gold', 'platinum', 'pearl', 'blackdiamond')});
 
     this.onChanges();

@@ -191,7 +191,7 @@
                                         <div class="col-sm-6">
                                             <label for="silver">Silver Band</label>
                                             <div [ngClass]="{'has-error':(fp.controls.silver.errors && fp.controls.silver.dirty), 'has-success': !fp.controls.silver.errors}">
-                                                <input type="silver" name="phone" class="form-control"
+                                                <input type="silver" name="silver" class="form-control"
                                                 formControlName="silver" placeholder="9999">
                                                 <div class="help-block text-light small bg-danger pl-2" *ngIf="fp.controls.silver.errors && fp.controls.silver.dirty">
                                                     <div *ngIf="fp.controls.silver.errors?.required">

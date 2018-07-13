@@ -2,22 +2,25 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Settings = new Schema({
-      user_id: { 
-            type: mongoose.Schema.Types.ObjectId,
-            required: true
+      username: { 
+            type: String,
+            required: true,
+            unique: true
       },
       name: {
             type: String,
             required: true,
             trim: true,
             lowercase: true,
-            minlength: 1
+            minlength: 3,
+            maxlength:50,
+            default:'Zario and The Black Diamond Loyalty Program'
       },
       avatar: { 
             type: String,
             default: ''
       },
-      emailid: { 
+      email: { 
             type: String, 
             trim:true, 
             required:true, 
@@ -27,11 +30,22 @@ var Settings = new Schema({
             type: String,
             required: true,
             trim: true,
+            minlength: 5,
+            maxlength:20,
             lowercase: true
             },
-      country: {
-            type: String,
+      countrycode: {
+            type: String, 
+            required: true,
             default: ''
+      },
+      mobile: {
+            type: String, 
+            required: true
+      },
+      phone: {
+            type: String, 
+            required: true
       },
       nocustomers: {
             type: Number,
@@ -40,11 +54,6 @@ var Settings = new Schema({
       nomerchants: {
          type: Number,
          default: null
-      },
-      // VALUE: is for calculating band/ levels/ reputations by amounts where as NUMBER is calculating it by the number of certain items purchased like the way coffee shops do it
-      strategy: {
-            type: String,
-            default: "VALUE"
       },
       bronze: {
          type: Number,
@@ -70,17 +79,33 @@ var Settings = new Schema({
          type: Number,
          default: null
       },
+      nobronze: {
+      type: Number,
+      default: null
+      },
+      nosilver: {
+      type: Number,
+      default: null
+      },
+      nogold: {
+      type: Number,
+      default: null
+      },
+      noplatinum: {
+      type: Number,
+      default: null
+      },
+      nopearl: {
+      type: Number,
+      default: null
+      },
+      noblackdiamond: {
+      type: Number,
+      default: null
+      },
       distributedzarios: {
          type: Number,
          default: null
-      },
-      mobile: {
-            countrycode: {type: Number, required: true},
-            number:{type: Number, required: true}
-      },
-      phone: {
-            countrycode: {type: Number, required: true},
-            number:{type: Number, required: true}
       },
       zarios:  {
             type: Number,

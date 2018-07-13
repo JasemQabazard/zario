@@ -72,6 +72,9 @@
             <a routerLink="/cprofile" class="dropdown-item" *ngIf="CUSTOMER">
               <i class="fas fa-user"></i> Profile
             </a>
+            <a routerLink="/settings" class="dropdown-item" *ngIf="ADMIN">
+              <i class="fas fa-cogs"></i> Settings
+            </a>
             <a routerLink="/passwordchange" class="dropdown-item">
               <i class="fas fa-angle-double-right"></i> Change Password
             </a>              

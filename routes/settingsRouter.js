@@ -21,14 +21,21 @@ settingsRouter.route('/')
    .catch((err) => next(err));
 })
 .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+    console.log("post settings req-body : ", req.body);
    Settings.create(req.body)
    .then((setting) => {
          console.log('Setting Created', setting);
          res.statusCode = 200;
          res.setHeader('Content-Type', 'application/json');
          res.json(setting);
-   }, (err) => next(err))
-   .catch((err) => next(err));
+   }, (err) => {
+                console.log("err-1 ", err);
+                next(err);
+            })
+   .catch((err) => {
+                console.log("err-2 ", err);
+                next(err);
+    });
 })
 .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    res.statusCode = 403;
