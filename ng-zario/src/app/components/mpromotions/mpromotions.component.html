@@ -1,0 +1,205 @@
+<div class="row m-5">
+  <div class="col-md-10 mx-auto">
+    <section id="tabs">
+      <div class="container">
+        <h6 class="section-title h2">Merchant Promotions Data</h6>
+        <div class="py-1 px-1 px-sm-0">
+          PROMOTIONS: Use this page to add/ viw/ maintain promotions data. Your customers will be able to display these promotions, like, and commented. The promotion will be effective only during the period from start to end dates. Once the display date passes the promotion will be ineffective.
+          <div class="card card-form border-warning p-1 m-1 mx-auto">
+            <div class="card-header">
+                <h4 class="text-center">Add or Maintain Promotion Data</h4>
+            </div>
+            <form [formGroup]="fmSelect" class="m-3 p-3" *ngIf="showMerchantsBox">
+                <h5 class="d-sm-block d-none">Select an existing Merchant Profile</h5>
+                <select id="merchant" class="form-control bg-primary text-white" formControlName="merchant" (change)="changeMerchant()">
+                    <option *ngFor="let merchant of merchants" [value]="merchant.name">{{merchant.name}}</option>
+                </select>
+            </form>
+            <div class="row">
+                <button class="btn btn-danger my-1 ml-5 col-md-3" (click)="togglePromotionEntry()">Show/Hide Promotion Form</button>
+                <button class="btn btn-success my-1 ml-5 col-md-3" (click)="AddNewPromotion()"
+                    *ngIf="showPromotionEntry">Add New Promotion</button>
+            </div>
+            <hr>
+            <div class="card-body" *ngIf="showPromotionEntry">
+                <div class="row show-hide-message">
+                    <div [ngClass]="messageClass" class="col-sm-9 border-warning h-50 mx-auto text-center">
+                        <strong>{{message}}</strong>
+                    </div>
+                </div>
+                <div class="row mt-2 px-3">
+                    <div class="imageContainer col-md-4">
+                        <img class="mb-3 border-warning img-fluid mx-auto imagePreview" [src]="avatarPath" alt="default Avatar">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="text-muted bg-warning mx-auto d-sm-block d-none">
+                                <strong>{{selectedImageFileName}}</strong>
+                        </label>
+                        <input type="file" name="imageFile" style="display:none" (change)="imageFileSelected($event)" #imageFile>
+                        <button class="btn btn-primary btn-block mt-1" (click)="imageFile.click()">Select Image for Media</button>
+                    </div>
+                </div>
+                <form [formGroup]="fp">
+                        <!-- <form [formGroup]="fp" (submit)="onfpSubmit()"> -->
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="name">Name</label>
+                            <div [ngClass]="{'has-error':(fp.controls.name.errors && fp.controls.name.dirty), 'has-success': !fp.controls.name.errors}">
+                                <input type="text" name="name" class="form-control"
+                                formControlName="name">
+                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fp.controls.name.errors && fp.controls.name.dirty">
+                                <div *ngIf="fp.controls.name.errors?.required">
+                                    Promotion Name field is required
+                                </div>
+                                <div *ngIf="fp.controls.name.errors?.minlength || fp.controls.name.errors?.maxlength">
+                                    Promotion Name minimum characters: 5, Maximum characters: 30
+                                </div>
+                                <div *ngIf="fp.controls.name.errors?.validateName">
+                                    Valid Promotion Name has no special characters 
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="narrative">Narrative Short</label>
+                            <input type="text" name="narrative" class="form-control"                        formControlName="narrative">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="genre">Promotion Type</label>
+                            <select id="genre" class="form-control" formControlName="genre">
+                            <option *ngFor="let genre of genres" [value]="genre.genreCode">{{genre.genreCode}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="category">Category</label>
+                            <select id="category" class="form-control" formControlName="category">
+                            <option *ngFor="let category of categories" [value]="category.categoryCode">{{category.categoryCode}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="level">Level</label>
+                            <select id="level" class="form-control" formControlName="level">
+                            <option *ngFor="let level of levels" [value]="level.levelCode">{{level.levelCode}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="daterange">Date Range: Start Date - End Date</label>
+                            <div [ngClass]="{'has-error':(fp.controls.daterange.errors && fp.controls.daterange.dirty), 'has-success': !fp.controls.daterange.errors}">
+                                <input type="text" id="daterange" name="daterange" formControlName="daterange"  class="form-control" bsDaterangepicker [bsConfig]="datePickerConfig" placeholder="Pick Promotion date Ragnge start - End" placement="right"/>
+                                <div class="help-block text-light small bg-danger pl-2" *ngIf="(fp.controls.daterange.errors && fp.controls.daterange.dirty)">
+                                <div *ngIf="fp.controls.daterange.errors?.required">
+                                    Date Range field is required
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="price">Promotion Price</label>
+                            <div [ngClass]="{'has-error':(fp.controls.price.errors && fp.controls.price.dirty), 'has-success': !fp.controls.price.errors}">
+                                <input type="text" name="price" class="form-control"
+                                formControlName="price" placeholder="9999">
+                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fp.controls.price.errors && fp.controls.price.dirty">
+                                    <div *ngIf="fp.controls.price.errors?.required">
+                                        Price field is required
+                                    </div>
+                                    <div *ngIf="fp.controls.price.errors?.validateNumericFloat">
+                                        Price must be Numeric
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="discount">Promotion Discount</label>
+                            <div [ngClass]="{'has-error':(fp.controls.discount.errors && fp.controls.discount.dirty), 'has-success': !fp.controls.discount.errors}">
+                                <input type="text" name="discount" class="form-control"
+                                formControlName="discount" placeholder="9999">
+                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fp.controls.discount.errors && fp.controls.discount.dirty">
+                                    <div *ngIf="fp.controls.discount.errors?.required">
+                                        Discount field is required
+                                    </div>
+                                    <div *ngIf="fp.controls.discount.errors?.validateNumericFloat">
+                                        Discount must be Numeric
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Promotion Description</label>
+                        <div [ngClass]="{'has-error':(fp.controls.description.errors && fp.controls.description.dirty), 'has-success': !fp.controls.description.errors}">
+                            <textarea name="description" class="form-control" rows="3" formControlName="description"></textarea>
+                            <div class="help-block text-light small bg-danger pl-2" *ngIf="fp.controls.description.errors && fp.controls.description.dirty">
+                            <div *ngIf="fp.controls.description.errors?.required">
+                                Description field is required
+                            </div>
+                            <div *ngIf="fp.controls.description.errors?.minlength ">
+                                Description minimum characters: 50
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button [disabled]="!fp.valid || notUpdated" type="submit" class="btn btn-primary btn-block mt-5"
+                    (click)="onfpSubmit()" >Submit  Promotion</button>
+                </form>
+            </div>
+          </div>
+          <div class="card" *ngFor="let p of promotions; let i = index">
+              <div class="card-body promo mt-3">
+                    <div class="row">
+                        <div class="imageContainer col-md-3">
+                            <img class="mb-3 border-warning img-fluid mx-auto imagePreview" [src]="p.avatar" alt="product medialink">
+                        </div>
+                        <div class="col-md-6">
+                            <p>
+                                <strong>Profile Name: {{p.name}}</strong> 
+                                <br/>
+                                <strong>Narrative: </strong>{{p.narrative}}
+                                <br/>
+                                <strong>Type: </strong>{{p.genre}} 
+                                <br/>
+                                <strong>Level: </strong>{{p.level}}
+                                <br/>
+                                <strong>Category: </strong>{{p.category}}
+                                <br/>
+                                <strong>Date Range: </strong>{{p.daterange[0]}} - {{p.daterange[1]}}
+                                <br/>
+                                <strong>Discount: </strong>{{p.discount}}
+                                <br/>
+                                <strong>Price: </strong>{{p.price}}
+                                <br/>
+                                <strong>Description: </strong>{{p.description}}
+                            </p>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="button" class="btn btn-outline-danger btn-block" (click)="editPromotion()" >Edit  Promotion</button>
+                            <br/>
+                            <strong>
+                                <i class="far fa-heart" style="font-size:40px;color:red;">  {{p.hearts}}</i>
+                                <!-- <i class="fas fa-heartbeat" style="font-size:40px;color:red;"></i> {{p.hearts}} -->
+                            </strong>
+                            <select size="7" disabled>
+                                    <option *ngFor="let heart of p.hearted">{{heart}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+                    <h5>Comments</h5>
+                    <hr>
+                    <div class="ml-3" *ngFor="let c of p.comments">
+                        <p><strong>Comment By: {{c.name}} </strong> <br/> {{c.comment}}</p>
+                        <textarea name="comment" class="form-control ml-5 col-md-10" rows="1" ></textarea>
+                        <button type="button" class="btn btn-outline-danger btn-block col-md-2">Add New Comment</button>
+                    </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

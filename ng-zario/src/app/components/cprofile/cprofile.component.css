@@ -1,13 +1,13 @@
 /* Tabs*/
 section {
-   padding: 60px 0;
+   padding: 30px 0;
    border: 1px solid #ffc107;
 }
 
 section .section-title {
    text-align: center;
    color: #f7f7f7;
-   margin-bottom: 50px;
+   margin-bottom: 10px;
    text-transform: uppercase;
 }
 #tabs{

@@ -21,6 +21,7 @@ promotionsRouter.route('/')
    .catch((err) => next(err));
 })
 .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+    console.log(req.body);
    Promotions.create(req.body)
    .then((promotion) => {
          console.log('Promotion Created', promotion);
@@ -42,6 +43,22 @@ promotionsRouter.route('/')
       res.json(resp);
    }, (err) => next(err))
    .catch((err) => next(err));
+});
+
+  /* ===============================================================
+     Route to get all merchant promotion records by _mid
+  =============================================================== */
+  promotionsRouter.route('/bymid/:mid')
+  .get(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+    // Look for _mid in Promotions
+    console.log("mmid : ", req.params.mid);
+    Promotions.find({ _mid: req.params.mid })
+    .then((prmotions) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(prmotions);
+    }, (err) => next(err))
+    .catch((err) => next(err));
 });
 
 promotionsRouter.route('/:promotionId')

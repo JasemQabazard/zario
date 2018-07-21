@@ -14,6 +14,7 @@ import { ProcessHttpmsgService } from './services/process-httpmsg.service';
 import { CommonRoutinesService } from './services/common-routines.service';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { ProfileService } from './services/profile.service';
+import { PromotionService } from './services/promotion.service';
 import { baseURL } from './shared/baseurl';
 
 import { AppComponent } from './app.component';
@@ -21,7 +22,7 @@ import { AppRoutingModule } from './/app-routing.module';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
 import { MProfileComponent } from './components/mprofile/mprofile.component';
-import { PromotionsComponent } from './components/promotions/promotions.component';
+import { MPromotionsComponent } from './components/mpromotions/mpromotions.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { BlogComponent } from './components/blog/blog.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -43,7 +44,7 @@ import { SettingsComponent } from './components/settings/settings.component';
     NavbarComponent,
     HomeComponent,
     MProfileComponent,
-    PromotionsComponent,
+    MPromotionsComponent,
     DashboardComponent,
     BlogComponent,
     RegisterComponent,
@@ -75,6 +76,7 @@ import { SettingsComponent } from './components/settings/settings.component';
     ProcessHttpmsgService,
     CommonRoutinesService,
     ProfileService,
+    PromotionService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

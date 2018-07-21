@@ -7,7 +7,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
 import { MProfileComponent } from './components/mprofile/mprofile.component';
 import { CProfileComponent } from './components/cprofile/cprofile.component';
-import { PromotionsComponent } from './components/promotions/promotions.component';
+import { MPromotionsComponent } from './components/mpromotions/mpromotions.component';
 import { RegisterComponent } from './components/register/register.component';
 import { PasswordchangeComponent } from './components/passwordchange/passwordchange.component';
 import { PasswordforgetComponent } from './components/passwordforget/passwordforget.component';
@@ -24,7 +24,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'mprofile', component: MProfileComponent},
   {path: 'cprofile', component: CProfileComponent},
-  {path: 'promotions', component: PromotionsComponent},
+  {path: 'mpromotions', component: MPromotionsComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'passwordchange', component: PasswordchangeComponent},
   {path: 'passwordforget', component: PasswordforgetComponent},

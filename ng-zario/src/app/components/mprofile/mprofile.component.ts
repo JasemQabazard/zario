@@ -349,13 +349,13 @@ export class MProfileComponent implements OnInit {
   }
   validateValue(controls) {
     // Create a regular expression
-  const regExp = new RegExp(/^\d+$/);
-  // Test Value for numeric against regular expression
-  if (regExp.test(controls.value)) {
-    return null; // Return as valid number
-  } else {
-    return { 'validateValue': true } // Return as invalid number
-  }
+    const regExp = new RegExp(/^\d+$/);
+    // Test Value for numeric against regular expression
+    if (regExp.test(controls.value)) {
+      return null; // Return as valid number
+    } else {
+      return { 'validateValue': true } // Return as invalid number
+    }
   }
 
   changeMerchant(mvalue) {

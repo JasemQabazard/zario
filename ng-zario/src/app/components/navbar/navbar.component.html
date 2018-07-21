@@ -22,8 +22,8 @@
           </a>
         </li>
         <li class="nav-item px-0" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}" *ngIf="!USER">
-          <a routerLink="/promotions" class="nav-link">
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="MERCHANT">
+          <a routerLink="/mpromotions" class="nav-link">
             <i class="fas fa-child"></i> Promotions
           </a>
         </li>

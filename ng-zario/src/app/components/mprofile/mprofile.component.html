@@ -3,7 +3,7 @@
         <section id="tabs">
             <div class="container">
                 <h6 class="section-title h2">Merchant Profile Data</h6>
-                <div class="py-3 px-3 px-sm-0">
+                <div class="py-1 px-1 px-sm-0">
                     PROFILE: The profile page is the main merchant record for a single retail business unit location. You can have only one business unit without having a group. In order to have several business units; first create a group, hence you can create more than one profile as they will all be under one single group.
                     <div class="card card-form border-warning p-0 ml-0 mr-0 mt-5 col-md-9 mx-auto">
                         <div class="card-header">
@@ -176,7 +176,7 @@
                                         <div class="col-sm-6">
                                             <label for="bronze">Bronze Band</label>
                                             <div [ngClass]="{'has-error':(fp.controls.bronze.errors && fp.controls.bronze.dirty), 'has-success': !fp.controls.bronze.errors}">
-                                                <input type="bronze" name="bronze" class="form-control"
+                                                <input type="text" name="bronze" class="form-control"
                                                 formControlName="bronze" placeholder="9999">
                                                 <div class="help-block text-light small bg-danger pl-2" *ngIf="fp.controls.bronze.errors && fp.controls.bronze.dirty">
                                                     <div *ngIf="fp.controls.bronze.errors?.required">
@@ -191,7 +191,7 @@
                                         <div class="col-sm-6">
                                             <label for="silver">Silver Band</label>
                                             <div [ngClass]="{'has-error':(fp.controls.silver.errors && fp.controls.silver.dirty), 'has-success': !fp.controls.silver.errors}">
-                                                <input type="silver" name="silver" class="form-control"
+                                                <input type="text" name="silver" class="form-control"
                                                 formControlName="silver" placeholder="9999">
                                                 <div class="help-block text-light small bg-danger pl-2" *ngIf="fp.controls.silver.errors && fp.controls.silver.dirty">
                                                     <div *ngIf="fp.controls.silver.errors?.required">
@@ -210,7 +210,7 @@
                                         <div class="col-sm-6">
                                             <label for="gold">Gold Band</label>
                                             <div [ngClass]="{'has-error':(fp.controls.gold.errors && fp.controls.gold.dirty), 'has-success': !fp.controls.gold.errors}">
-                                                <input type="gold" name="gold" class="form-control"
+                                                <input type="text" name="gold" class="form-control"
                                                 formControlName="gold" placeholder="9999">
                                                 <div class="help-block text-light small bg-danger pl-2" *ngIf="fp.controls.gold.errors && fp.controls.gold.dirty">
                                                     <div *ngIf="fp.controls.gold.errors?.required">
@@ -225,7 +225,7 @@
                                         <div class="col-sm-6">
                                             <label for="platinum">Platinum Band</label>
                                             <div [ngClass]="{'has-error':(fp.controls.platinum.errors && fp.controls.platinum.dirty), 'has-success': !fp.controls.platinum.errors}">
-                                                <input type="platinum" name="platinum" class="form-control"
+                                                <input type="text" name="platinum" class="form-control"
                                                 formControlName="platinum" placeholder="9999">
                                                 <div class="help-block text-light small bg-danger pl-2" *ngIf="fp.controls.platinum.errors && fp.controls.platinum.dirty">
                                                     <div *ngIf="fp.controls.platinum.errors?.required">
@@ -244,7 +244,7 @@
                                         <div class="col-sm-6">
                                             <label for="pearl">Pearl Band</label>
                                             <div [ngClass]="{'has-error':(fp.controls.pearl.errors && fp.controls.pearl.dirty), 'has-success': !fp.controls.pearl.errors}">
-                                                <input type="pearl" name="pearl" class="form-control"
+                                                <input type="text" name="pearl" class="form-control"
                                                 formControlName="pearl" placeholder="9999">
                                                 <div class="help-block text-light small bg-danger pl-2" *ngIf="fp.controls.pearl.errors && fp.controls.pearl.dirty">
                                                     <div *ngIf="fp.controls.pearl.errors?.required">
@@ -259,7 +259,7 @@
                                         <div class="col-sm-6">
                                             <label for="blackdiamond">blackdiamond Band</label>
                                             <div [ngClass]="{'has-error':(fp.controls.blackdiamond.errors && fp.controls.blackdiamond.dirty) || (fp.errors?.bandSync && fp.controls.blackdiamond.dirty), 'has-success': !fp.controls.blackdiamond.errors || fp.errors?.bandSync}">
-                                                <input type="blackdiamond" name="blackdiamond" class="form-control"
+                                                <input type="text" name="blackdiamond" class="form-control"
                                                 formControlName="blackdiamond" placeholder="9999">
                                                 <div class="help-block text-light small bg-danger pl-2" *ngIf="(fp.controls.blackdiamond.errors && fp.controls.blackdiamond.dirty) || (fp.errors?.bandSync && fp.controls.blackdiamond.dirty)">
                                                     <div *ngIf="fp.controls.blackdiamond.errors?.required">
@@ -270,7 +270,7 @@
                                                     </div>
                                                     <div *ngIf="fp.errors?.bandSync">
                                                         Bands must progressively increase in value
-                                                    </div>
+                                                    </div> 
                                                 </div>
                                             </div>
                                         </div>

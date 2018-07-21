@@ -5,20 +5,32 @@ const Currency = mongoose.Types.Currency;
 
 // comments schema
 var commentsSchema = new Schema({
-      user_id: { type: mongoose.Schema.Types.ObjectId, required: true},
-      hearted:  {type: Boolean,default: false},
-      comment:  {type: String,default: ''}
+      username: { type: String, required: true },
+      name: {type: String},
+      post:  {type: String,default: ''}
   }, {timestamps: true});
 //
 
 var Promotions = new Schema({
-      merchant_id: { 
+      _mid: { 
             type: mongoose.Schema.Types.ObjectId,
             required: true
       },
-      medialink: {
+      avatar: {
             type: String,
             required: true,
+            trim: true,
+            lowercase: true
+      },
+      name: {
+            type: String,
+            required: true,
+            trim: true,
+            lowercase: true,
+            minlength: 1
+      },
+      narrative : {
+            type: String,
             trim: true,
             lowercase: true
       },
@@ -26,45 +38,49 @@ var Promotions = new Schema({
          type: Number,
          default: null
       },
-      // promotion type DAILY: daily promotions will have a time remaining clock attached to them to place a little urgency on the offerLEVEL: the level promotion is used for regular purchases of a customer when he is at a certain level INITIAL: is a promotion to encourage a customer to come in and follow the retail merchant
-      type: { 
+      // usernames who like the promotion
+      hearted:[String],
+  // {"All"},===========> all customers, non customers
+  // {"Customer"},======> customers only where level is all or a certain band
+  // {"Daily"},=========> Its a deily purchasing quest randomly gigen to a customer restircted to a time period of 24 hours
+  // {"Game"},==========> Its a winable item in a non Hunt game like scratch and win 
+  // {"Hunt"},==========> Its winnable in a the treasure Hunt game 
+  // {"Initial"},=======> Initial Customer Sign on deal
+  // {"Level"},=========> its a Level jump reward if level is all then all jumps are rewarded if level set to band then only jumping from that band is rewarded
+  // {"Monthly"},=======> its offered for a month only 
+  // {"Weekly"},========> its offered for a week only 
+      genre: { 
          type: String,
-         default: ''
-      },
-      // BRONZE/ SILVER/ GOLD/ PLATINUM/ PEARL/ BLACKDIAMOND
-      level: { 
-         type: String,
+         default: '',
          required: true
       },
-      // business category ---> Product category is finer than the business category.
-      category: { 
+      // All / Bronze/ Silver/ Gold/ Platinum/ Pesrl/ Blackdiamond
+      level: { 
          type: String,
-         default: ''
+         default: '',
+         required: true
       },
-      startdate: {
-         type: Date,
-         default: Date.now
-      },
-      enddate: {
-         type: Date,
-         default: Date.now
-      },
+      // All, Zario, Prodcut, Service, Purchase
+      category: { 
+            type: String,
+            default: '',
+            required: true
+         },
+      // date range will hold start date and end date
+      daterange: [Date],
       discount: {
             type: String,
             default: ""
       },
       price: {
             type: Currency,
-            default: null
+            default: null,
+            min: 0
       },
       description: {
          type: String,
          default: ""
       },
-      post: {
-         type: String,
-         default: ""
-      },      
       comments: [commentsSchema]
 },{
    timestamps: true
