@@ -16,7 +16,8 @@ interface AuthResponse {
   status: string,
   success: string,
   token: string,
-  role: string
+  role: string,
+  realname:string
 };
 
 interface JWTResponse {
@@ -33,6 +34,7 @@ export class AuthService {
   username: Subject<string> = new Subject<string>();
   authToken: string = undefined;
   userrole: Subject<string> = new Subject<string>();
+  realname: Subject<string> = new Subject<string>();
 
   constructor(
     private http: HttpClient,
@@ -87,6 +89,7 @@ export class AuthService {
       console.log("JWT Token Valid: ", res);
       this.sendUsername(res.user.username);
       this.sendUserrole(res.user.role);
+      this.sendRealname(res.user.firstname+" "+res.user.lastname);
     },
     err => {
       console.log("JWT Token invalid: ", err);
@@ -100,6 +103,14 @@ export class AuthService {
 
   clearUsername() {
     this.username.next(undefined);
+  }
+
+  sendRealname(Rname: string) {
+    this.realname.next(Rname);
+  }
+
+  clearRealname() {
+    this.realname.next(undefined);
   }
 
   sendUserrole(role: string) {
@@ -129,6 +140,7 @@ export class AuthService {
   useCredentials(credentials: any) {
     this.isAuthenticated = true;
     this.sendUsername(credentials.username);
+    this.sendRealname(credentials.realname);
     this.authToken = credentials.token;
     this.sendUserrole(credentials.userrole);
   }
@@ -136,6 +148,7 @@ export class AuthService {
   destroyUserCredentials() {
     this.authToken = undefined;
     this.clearUsername();
+    this.clearRealname();
     this.clearUserrole();
     this.isAuthenticated = false;
     localStorage.removeItem(this.tokenKey);
@@ -145,7 +158,7 @@ export class AuthService {
     return this.http.post<AuthResponse>(baseURL + '/users/login',
     {"username": user.username, "password": user.password})
       .map(res => {
-          this.storeUserCredentials({username: user.username, token: res.token, userrole: res.role});
+          this.storeUserCredentials({username: user.username, token: res.token, userrole: res.role, realname:res.realname});
           return {'success': true, 'username': user.username };
       })
         .catch(error => { return this.processHttpmsgService.handleError(error); });
@@ -177,6 +190,9 @@ export class AuthService {
   }
   getUserrole(): Observable<string> {
     return this.userrole.asObservable();
+  }
+  getRealname(): Observable<string> {
+    return this.realname.asObservable();
   }
 
   getToken(): string {

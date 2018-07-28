@@ -16,6 +16,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   USER: Boolean = true;
 
   username: string = undefined;
+  realname: string = undefined;
   userrole: string = undefined;
   subscription: Subscription;
 
@@ -25,8 +26,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.authService.loadUserCredentials();
-    this.subscription = this.authService.getUsername()
-      .subscribe(name => { console.log(name); this.username = name; });
+    this.subscription = this.authService.getRealname()
+      .subscribe(rname => { console.log(name); this.realname = rname; });
     this.subscription = this.authService.getUserrole()
       .subscribe(role => { 
         console.log(role); this.userrole = role; 

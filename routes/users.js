@@ -258,7 +258,7 @@ router.post('/passwordcodemailer', function (req, res, next) {
             var token = authenticate.getToken({_id: req.user._id});
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
-            res.json({success: true, message: 'Login Successful!', token: token, role: user.role});
+            res.json({success: true, message: 'Login Successful!', token: token, role: user.role, realname:user.firstname+" "+user.lastname});
         }); 
     }) (req, res, next);
   });

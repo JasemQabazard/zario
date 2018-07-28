@@ -97,7 +97,7 @@ promotionsRouter.route('/:promotionId')
     .catch((err) => next(err));
 });
 
-// for comments end points ================
+// for comments end points ================ working on entire comments 
 
 promotionsRouter.route('/:promotionId/comments')
 .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
@@ -126,7 +126,7 @@ promotionsRouter.route('/:promotionId/comments')
             .then((promotion) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(promotion);                
+                res.json(promotion);
             }, (err) => next(err));
         }
         else {
@@ -153,7 +153,7 @@ promotionsRouter.route('/:promotionId/comments')
             .then((promotion) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(promotion);                
+                res.json(promotion);
             }, (err) => next(err));
         }
         else {
@@ -164,6 +164,8 @@ promotionsRouter.route('/:promotionId/comments')
     }, (err) => next(err))
     .catch((err) => next(err));    
 });
+
+// comments with the comment id single comment works
 
 promotionsRouter.route('/:promotionId/comments/:commentId')
 .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
@@ -197,17 +199,18 @@ promotionsRouter.route('/:promotionId/comments/:commentId')
     Promotions.findById(req.params.promotionId)
     .then((promotion) => {
         if (promotion != null && promotion.comments.id(req.params.commentId) != null) {
-            if (req.body.hearted) {
-                social.comments.id(req.params.commentId).hearted = req.body.hearted;
-            }
+            // if (req.body.hearted) {
+            //     promotion.comments.id(req.params.commentId).hearted = req.body.hearted;
+            // }
+            console.log("req.body : ", req.body);
             if (req.body.comment) {
-                promotion.comments.id(req.params.commentId).comment = req.body.comment;                
+                promotion.comments.id(req.params.commentId).comment = req.body.comment;
             }
             promotion.save()
             .then((promotion) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(promotion);                
+                res.json(promotion);
             }, (err) => next(err));
         }
         else if (promotion == null) {
@@ -232,7 +235,7 @@ promotionsRouter.route('/:promotionId/comments/:commentId')
             .then((promotion) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(promotion);                
+                res.json(promotion);
             }, (err) => next(err));
         }
         else if (promotion == null) {

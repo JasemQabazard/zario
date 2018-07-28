@@ -7,7 +7,7 @@ const Currency = mongoose.Types.Currency;
 var commentsSchema = new Schema({
       username: { type: String, required: true },
       name: {type: String},
-      post:  {type: String,default: ''}
+      comment:  {type: String, default: ''}
   }, {timestamps: true});
 //
 

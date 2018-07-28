@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css']
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent implements OnInit, OnDestroy {
   fs: FormGroup;  // Setting Form control
   vbg: FormGroup;
   codes: Codes[];
@@ -56,6 +56,7 @@ export class SettingsComponent implements OnInit {
       .subscribe(
         name => { 
           this.username = name;
+          this.subscription.unsubscribe();
           this.profileService.getSettings()
           .subscribe(settings => {
             this.settings = settings[0];
@@ -99,6 +100,10 @@ export class SettingsComponent implements OnInit {
               console.log("error : ", errmess);
           });
       });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   createfs() {

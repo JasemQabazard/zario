@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 import { AgmCoreModule } from '@agm/core';
 import { environment } from '../environments/environment';
@@ -65,6 +66,7 @@ import { SettingsComponent } from './components/settings/settings.component';
     ReactiveFormsModule,
     FormsModule,
     BsDatepickerModule.forRoot(),
+    TooltipModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: environment.googleMaps_api_key
     }),

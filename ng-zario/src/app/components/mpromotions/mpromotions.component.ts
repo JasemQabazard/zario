@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray , Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../services/auth.service';
@@ -9,6 +9,7 @@ import { ProfileService } from '../../services/profile.service';
 import { Promotion, Genre, Level, Category } from '../../shared/promotions';
 import { MProfile, Merchant } from '../../shared/profile';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 import { Subscription } from 'rxjs/Subscription';
 
@@ -17,7 +18,7 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: './mpromotions.component.html',
   styleUrls: ['./mpromotions.component.css']
 })
-export class MPromotionsComponent implements OnInit {
+export class MPromotionsComponent implements OnInit, OnDestroy {
   datePickerConfig: Partial<BsDatepickerConfig>;
   fp: FormGroup;  // initial promotion input form control
   fmSelect: FormGroup;
@@ -31,12 +32,14 @@ export class MPromotionsComponent implements OnInit {
   promotion: Promotion;
   subscription: Subscription;
   username: string = undefined;
+  realname: string = undefined;
   merchant_id: string;
-  PROMOTIONS: number = null;
-  ADDFLAG: boolean=true;
+  NEWPROMOTION: boolean=true;
+  UPDATINGCOMMENT_J: number=null;
   message: string;
   messageClass: string;
   notUpdated: boolean = true;
+  commentNotUpdated: boolean = true;
   showMerchantsBox: boolean = false;
   showPromotionEntry: boolean = false;
   _mid: string = "";
@@ -45,8 +48,7 @@ export class MPromotionsComponent implements OnInit {
   selectedImageFileName: string = "No New Image Selected";
   avatarPath: string ="../../../assets/img/avatardefault.png";
   avatarChanged: boolean = false;
-  start: Date = new Date();
-  min: Date = new Date(this.start.getFullYear(), this.start.getMonth(), this.start.getDate(), 0,0,0);
+  komments: Array<string>=[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -55,12 +57,10 @@ export class MPromotionsComponent implements OnInit {
     private profileService: ProfileService,
     private router: Router
   ) { 
-    console.log(this.min);
     this.datePickerConfig = Object.assign( {}, 
       { 
         containerClass: 'theme-dark-blue',
         showWeekNumbers: false,
-        minDate: this.min,
         rangeInputFormat : 'DD/MM/YYYY'
       });
     this.createfp();
@@ -108,10 +108,17 @@ export class MPromotionsComponent implements OnInit {
       {categoryCode:"Zario"}
     ];
     this.authService.loadUserCredentials();
+    this.subscription = this.authService.getRealname()
+    .subscribe(
+      rname => {
+        this.realname = rname;
+      });
+
     this.subscription = this.authService.getUsername()
     .subscribe(
       name => {
         this.username = name;
+        this.subscription.unsubscribe();
         // get merchants BY username. If only one merchant display promotions for that merchant and allow managing promotions. If several merchants === display promotions for the first one then allow the user to select another merchant and display thye promotions for 
         this.profileService.getMProfile(this.username)
         .subscribe(mprofiles => {
@@ -134,38 +141,37 @@ export class MPromotionsComponent implements OnInit {
             }
             this.fmSelect.controls['merchant'].setValue(this.merchants[0].name);
           } 
-          console.log("mid ", this.mprofiles[0]._id);
           this._mid = this.mprofiles[0]._id;
           // Use merchant_id and fetch promotions 
           this.promotionService.getPromotions(this._mid)
           .subscribe(promotions => {
             this.promotions = promotions;
             console.log("promotions : ", this.promotions);
-            this.PROMOTIONS = this.promotions.length;
-            if (this.PROMOTIONS === 0) {
+            for (var x = 0; x < this.promotions.length; x++) {
+              this.komments.push(" ");
+              console.log("building komments i = ", x);
+            }
+            if (this.promotions.length === 0) {
               this.showPromotionEntry = true;
               console.log("no promotions display data entry form");
             } else {
-              console.log("Display promotions on page, allow an edit button, anbd comment entry by merchant");
-              this.promotions[0].hearts = 519;
-              this.promotions[0].hearted[0] = "Jasem Qabazard";
-              this.promotions[0].hearted[1] = "Jim Vanila";
-              this.promotions[0].hearted[2] = "Elizabeth Rangler";
-              this.promotions[0].comments[0] = {
-                username: "customerone",
-                name: "uuuuuuuuuuu",
-                comment:"hhhhhhhhllll kkkkk kkkkkkkk d    dddddddddd hhhhhhhh"
-              }
+              console.log("Display promotions on page, allow an edit button, and comment entry by merchant");
             }
           },
             errmess => {
-              console.log("error : ", errmess);
+              this.message = errmess;
+              this.messageClass= "alert alert-danger";
           });
         },
           errmess => {
-            console.log("error : ", errmess);
+            this.message = errmess;
+            this.messageClass= "alert alert-danger";
         });
     });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   togglePromotionEntry() {
@@ -173,25 +179,46 @@ export class MPromotionsComponent implements OnInit {
   }
 
   AddNewPromotion() {
-    this.ADDFLAG = true;
+    this.NEWPROMOTION = true;
     this.notUpdated = true;
+  }
+
+  changeMerchant(mvalue) {
+    for ( var ndx = 0; ndx < this.merchants.length; ndx++) {
+      if(this.merchants[ndx].name == this.fmSelect.controls['merchant'].value) {
+        break;
+      }
+   }
+    this.fmSelect.controls['merchant'].setValue(this.merchants[ndx].name);
+    this._mid = this.mprofiles[ndx]._id;
+    // Use merchant_id and fetch promotions 
+    this.promotionService.getPromotions(this._mid)
+    .subscribe(promotions => {
+      this.promotions = promotions;
+      console.log("promotions : ", this.promotions);
+      if (this.promotions.length === 0) {
+        this.showPromotionEntry = true;
+        console.log("no promotions display data entry form");
+      } else {
+        console.log("Display promotions on page, allow an edit button, and comment entry by merchant");
+      }
+    },
+      errmess => {
+        console.log("error : ", errmess);
+    });
   }
 
   createfmSelect() {
     this.fmSelect= this.formBuilder.group({
       merchant: ''
-    })
-  }
-
-  changeMerchant() {
-    console.log("Merchant changed");
+    });
   }
 
   createfp() {
     this.fp= this.formBuilder.group({
       name: ['', Validators.compose([
         Validators.required,
-        Validators.minLength(15),
+        Validators.minLength(10),
         Validators.maxLength(50),
         this.validateName
       ])],
@@ -274,7 +301,7 @@ export class MPromotionsComponent implements OnInit {
       fd.append('imageFile', this.selectedImageFile);
       this.profileService.imageUpload(fd).subscribe(
         imageData => {
-          this.promotion.avatar = imageData.filename;
+          this.promotion.avatar = "avatars/"+imageData.filename;
           this.promotionsDataBaseChange();
         }, 
         errormessage => {
@@ -287,12 +314,8 @@ export class MPromotionsComponent implements OnInit {
     }
   }
 
-  editPromotion() {
-
-  }
-
   promotionsDataBaseChange() {
-    if (this.ADDFLAG) {
+    if (this.NEWPROMOTION) {
       this.promotionService.addPromotion(this.promotion).subscribe(
         data => {
           console.log("add data : ", data);
@@ -302,7 +325,9 @@ export class MPromotionsComponent implements OnInit {
             this.messageClass= "";
             this.message="";
           }, 1500);
-// get promotions again and display
+          // get promotions again and make ready for display
+          this.getPromotions();
+          this.clearfp();
         }, 
         errormessage => {
           this.message = <any>errormessage;
@@ -319,7 +344,9 @@ export class MPromotionsComponent implements OnInit {
               this.messageClass= "";
               this.message="";
             }, 1500);
-// get promotions again and display
+            // get promotions again and make ready for display
+            this.getPromotions();
+            this.clearfp();
           }, 
           errormessage => {
             this.message = <any>errormessage;
@@ -327,6 +354,124 @@ export class MPromotionsComponent implements OnInit {
           }
         );
     }
+  }
+  
+  clearfp() {
+    this.avatarPath = "../../../assets/img/avatardefault.png";
+    this.fp.setValue ({
+      name: "",
+      narrative: "",
+      genre: "All",
+      level: "All", 
+      category: "All",
+      daterange: null,
+      discount: 0,
+      price: 0,
+      description: ""
+    });
+    this.AddNewPromotion();
+    this.togglePromotionEntry();
+  }
+
+  getPromotions() {
+      // Use merchant_id and fetch promotions 
+      this.promotionService.getPromotions(this._mid)
+      .subscribe(promotions => {
+        this.promotions = promotions;
+        console.log("promotions : ", this.promotions);
+      },
+        errmess => {
+          console.log("error : ", errmess);
+      });
+  }
+
+  editPromotion(i) {
+    // get the index value for the promotion and set the form to its values from the array 
+    // allow for change and update when requested. 
+    console.log("promotion index : ", i);
+    this._pid = this.promotions[i]._id;
+    if (this.promotions[i].avatar) {
+      this.avatarPath = this.promotions[i].avatar;
+    } else {
+      this.avatarPath = "../../../assets/img/avatardefault.png";
+    }
+    const dates: Date[] = [
+      new Date(this.promotions[i].daterange[0]),
+      new Date(this.promotions[i].daterange[1])
+    ]
+    this.fp.setValue ({
+      name: this.promotions[i].name,
+      narrative: this.promotions[i].narrative,
+      genre: this.promotions[i].genre,
+      level: this.promotions[i].level, 
+      category: this.promotions[i].category,
+      daterange: dates,
+      discount: this.promotions[i].discount,
+      price: this.promotions[i].price,
+      description: this.promotions[i].description
+    });
+    console.log("date range : ", this.fp.value.daterange);
+    this.NEWPROMOTION = false;
+    this.notUpdated = true;
+    this.showPromotionEntry = true;
+  }
+
+  addUpdateComments(i) {
+    if (!this.UPDATINGCOMMENT_J) {
+      const remark = {
+        username: this.username,
+        name: this.realname,
+        comment:  this.komments[i]
+      }
+      this.promotionService.addComment(this.promotions[i]._id, remark)
+      .subscribe(promotion => {
+        this.promotions[i] = promotion;
+        console.log("promotions : ", this.promotions);
+      },
+        errmess => {
+          console.log("error : ", errmess);
+      });
+    } else {
+      const remark = {
+        "comment":  this.komments[i]
+      }
+      console.log("remark.comment : ", this.UPDATINGCOMMENT_J, remark);
+      this.promotionService.updateComment(this.promotions[i]._id, this.promotions[i].comments[this.UPDATINGCOMMENT_J]._id, remark)
+      .subscribe(promotion => {
+        this.promotions[i] = promotion;
+        console.log("promotions : ", this.promotions);
+      },
+        errmess => {
+          console.log("error : ", errmess);
+      });
+      if (this.UPDATINGCOMMENT_J) {this.cancelUpdateComments(i)};
+    }
+  }
+
+  deleteComments(i,j) {
+    console.log("delete ixj:", i,j);
+    if (this.UPDATINGCOMMENT_J) {this.cancelUpdateComments(i)};
+    this.promotionService.deleteComment(this.promotions[i]._id, this.promotions[i].comments[j]._id)
+    .subscribe(promotion => {
+      this.promotions[i] = promotion;
+      console.log("promotions : ", this.promotions);
+    },
+      errmess => {
+        console.log("error : ", errmess);
+    });
+  }
+
+  editComments(i,j) {
+    console.log("edit ixj:", i,j);
+    this.komments[i]=this.promotions[i].comments[j].comment;
+    this.UPDATINGCOMMENT_J = j;
+    this.commentNotUpdated = true;
+  }
+
+  cancelUpdateComments(i) {
+    this.komments[i]="";
+    this.UPDATINGCOMMENT_J = null;
+    this.commentNotUpdated = false;
   }
 
 }

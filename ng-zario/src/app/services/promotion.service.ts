@@ -30,8 +30,24 @@ export class PromotionService {
   }
 
   updatePromotion(pid: string, promotion: any) {
-    return this.http.put(baseURL + '/groups/' + pid , promotion)
+    return this.http.put(baseURL + '/promotions/' + pid , promotion)
       .catch(error => { return this.processHttpmsgService.handleError(error); });
-    
   }
+
+  addComment(pid: string, remark: any) {
+    return this.http.post(baseURL + '/promotions/' + pid + '/comments', remark)
+      .catch(error => { return this.processHttpmsgService.handleError(error); });
+  }
+
+  deleteComment(pid: string, cid: string) {
+    return this.http.delete(baseURL + '/promotions/' + pid + '/comments/'+ cid)
+      .catch(error => { return this.processHttpmsgService.handleError(error); });
+  }
+
+  updateComment(pid: string, cid: string, comment:any) {
+    console.log("updateComment Service comment : ", comment);
+    return this.http.put(baseURL + '/promotions/' + pid + '/comments/'+ cid, comment)
+      .catch(error => { return this.processHttpmsgService.handleError(error); });
+  }
+
 }

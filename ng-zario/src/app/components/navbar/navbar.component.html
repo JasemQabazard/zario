@@ -60,7 +60,7 @@
         <li class="nav-item dropdown px-0" [routerLinkActive]="['active']"
         [routerLinkActiveOptions]="{exact: true}" *ngIf="!USER">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-            <i class="fas fa-user-circle"></i> Welcome {{username}}
+            <i class="fas fa-user-circle"></i> Welcome {{realname}}
           </a>
           <div class="dropdown-menu">
             <a routerLink="/group" class="dropdown-item" *ngIf="MERCHANT">

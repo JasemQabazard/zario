@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: './group.component.html',
   styleUrls: ['./group.component.css']
 })
-export class GroupComponent implements OnInit {
+export class GroupComponent implements OnInit, OnDestroy {
   fg: FormGroup;  // group input form control
   codes: Codes[];
   group: Group;
@@ -52,8 +52,7 @@ export class GroupComponent implements OnInit {
       .subscribe(
         name => { 
           this.username = name;
-          console.log("name: ", name);
-          console.log("user name: ", this.username); 
+          this.subscription.unsubscribe(); 
           this.profileService.getGroup(this.username)
           .subscribe(gp => {
             console.log("group : ", gp);
@@ -82,6 +81,11 @@ export class GroupComponent implements OnInit {
           });
       });
   }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+  
   createfg() {
     this.fg= this.formBuilder.group({
       username: this.username, 

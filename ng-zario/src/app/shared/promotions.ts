@@ -1,4 +1,5 @@
 export class Promotion {
+   _id: string;
    _mid: string;
    avatar: string;
    name: string;
@@ -13,9 +14,12 @@ export class Promotion {
    price: string;
    description: string;
    comments: [{
+      _id: string,
       username: string,
       name:string,
-      comment: string
+      comment: string,
+      createdAt: string,
+      updatedAt: string
    }];
 };
 
@@ -32,6 +36,9 @@ export class Category {
 };
 
 export class Comment {
+   _id: string;
    username: string;
-   post:  string;
+   name: string;
+   comment:  string;
+   date: string;
 }

@@ -22,7 +22,7 @@ const transRouter = require('./routes/transRouter');
 const uploadRouter = require('./routes/uploadRouter');
 
 const mongoose = require('mongoose');
-mongoose.Promise = require('bluebird');
+// mongoose.Promise = require('bluebird');
 
 // Connection URL
 const url = config.mongoUrl;

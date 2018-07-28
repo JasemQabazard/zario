@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -15,7 +15,7 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: './mprofile.component.html',
   styleUrls: ['./mprofile.component.css']
 })
-export class MProfileComponent implements OnInit {
+export class MProfileComponent implements OnInit, OnDestroy {
   fp: FormGroup;  // initial profile input form control
   fpSelect: FormGroup;
   codes: Codes[];
@@ -96,6 +96,7 @@ export class MProfileComponent implements OnInit {
       .subscribe(
         name => { 
           this.username = name;
+          this.subscription.unsubscribe();
           this.profileService.getMProfile(this.username)
           .subscribe(mprofiles => {
             this.mprofiles = mprofiles;
@@ -170,6 +171,11 @@ export class MProfileComponent implements OnInit {
           });
       });
   }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
   getUserPosition() {
     /// locate the user
     if (navigator.geolocation) {
