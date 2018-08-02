@@ -1,0 +1,140 @@
+
+<div class="row mt-5">
+  <div class="col-md-5 mx-auto">
+    <div class="card card-form border-warning mb-5">
+      <div class="card-header">
+          <h3 class="text-center">User Data Update</h3>
+      </div>
+      <div class="card-body">
+        <div class="row show-hide-message">
+            <div [ngClass]="messageClass" class="col-sm-9 border-warning h-50 mx-auto text-center">
+              <strong>{{message}}</strong>
+            </div>
+        </div>
+        <form [formGroup]="fu" (submit)="onUpdateSubmit()">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <div [ngClass]="{'has-error':(fu.controls.email.errors && fu.controls.email.dirty) || (!emailValid && fu.controls.email.dirty), 'has-success': !fu.controls.email.errors && emailValid}">
+                  <input type="email" name="email" class="form-control" placeholder="name@domain.com"
+                  formControlName="email" (blur)="checkEmail()">
+                  <div class="help-block text-light small bg-danger pl-2" *ngIf="(fu.controls.email.errors && fu.controls.email.dirty) || (!emailValid && fu.controls.email.dirty)">
+                      <div *ngIf="fu.controls.email.errors?.required">
+                        Email field is required
+                      </div>
+                      <div *ngIf="fu.controls.email.errors?.minlength || fu.controls.email.errors?.maxlength">
+                          Email minimum characters: 5, Maximum characters: 30
+                      </div>
+                      <div *ngIf="fu.controls.email.errors?.validateEmail">
+                          Email must be in a valid format
+                      </div>
+                      <div *ngIf="emailMessage"> {{ emailMessage }}</div>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="extradata p-3 bg-light">
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <label for="firstname">First Name</label>
+                      <div [ngClass]="{'has-error':(fu.controls.firstname.errors && fu.controls.firstname.dirty), 'has-success': !fu.controls.firstname.errors}">
+                        <input type="firstname" name="firstname" class="form-control"
+                        formControlName="firstname">
+                        <div class="help-block text-light small bg-danger pl-2" *ngIf="fu.controls.firstname.errors && fu.controls.firstname.dirty">
+                            <div *ngIf="fu.controls.firstname.errors?.required">
+                              First Name field is required
+                            </div>
+                            <div *ngIf="fu.controls.firstname.errors?.minlength || fu.controls.firstname.errors?.maxlength">
+                                First Name minimum characters: 2, Maximum characters: 15
+                            </div>
+                            <div *ngIf="fu.controls.firstname.errors?.validateName">
+                                First Name must be in a valid format
+                            </div>
+                        </div>
+                      </div>
+                    </div>       
+                    <div class="col-sm-6">
+                      <label for="lastname">Last Name</label>
+                      <div [ngClass]="{'has-error':(fu.controls.lastname.errors && fu.controls.lastname.dirty), 'has-success': !fu.controls.lastname.errors}">
+                        <input type="lastname" name="lastname" class="form-control"
+                        formControlName="lastname">
+                        <div class="help-block text-light small bg-danger pl-2" *ngIf="fu.controls.lastname.errors && fu.controls.lastname.dirty">
+                            <div *ngIf="fu.controls.lastname.errors?.required">
+                              Last Name field is required
+                            </div>
+                            <div *ngIf="fu.controls.lastname.errors?.minlength || fu.controls.lastname.errors?.maxlength">
+                                Last Name minimum characters: 2, Maximum characters: 15
+                            </div>
+                            <div *ngIf="fu.controls.lastname.errors?.validateName">
+                                Last Name must be in a valid format
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div><!--/form-group-->
+                <div class="form-group">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <label for="countrycode">Country Code</label>
+                        <select id="countrycode" class="form-control" formControlName="countrycode">
+                          <option *ngFor="let code of codes" [value]="code.countryCode">{{code.countryCode}}</option>
+                        </select>
+                      </div>       
+                      <div class="col-sm-6">
+                        <label for="mobile">Mobile Number</label>
+                        <div [ngClass]="{'has-error':(fu.controls.mobile.errors && fu.controls.mobile.dirty), 'has-success': !fu.controls.mobile.errors}">
+                          <input type="mobile" name="mobile" class="form-control"
+                          formControlName="mobile" placeholder="9xx-xxx-xxxx">
+                          <div class="help-block text-light small bg-danger pl-2" *ngIf="fu.controls.mobile.errors && fu.controls.mobile.dirty">
+                              <div *ngIf="fu.controls.mobile.errors?.required">
+                                Mobile Number field is required
+                              </div>
+                              <div *ngIf="fu.controls.mobile.errors?.minlength || fu.controls.mobile.errors?.maxlength">
+                                  Mobile Number characters: 8, Maximum characters: 10
+                              </div>
+                              <div *ngIf="fu.controls.mobile.errors?.validateMobile">
+                                  Mobile Number must be in a valid format
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div><!--/form-group-->
+              </div>
+              <button [disabled]="!fu.valid || !emailValid || notUpdated || processing" type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
+        </form>
+        <hr>
+        <div class="row">
+          <div class="col-sm-8 mx-auto">
+            <form [formGroup]="vrifyemailform" (submit)="onVerifyClick()">
+              <div class="form-group mt-3" *ngIf="showverifyemail">
+                <h1 class="text-danger text-center m-2">{{timeleft}}</h1>
+                <div [ngClass]="{'has-error':(vrifyemailform.controls.verifyInput.errors && vrifyemailform.controls.verifyInput.dirty) || (vrifyemailform.errors?.emailVerification && vrifyemailform.controls.verifyInput.dirty), 'has-success': !vrifyemailform.controls.verifyInput.errors && !vrifyemailform.errors?.emailVerification}">
+                    <input type="text" name="verifyInput" class="form-control mt-2"
+                    formControlName="verifyInput">
+                    <div class="help-block text-light small bg-danger pl-2" *ngIf="(vrifyemailform.controls.verifyInput.errors && vrifyemailform.controls.verifyInput.dirty) ||(vrifyemailform.errors?.emailVerification && vrifyemailform.controls.verifyInput.dirty)">
+                        <div *ngIf="vrifyemailform.controls.verifyInput.errors?.required">
+                          Email Verification Code is required! Please check your email
+                        </div>
+                        <div *ngIf="vrifyemailform.controls.verifyInput.errors?.minlength || vrifyemailform.controls.verifyInput.errors?.maxlength">
+                            Email Verification Code is ONLY 6 characters
+                        </div>
+                        <div *ngIf="vrifyemailform.errors?.emailVerification">
+                            Email Verification Code must be EXACTLY what you received in your email
+                        </div>
+                    </div>
+                  </div>
+                <button [disabled]="!vrifyemailform.valid" type="submit" class="btn btn-danger btn-block mt-2">Verify Email</button>
+                <div class="text-center mt-2">
+                    <h3>Enter 6 Digit Verification Code</h3>
+                    <h3>Please check your Email</h3>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

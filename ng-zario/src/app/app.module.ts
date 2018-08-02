@@ -37,6 +37,7 @@ import { CartComponent } from './components/cart/cart.component';
 import { GroupComponent } from './components/group/group.component';
 import { CProfileComponent } from './components/cprofile/cprofile.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { UsersamendComponent } from './components/usersamend/usersamend.component';
 
 
 @NgModule({
@@ -58,7 +59,8 @@ import { SettingsComponent } from './components/settings/settings.component';
     CartComponent,
     GroupComponent,
     CProfileComponent,
-    SettingsComponent
+    SettingsComponent,
+    UsersamendComponent
   ],
   imports: [
     BrowserModule,

@@ -41,7 +41,7 @@ export class MProfileComponent implements OnInit, OnDestroy {
   avatarChanged: boolean = false;
   position: Position;
   clickedPosition: Position;
-  
+  currentPosition: Position;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -52,12 +52,16 @@ export class MProfileComponent implements OnInit, OnDestroy {
     this.createfp();
     this.createfpSelect();
     this.position = {
-      lat:0,
-      lng:0
+      lng:0.0,
+      lat:0.0
     };
     this.clickedPosition = {
-      lat:0,
-      lng:0
+      lng:0.0,
+      lat:0.0
+    };
+    this.currentPosition = {
+      lng:0.0,
+      lat:0.0
     };
   }
 
@@ -103,10 +107,17 @@ export class MProfileComponent implements OnInit, OnDestroy {
             console.log("profiles : ", this.mprofiles);
             if (mprofiles.length === 0) {
               this.notUpdated = false;
-              this.fp.patchValue({
-                longitude:this.position.lat,
-                latitude:this.position.lng
-              });
+              var x = setInterval(() => {
+                if (this.currentPosition.lat) {
+                  clearInterval(x);
+                  this.position.lng = this.currentPosition.lng;
+                  this.position.lat = this.currentPosition.lat;
+                  this.fp.patchValue({
+                    longitude:this.currentPosition.lng,
+                    latitude:this.currentPosition.lat
+                  });
+                }
+              }, 1000);
             } else {
               this._pid = mprofiles[0]._id;
               this.profileBox = true;
@@ -135,7 +146,11 @@ export class MProfileComponent implements OnInit, OnDestroy {
                 blackdiamond: this.mprofiles[0].blackdiamond,
                 longitude: this.mprofiles[0].longitude,
                 latitude: this.mprofiles[0].latitude
-              });
+              })
+              console.log("this.mprofiles[0].longitude ", this.mprofiles[0].longitude);
+              this.position.lng = this.mprofiles[0].longitude;
+              this.position.lat = this.mprofiles[0].latitude;
+              console.log("my GPS Position 2 ", this.position);
               this.NOPROFILE = 0;
               this.notUpdated = true;
               for (var i = 0; i < mprofiles.length; i++) {
@@ -180,20 +195,22 @@ export class MProfileComponent implements OnInit, OnDestroy {
     /// locate the user
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(pos => {
-        this.position.lat = pos.coords.latitude;
-        this.position.lng = pos.coords.longitude;
-        // console.log(pos.coords.latitude, pos.coords.longitude);
-        console.log("my GPS Position ", this.position);
+        this.currentPosition.lat = pos.coords.latitude;
+        this.currentPosition.lng = pos.coords.longitude;
+        console.log("pos.coords : ", pos.coords.latitude, pos.coords.longitude);
+        console.log("my GPS Position ", this.currentPosition);
       });
     }
   }
 
   setLocation2Current() {
-    this.clickedPosition.lat = 0;
-    this.clickedPosition.lng = 0;
+    this.clickedPosition.lat = 0.0;
+    this.clickedPosition.lng = 0.0;
+    this.position.lng = this.currentPosition.lng;
+    this.position.lat = this.currentPosition.lat;
     this.fp.patchValue({
-      longitude:this.position.lat,
-      latitude:this.position.lng
+      longitude:this.currentPosition.lng,
+      latitude:this.currentPosition.lat
     });
   }
 
@@ -201,8 +218,8 @@ export class MProfileComponent implements OnInit, OnDestroy {
     this.clickedPosition.lat = $event.coords.lat;
     this.clickedPosition.lng = $event.coords.lng;
     this.fp.patchValue({
-      longitude:this.clickedPosition.lat,
-      latitude:this.clickedPosition.lng
+      longitude:this.clickedPosition.lng,
+      latitude:this.clickedPosition.lat
     });
   }
 
@@ -428,8 +445,8 @@ export class MProfileComponent implements OnInit, OnDestroy {
           platinum: 0,
           pearl: 0,
           blackdiamond: 0,
-          longitude:this.position.lat,
-          latitude:this.position.lng
+          longitude:this.position.lng,
+          latitude:this.position.lat
         });
         this.NOPROFILE = null;
         this.notUpdated = false;
@@ -445,7 +462,7 @@ export class MProfileComponent implements OnInit, OnDestroy {
     this.profile = this.fp.value;
     this.profile.username = this.username;
     this.profile.group_id = this._gid;
-    console.log("profile ", this.profile);
+    console.log("storing profile ", this.profile);
     if (this.NOPROFILE === null) {
       this.profileService.addMProfile(this.profile).subscribe(
         data => {

@@ -65,6 +65,16 @@ export class AuthService {
     .catch(error => {return this.processHttpmsgService.handleError(error)});
   }
 
+  // Function to check if username is taken, used in useramend.component.ts user date Update
+  getUser(username): Observable<any> {
+    return this.http.get(baseURL + '/users/userUpdate/' + username)
+    .catch(error => {return this.processHttpmsgService.handleError(error)});
+  }
+  updateUser(uid: string, user: any) {
+    return this.http.put(baseURL + '/users/' + uid , user)
+      .catch(error => { return this.processHttpmsgService.handleError(error); });
+  }
+
   // Function to check if e-mail is taken, used in registration
   checkEmail(email): Observable<any> {
     return this.http.get(baseURL + '/users/checkEmail/' + email)

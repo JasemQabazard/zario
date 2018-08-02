@@ -16,7 +16,7 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class CProfileComponent implements OnInit, OnDestroy {
   datePickerConfig: Partial<BsDatepickerConfig>;
-  fp: FormGroup;  // initial profile input form control
+  fp: FormGroup;    // initial profile input form control
   fpSelect: FormGroup;
   cprofile: CProfile;
   subscription: Subscription;

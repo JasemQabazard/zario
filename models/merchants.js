@@ -90,12 +90,12 @@ var Merchants = new Schema({
             required: true
       },
       longitude:  {
-            type: String,
-            default: ''
+            type: Number,
+            default: 0.0
       },
       latitude:  {
-            type: String,
-            default: ''
+            type: Number,
+            default: 0.0
       },
       zarios:  {
             type: Number,

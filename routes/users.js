@@ -22,6 +22,46 @@ router.route('/')
    .catch((err) => next(err));
 })
 
+  /* ===============================================================
+     Route to get user by username  for user data update 
+  =============================================================== */
+  router.get('/userUpdate/:username', (req, res) => {
+    // Check if username was provided in paramaters
+    if (!req.params.username) {
+      res.json({ success: false, message: 'Username was not provided' }); // Return error
+    } else {
+      // Look for username in database
+      User.findOne({ username: req.params.username }, (err, user) => {
+        // Check if connection error was found
+        if (err) {
+          res.statusCode  = 500;
+          res.setHeader('Content-Type', 'application/json');
+          res.json({err: err}); 
+          // Return connection error
+        } else {
+          res.statusCode  = 200;
+          res.setHeader('Content-Type', 'application/json');
+          res.json(user); // Return user 
+        }
+      });
+    }
+  });
+
+  /* ===============================================================
+     Route to put user by userId  for user data update 
+  =============================================================== */
+  router.put('/:userId', cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+    User.findByIdAndUpdate(req.params.userId, {
+         $set: req.body
+     }, { new: true })
+     .then((user) => {
+         res.statusCode = 200;
+         res.setHeader('Content-Type', 'application/json');
+         res.json(user);
+     }, (err) => next(err))
+     .catch((err) => next(err));
+ })
+
 /* ============================================================
      Route user password change does not require mailer
      requires sending teh user name and the new password 

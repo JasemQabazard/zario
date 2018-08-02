@@ -48,14 +48,22 @@
    - Company profile with image loading and details 
    - CUSTOMER profile with customer loading image and id for more zario and reputation gains
 =================================================================================
-===  branchName: == start:01June2018== Completed: 99 June 2018 ====
+===  branchName:UserAmend == start:28July2018== Completed: 30 July 2018 ====
 ================================================================================= 
-   - blog
+amend user date should be a quick component
+=================================================================================
+===  branchName:Merchant-Customers == start:01June2018== Completed: 99 June 2018 ====
+================================================================================= 
+   - MERCHANT can record a CUSTOMER to the application. The CART menu option will hav this ability. Along with the recording of customer transactions on the system.
+   - This CUSTOMER will be flaged as recruited by that MERCHANT and hence he will not be able to see any competiotion for that MERCHANT based to type of bussiness attribute. The ONLY way to open another MERCHANT with the same category of type of business is if that new MERCHANT also recruites the same customer. 
+=================================================================================
+===  branchName:Customer-Promotions == start:01June2018== Completed: 99 June 2018 ====
+================================================================================= 
    - promotions will display map of all MERCHANTS + logo card for each MERCHANT. Promotions will also dsiplay dailies and weekly purchases that are special and daily achievements for each MERCHANT.
    - Once CUSTOMER clicks on map location or MERCHANT Card will get a display for MERCHANT details of basic promotions
    - when CUSTOMER press the ===MyPromotions=== button he gets same views with only the promotions he is subscribed to. The "You May Like This" MERCHANTS and promotions will also be displayed to teh CUSTOMER as a form of suggestive purchases. This will be an entry to AI.
-   - MERCHANT can record a CUSTOMER to the application. The CART menu option will hav ethis ability. Along with the recording of customer transactions on the system.
-   - This CUSTOMER will be flaged as recruited by that MERCHANT and hence he will not be able to see any competiotion for that MERCHANT based to type of bussiness attribute. The ONLY way to open another MERCHANT with the same category of type of business is if that new MERCHANT also recruites the same customer. 
+
+   - blog
    - Wallet design considerations and research. Wallet to allow purc hase of zario coins as well as show price of zario, ethereum, bitcoin on display
    - Wallet to show the amount of zarion and the transaction history for the CUSTOMER and MERCHANT that lead to this.
    - Wallet transafer to other Wallet addresses of zario coins can be entertained offline on the ethereum platform  if the CUSTOMER or MERCHANT makes that wish

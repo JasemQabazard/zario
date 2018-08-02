@@ -19,8 +19,8 @@ export class MProfile {
    countrycode: string;
    mobile:string;
    phone: string;
-   longitude:  number;
-   latitude: number;
+   longitude:  Number;
+   latitude: Number;
    zarios: Number;
    ukey: string;
    rkey: string;
@@ -106,6 +106,6 @@ export class Strategy {
 }
 
 export class Position {
-   lat: number;
-   lng: number;
+   lng: Number;
+   lat: Number;
 }
