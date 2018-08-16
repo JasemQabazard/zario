@@ -1,0 +1,181 @@
+<div class="row mt-5">
+  <div class="col-md-5 mx-auto">
+    <div class="card card-form border-warning mb-5">
+      <div class="card-header">
+        <h3 class="text-center"  *ngIf="userrole==='MERCHANT'">Add Group user/customer</h3>
+        <h3 class="text-center"  *ngIf="userrole==='merchant'">Add Merchant customer</h3>
+      </div>
+      <div class="card-body">
+        <div class="row show-hide-message">
+            <div [ngClass]="messageClass" class="col-sm-9 border-warning h-50 mx-auto text-center">
+              <strong>{{message}}</strong>
+            </div>
+        </div>
+        <div class="m-5 p-4 slectionBox">
+          <form [formGroup]="fmSelect" class="m-1 p-1">
+            <h5 class="d-sm-block d-none">The Merchant Profile</h5>
+            <select id="merchant" class="form-control bg-primary text-white" formControlName="merchant" (change)="changeMerchant()">
+                <option *ngFor="let merchant of merchants" [value]="merchant.name">{{merchant.name}}</option>
+            </select>
+          </form>
+          <form [formGroup]="frSelect" class="m-1 p-1">
+            <h5 class="d-sm-block d-none">The User Role</h5>
+            <select id="role" class="form-control bg-primary text-white" formControlName="role">
+                <option *ngFor="let role of roles" [value]="role.name">{{role.name}}</option>
+            </select>
+          </form>
+        </div>
+        <form [formGroup]="form" (submit)="onMaddSubmit()">
+          <div class="form-group">
+            <label for="username">User Name</label>
+            <div [ngClass]="{'has-error':(form.controls.username.errors && form.controls.username.dirty) || (!usernameValid && form.controls.username.dirty), 'has-success': !form.controls.username.errors && usernameValid}">
+              <input type="text" name="username" class="form-control"
+              formControlName="username" (blur)="checkUsername()">
+              <div class="help-block text-light small bg-danger pl-2" *ngIf="(form.controls.username.errors && form.controls.username.dirty) || (!usernameValid && form.controls.username.dirty)">
+                <div *ngIf="form.controls.username.errors?.required">
+                  UserName field is required
+                </div>
+                <div *ngIf="form.controls.username.errors?.minlength || form.controls.username.errors?.maxlength">
+                    UserName minimum characters: 3, Maximum characters: 15
+                </div>
+                <div *ngIf="form.controls.username.errors?.validateUsername">
+                    Valid User Name must not have special characters
+                </div>
+                <div *ngIf="usernameMessage"> {{ usernameMessage }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <div [ngClass]="{'has-error':(form.controls.email.errors && form.controls.email.dirty) || (!emailValid && form.controls.email.dirty), 'has-success': !form.controls.email.errors && emailValid}">
+              <input type="email" name="email" class="form-control" placeholder="name@domain.com"
+              formControlName="email" (blur)="checkEmail()">
+              <div class="help-block text-light small bg-danger pl-2" *ngIf="(form.controls.email.errors && form.controls.email.dirty) || (!emailValid && form.controls.email.dirty)">
+                  <div *ngIf="form.controls.email.errors?.required">
+                    Email field is required
+                  </div>
+                  <div *ngIf="form.controls.email.errors?.minlength || form.controls.email.errors?.maxlength">
+                      Email minimum characters: 5, Maximum characters: 30
+                  </div>
+                  <div *ngIf="form.controls.email.errors?.validateEmail">
+                      Email must be in a valid format
+                  </div>
+                  <div *ngIf="emailMessage"> {{ emailMessage }}</div>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="extradata p-3 bg-light">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-sm-6">
+                  <label for="firstname">First Name</label>
+                  <div [ngClass]="{'has-error':(form.controls.firstname.errors && form.controls.firstname.dirty), 'has-success': !form.controls.firstname.errors}">
+                    <input type="firstname" name="firstname" class="form-control"
+                    formControlName="firstname">
+                    <div class="help-block text-light small bg-danger pl-2" *ngIf="form.controls.firstname.errors && form.controls.firstname.dirty">
+                        <div *ngIf="form.controls.firstname.errors?.required">
+                          First Name field is required
+                        </div>
+                        <div *ngIf="form.controls.firstname.errors?.minlength || form.controls.firstname.errors?.maxlength">
+                            First Name minimum characters: 2, Maximum characters: 15
+                        </div>
+                        <div *ngIf="form.controls.firstname.errors?.validateName">
+                            First Name must be in a valid format
+                        </div>
+                    </div>
+                  </div>
+                </div>       
+                <div class="col-sm-6">
+                  <label for="lastname">Last Name</label>
+                  <div [ngClass]="{'has-error':(form.controls.lastname.errors && form.controls.lastname.dirty), 'has-success': !form.controls.lastname.errors}">
+                    <input type="lastname" name="lastname" class="form-control"
+                    formControlName="lastname">
+                    <div class="help-block text-light small bg-danger pl-2" *ngIf="form.controls.lastname.errors && form.controls.lastname.dirty">
+                        <div *ngIf="form.controls.lastname.errors?.required">
+                          Last Name field is required
+                        </div>
+                        <div *ngIf="form.controls.lastname.errors?.minlength || form.controls.lastname.errors?.maxlength">
+                            Last Name minimum characters: 2, Maximum characters: 15
+                        </div>
+                        <div *ngIf="form.controls.lastname.errors?.validateName">
+                            Last Name must be in a valid format
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!--/form-group-->
+            <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <label for="countrycode">Country Code</label>
+                    <select id="countrycode" class="form-control" formControlName="countrycode">
+                      <option *ngFor="let code of codes" [value]="code.countryCode">{{code.countryCode}}</option>
+                    </select>
+                  </div>       
+                  <div class="col-sm-6">
+                    <label for="mobile">Mobile Number</label>
+                    <div [ngClass]="{'has-error':(form.controls.mobile.errors && form.controls.mobile.dirty), 'has-success': !form.controls.mobile.errors}">
+                      <input type="mobile" name="mobile" class="form-control"
+                      formControlName="mobile" placeholder="9xx-xxx-xxxx">
+                      <div class="help-block text-light small bg-danger pl-2" *ngIf="form.controls.mobile.errors && form.controls.mobile.dirty">
+                          <div *ngIf="form.controls.mobile.errors?.required">
+                            Mobile Number field is required
+                          </div>
+                          <div *ngIf="form.controls.mobile.errors?.minlength || form.controls.mobile.errors?.maxlength">
+                              Mobile Number characters: 8, Maximum characters: 10
+                          </div>
+                          <div *ngIf="form.controls.mobile.errors?.validateMobile">
+                              Mobile Number must be in a valid format
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div><!--/form-group-->
+          </div>
+          <button [disabled]="!form.valid || !usernameValid || !emailValid" type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <h4>
+  Merchant (both role === MERCHANT && merchant) can add a new customer in the shop to the application on the fly
+  Usually he would take the customer id for the firstname, lastname, get his mobile number
+  then the following info is required when a merchant needs to add a customer to the user database table 
+
+  firstname 
+  lastname
+  mobile
+  countrycode
+  email 
+  System Generated password   
+  merchant _id will be placed in the user._mid  field as recruiting merchant
+
+  NOTE: 
+  + MERCHANT can select adding a customer (role === customer) to any profile in his GROUP
+          OR 
+    adding another USER (role=== merchant) to work in his GROUP => this merchant role is typically a collegue.
+  + Should we also build the customer profile record if we are going to record his purchases ????????????????????????????????????????????????????????????????????????
+  + merchant can only add customers to the profile he is working on 
+
+we will send the user data recorded via email informing him of the recording event 
+Obviously the email will be different between CUSTOMER and merchant roles 
+The email will also contain the password and username 
+the user will the be encouraged to change his generated password since it will be a difficulat phrase 
+================================================================
+the new user / CUSTOMER information will also be emitted to the cart program where it will record his purchases 
+ONCE
+the recruitingmerchant field === user._mid field has been set then the CUSTOMER should be immune to other similar merchant adverts as indicated by the business category code in the merchants profile and the set flag for referal
+
+</h4> -->
+
+<!-- username: String;
+email: String;
+password: string;
+firstname: String; 
+lastname:String; 
+countrycode: String; 
+mobile: String; -->

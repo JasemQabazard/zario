@@ -13,8 +13,9 @@ var Merchants = new Schema({
             lowercase: true,
             minlength: 1
       },
-      group_id: {
-         type: mongoose.Schema.Types.ObjectId
+      _gid: {
+         type: mongoose.Schema.Types.ObjectId,
+         default: null
       },
       // referral within the gorup only or between merchants except with similar categories
       referral: {

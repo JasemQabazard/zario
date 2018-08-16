@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MProfile, Group, CProfile, Settings } from '../shared/profile';
+import { MProfile, Group, CProfile, Settings, CRM } from '../shared/profile';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
@@ -36,6 +36,17 @@ export class ProfileService {
   getMProfile(username: string): Observable<MProfile[]> {
     console.log("profile service username: ", username);
     return  this.http.get(baseURL + '/merchants/byuser/'+ username)
+                    .catch(error => { return this.processHttpmsgService.handleError(error); });
+  }
+  getGroupMerchants(gid: string): Observable<MProfile[]> {
+    console.log("profile service username: ", gid);
+    return  this.http.get(baseURL + '/merchants/bygroup/'+ gid)
+                    .catch(error => { return this.processHttpmsgService.handleError(error); });
+  }
+
+  getMProfileID(mid: string): Observable<MProfile> {
+    console.log("profile service mid: ", mid);
+    return  this.http.get(baseURL + '/merchants/'+ mid)
                     .catch(error => { return this.processHttpmsgService.handleError(error); });
   }
 
@@ -77,6 +88,12 @@ export class ProfileService {
   updateCProfile(pid: string, profile: any) {
     return this.http.put(baseURL + '/customers/' + pid , profile)
       .catch(error => { return this.processHttpmsgService.handleError(error); });
+  }
+
+  // adding new CRM Record to database on the server
+  addCRM(crm): Observable<CRM> {
+    return this.http.post(baseURL + '/crms', crm)
+      .catch(error => {return this.processHttpmsgService.handleError(error)});
   }
 
   // adding new group tp database on the server

@@ -145,6 +145,18 @@ router.route('/register')
       {
          user.mobile = req.body.mobile;
       }
+      if (req.body.role)
+      {
+        user.role = req.body.role;
+      } 
+      if (req.body._gid)
+      {
+        user._gid = req.body._gid;
+      } 
+      if (req.body._mid)
+      {
+         user._mid = req.body._mid;
+      }
       console.log('user', user);
       user.save((err, user) => {
         if (err) {
@@ -163,9 +175,9 @@ router.route('/register')
   });
 });
 
-/* ============================================================
-     Route to send user email with the verification code 
-  ============================================================ */
+/* ==========================================================================
+     Route to send user email with the verification code used in registration
+  =========================================================================== */
 router.post('/mailer', function (req, res, next) {
       var transporter = nodemailer.createTransport({
           service: 'Gmail',
@@ -191,6 +203,37 @@ router.post('/mailer', function (req, res, next) {
               });
           }
       });
+});
+
+
+/* ==========================================================================
+     Route to send user / customer MADD email with the username, password 
+  =========================================================================== */
+  router.post('/maddmailer', function (req, res, next) {
+    var transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'successarchitecture@gmail.com',
+            pass: 'pbdqtlxogbdjonru'
+        }
+    });
+    var mailOptions = {
+        from: 'successarchitecture@gmail.com',
+        to: req.body.email,
+        subject: 'Your Registration Information',
+        text: 'You are receiving this email because the merchant:'+ req.body.merchantname +  'registered you to zario.io and the black diamond loyalty program. Your username is: ' +req.body.username + 'and your password is: '+ req.body.password+ 'Please visit our application at: www.zario.io.com and sign on to complete the registration process.',
+        html: '<p>You are receiving this email because the merchant: </p>' + req.body.merchantname + '<p>registered you to zario.io and the black diamond loyalty program. Your username is: </p>' + req.body.username + '<p>and your password is: </p>' +req.body.password + '<p>Please visit our application at: www.zario.io.com and sign on to complete the registration process.</p>'
+    };
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            next(error);
+        } else {
+            res.status(200).json({
+                status: 'Madd Mail Registration Message Sent' + info.response,
+                success: true
+            });
+        }
+    });
 });
 
 /* ============================================================

@@ -48,13 +48,13 @@
    - Company profile with image loading and details 
    - CUSTOMER profile with customer loading image and id for more zario and reputation gains
 =================================================================================
-===  branchName:UserAmend == start:28July2018== Completed: 30 July 2018 ====
+===  branchName:UserAmend == start:28July2018== Completed: 02 Aug 2018 ====
 ================================================================================= 
 amend user date should be a quick component
 =================================================================================
-===  branchName:Merchant-Customers == start:01June2018== Completed: 99 June 2018 ====
+===  branchName:MerchantAddCustomer == start:02Aug2018== Completed: 99 June 2018 ====
 ================================================================================= 
-   - MERCHANT can record a CUSTOMER to the application. The CART menu option will hav this ability. Along with the recording of customer transactions on the system.
+   - MERCHANT can record a CUSTOMER to the application. Along with the recording of customer transactions on the system.
    - This CUSTOMER will be flaged as recruited by that MERCHANT and hence he will not be able to see any competiotion for that MERCHANT based to type of bussiness attribute. The ONLY way to open another MERCHANT with the same category of type of business is if that new MERCHANT also recruites the same customer. 
 =================================================================================
 ===  branchName:Customer-Promotions == start:01June2018== Completed: 99 June 2018 ====

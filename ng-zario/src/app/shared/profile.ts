@@ -2,7 +2,7 @@ export class MProfile {
    _id: string;
    username: string;
    name: string;
-   group_id: string;
+   _gid: string;
    referral: Boolean;
    avatar: string;
    category: string;
@@ -37,10 +37,10 @@ export class CProfile {
    work: string;
    avatar: string;
    score: Number;
+   initialflag: boolean;
    zarios: Number;
    ukey: string;
    rkey: string;
-   merchants: [string];
 };
 
 export class Settings {
@@ -77,7 +77,21 @@ export class Group {
    countrycode: string;
    mobile: string;
    phone: string;
-   merchants: [string];
+   strategy: string;
+   bronze: Number;
+   silver: Number;
+   gold: Number;
+   platinum: Number;
+   pearl: Number;
+   blackdiamond: Number;
+};
+
+export class CRM {
+   _id: string;
+   _cid: string;
+   _mid: string;
+   score: Number;
+   vists: Number;
 };
 
 export class Codes {

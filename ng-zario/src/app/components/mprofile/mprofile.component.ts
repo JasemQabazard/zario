@@ -32,12 +32,11 @@ export class MProfileComponent implements OnInit, OnDestroy {
   messageClass: string;
   notUpdated: boolean = false;
   profileBox: boolean = false;
-  _pid: string = "";
+  _mid: string = "";
   _gid: string = "";
   selectedImageFile: File =null;
   selectedImageFileName: string = "No New Image Selected";
   avatarPath: string ="../../../assets/img/avatardefault.png";
-  avatarShow: boolean = false;
   avatarChanged: boolean = false;
   position: Position;
   clickedPosition: Position;
@@ -101,6 +100,25 @@ export class MProfileComponent implements OnInit, OnDestroy {
         name => { 
           this.username = name;
           this.subscription.unsubscribe();
+          // group access code
+          this.profileService.getGroup(this.username)
+          .subscribe(gp => {
+            console.log("group in profile component ", gp);
+            if (gp === null) {
+              this.message = "You must create a GROUP before adding Merchant Profiles";
+              this.messageClass= "alert alert-danger";
+              setTimeout(() => {
+                this.router.navigate(['/group']); 
+              }, 1500);
+            } else {
+              this._gid = gp._id;
+              this.nogroup = false;
+            }
+          },
+            errormessage => {
+              this.message = <any>errormessage;
+              this.messageClass= "alert alert-danger";
+          });
           this.profileService.getMProfile(this.username)
           .subscribe(mprofiles => {
             this.mprofiles = mprofiles;
@@ -119,11 +137,10 @@ export class MProfileComponent implements OnInit, OnDestroy {
                 }
               }, 1000);
             } else {
-              this._pid = mprofiles[0]._id;
+              this._mid = mprofiles[0]._id;
               this.profileBox = true;
-              this.avatarShow = true;
               if (this.mprofiles[0].avatar) {
-                this.avatarPath = `avatars/${this.mprofiles[0].avatar}`;
+                this.avatarPath = `${this.mprofiles[0].avatar}`;
               } else {
                 this.avatarPath = "../../../assets/img/avatardefault.png";
               }
@@ -164,25 +181,9 @@ export class MProfileComponent implements OnInit, OnDestroy {
               this.fpSelect.controls['merchant'].setValue(this.merchants[0].name);
             }
           },
-            errmess => {
-              console.log("error : ", errmess);
-          });
-          // group access code
-          console.log("group access code");
-          this.profileService.getGroup(this.username)
-          .subscribe(gp => {
-            console.log("group in profile component ", gp);
-            if (gp === null) {
-              this.nogroup = true;
-              this._gid = "5b2602dd73226f112c07b465";
-            } else {
-              this._gid = gp._id;
-              this.nogroup = false;
-              console.log("groupID, nogroup ", this._gid, this.nogroup);
-            }
-          },
-            errmess => {
-              console.log("error : ", errmess);
+            errormessage => {
+              this.message = <any>errormessage;
+              this.messageClass= "alert alert-danger";
           });
       });
   }
@@ -308,13 +309,10 @@ export class MProfileComponent implements OnInit, OnDestroy {
       this.selectedImageFileName = `Selected Image: ${this.selectedImageFile.name}`;
       this.avatarChanged = true;
       this.notUpdated = false;
-      
       var reader = new FileReader();
-  
       reader.onload = (event:any) => {
         this.avatarPath = event.target.result;
       }
-  
       reader.readAsDataURL(event.target.files[0]);
     }
   }
@@ -381,16 +379,16 @@ export class MProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-  changeMerchant(mvalue) {
+  changeMerchant() {
     for ( var ndx = 0; ndx < this.merchants.length; ndx++) {
-       if(this.merchants[ndx].name == this.fpSelect.controls['merchant'].value) {
+       if(this.merchants[ndx].name === this.fpSelect.controls['merchant'].value) {
          break;
        }
     }
-    this._pid = this.mprofiles[ndx]._id;
+    this._mid = this.mprofiles[ndx]._id;
     this.profileBox = true;
     if (this.mprofiles[ndx].avatar) {
-      this.avatarPath = `avatars/${this.mprofiles[ndx].avatar}`;
+      this.avatarPath = `${this.mprofiles[ndx].avatar}`;
     } else {
       this.avatarPath = "../../../assets/img/avatardefault.png";
     }
@@ -416,88 +414,56 @@ export class MProfileComponent implements OnInit, OnDestroy {
     });
     this.NOPROFILE = ndx;
     this.notUpdated = true;
-    this.avatarShow = true;
+    this.avatarChanged = false;
     this.fpSelect.controls['merchant'].setValue(this.merchants[ndx].name);
   }
 
   addMerchant() {
-    if (this.nogroup) {
-        this.message = "Add a GROUP before adding more merchant profiles";
-        this.messageClass = "alert alert-danger";
-        setTimeout(() => {
-          this.router.navigate(['/group']); 
-        }, 1500);
-    } else {
-        this.fp.setValue({
-          username: this.username, 
-          name: "",
-          category: "",
-          referral: false,
-          email: "",
-          city: "",
-          countrycode: '+965 Kuwait', 
-          mobile: "",
-          phone: "",
-          strategy: "value",
-          bronze: 0,
-          silver: 0,
-          gold: 0,
-          platinum: 0,
-          pearl: 0,
-          blackdiamond: 0,
-          longitude:this.position.lng,
-          latitude:this.position.lat
-        });
-        this.NOPROFILE = null;
-        this.notUpdated = false;
-        this.avatarShow = false;
-        this._pid = "";
-        this.message = "";
-        this.messageClass = "";
-        this.fpSelect.controls['merchant'].setValue("");
-    };
+    this.avatarPath = "../../../assets/img/avatardefault.png";
+    this.fp.setValue({
+      username: this.username, 
+      name: "",
+      category: "",
+      referral: false,
+      email: "",
+      city: "",
+      countrycode: '+965 Kuwait', 
+      mobile: "",
+      phone: "",
+      strategy: "value",
+      bronze: 0,
+      silver: 0,
+      gold: 0,
+      platinum: 0,
+      pearl: 0,
+      blackdiamond: 0,
+      longitude:this.position.lng,
+      latitude:this.position.lat
+    });
+    this.NOPROFILE = null;
+    this.notUpdated = false;
+    this.avatarChanged = false;
+    this._mid = "";
+    this.message = "";
+    this.messageClass = "";
+    this.fpSelect.controls['merchant'].setValue("");
   }
 
   onfpSubmit() {
     this.profile = this.fp.value;
     this.profile.username = this.username;
-    this.profile.group_id = this._gid;
+    this.profile._gid = this._gid;
     console.log("storing profile ", this.profile);
-    if (this.NOPROFILE === null) {
-      this.profileService.addMProfile(this.profile).subscribe(
-        data => {
-          this.messageClass= "alert alert-success";
-          this.message="Profile Add Successfull";
-          setTimeout(() => {
-            this.router.navigate(['/']); 
-          }, 1500);
-        }, 
-        errormessage => {
-          this.message = <any>errormessage;
-          this.messageClass= "alert alert-danger";
-        }
-      );
-    } else {
       if (this.avatarChanged) {
         const fd = new FormData();
         fd.append('imageFile', this.selectedImageFile);
         this.profileService.imageUpload(fd).subscribe(
           imageData => {
-            this.profile.avatar = imageData.filename;
-            this.profileService.updateMProfile(this._pid, this.profile).subscribe(
-              data => {
-                console.log("data : ", data);
-                this.messageClass= "alert alert-success";
-                this.message="Profile Update Successfull";
-                setTimeout(() => {
-                  this.router.navigate(['/']); 
-                }, 1500);
-              }, 
-              errormessage => {
-                this.message = <any>errormessage;
-                this.messageClass= "alert alert-danger";
-              }
-            );
+            this.profile.avatar = "avatars/"+imageData.filename;
+            this.profileDataBaseChange();
+            setTimeout(() => {
+              this.router.navigate(['/']); 
+            }, 1000);
           }, 
           errormessage => {
             this.message = "Accepts image files less than 500KB ONLY, Please try another image";
@@ -505,23 +471,67 @@ export class MProfileComponent implements OnInit, OnDestroy {
           }
         );
       } else {
-        this.profileService.updateMProfile(this._pid, this.profile).subscribe(
-          data => {
-            console.log("data : ", data);
-            this.messageClass= "alert alert-success";
-            this.message="Profile Update Successfull";
-            setTimeout(() => {
-              this.router.navigate(['/']); 
-            }, 1500);
-          }, 
-          errormessage => {
-            this.message = <any>errormessage;
-            this.messageClass= "alert alert-danger";
-          }
-        );
+        this.profileDataBaseChange();
+        setTimeout(() => {
+          this.router.navigate(['/']); 
+        }, 1000);
       }
+
+    }
+
+  profileDataBaseChange() {
+    if (this.NOPROFILE === null) {
+      this.profileService.addMProfile(this.profile).subscribe(
+        data => {
+          this.messageClass= "alert alert-success";
+          this.message="Profile Add Successfull";
+          console.log("Merchant Profile Data Added : ", data);
+          // update the user record with _mid
+          this._mid = data._id;
+          this.authService.getUser(this.username)
+          .subscribe(user => {
+            console.log("user : ", user);
+            if (user._mid === null) {
+              user._mid = this._mid;
+              this.authService.updateUser(user._id, user).subscribe(
+                data => {
+                  console.log("update data : ", data);
+                  this.messageClass= "alert alert-success";
+                  this.message="User Data Update Successfull";
+                }, 
+                errormessage => {
+                  this.message = <any>errormessage;
+                  this.messageClass= "alert alert-danger";
+                }
+              );
+            }
+          },
+            errormessage => {
+                this.message = <any>errormessage;
+                this.messageClass= "alert alert-danger";
+          });
+        }, 
+        errormessage => {
+          this.message = <any>errormessage;
+          this.messageClass= "alert alert-danger";
+        }
+      );
+    } else {
+      this.profileService.updateMProfile(this._mid, this.profile).subscribe(
+        data => {
+          console.log("data : ", data);
+          this.messageClass= "alert alert-success";
+          this.message="Profile Update Successfull";
+        }, 
+        errormessage => {
+          this.message = <any>errormessage;
+          this.messageClass= "alert alert-danger";
+        }
+      );
     }
   }
+
+}
 
   // AIzaSyBQZFTAbfC2foRcTVmLLCL4RxeXdc4Z4Is ========== Google api key
 
@@ -576,4 +586,3 @@ export class MProfileComponent implements OnInit, OnDestroy {
   // zarios: Number; on creation  this must default to zero
   // ukey: string; How are you going to generate these keys these questions will be answered when we investigate the wallet related issues.
   // rkey: string;
-}

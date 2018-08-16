@@ -29,7 +29,7 @@ interface JWTResponse {
 @Injectable()
 export class AuthService {
 
-  tokenKey: string = 'JWT';
+  tokenKey: string = 'JWT'; 
   isAuthenticated: Boolean = false;
   username: Subject<string> = new Subject<string>();
   authToken: string = undefined;
@@ -59,13 +59,20 @@ export class AuthService {
     .catch(error => {return this.processHttpmsgService.handleError(error)});
   }
 
+  // MADD mailer to user email with registration data   
+  maddmailer(mailerBody) {
+    return this.http.post(baseURL + '/users/maddmailer', mailerBody)
+    .catch(error => {return this.processHttpmsgService.handleError(error)});
+  }
+
   // Function to check if username is taken, used in registration
   checkUsername(username): Observable<any> {
     return this.http.get(baseURL + '/users/checkUsername/' + username)
     .catch(error => {return this.processHttpmsgService.handleError(error)});
   }
 
-  // Function to check if username is taken, used in useramend.component.ts user date Update
+  // Functions to get/ update user using username, used in useramend.component.ts user date Update
+  // and group
   getUser(username): Observable<any> {
     return this.http.get(baseURL + '/users/userUpdate/' + username)
     .catch(error => {return this.processHttpmsgService.handleError(error)});

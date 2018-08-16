@@ -1,0 +1,15 @@
+input.ng-invalid.ng-touched {
+   border: 1px solid red;
+}
+
+.extradata {
+   border: 1px solid gray;
+}
+
+input, select {
+   background-color : #f1f7fc;
+}
+.slectionBox {
+   background-color: rgb(248, 245, 245);
+   border: 1px solid rgb(88, 87, 87);
+ }

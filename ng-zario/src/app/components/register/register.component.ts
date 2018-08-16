@@ -202,7 +202,7 @@ export class RegisterComponent implements OnInit {
               }, 1000);
       }, 
       errormessage => {
-        this.message = <any>errormessage;
+        this.message = "OPPS! error please try later! Thank You";
         this.messageClass= "alert alert-danger";
       }
     );

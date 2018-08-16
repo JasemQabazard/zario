@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+
 var Customers = new Schema({
       username: { 
             type: String,
@@ -13,7 +14,8 @@ var Customers = new Schema({
       },
       gender: {
             type: String,
-            required: true
+            required: true,
+            defaul: 'U'
       },
       social: {
             type: String,
@@ -39,6 +41,7 @@ var Customers = new Schema({
             type: Number,
             default: 0
       },
+      // set === true if created by merchant - once customer and system amends to falkse and changes the customer role ===> CUSTOMER and asks to verify user email as well 
       initialflag: {
             type: Boolean,
             default: false
@@ -54,8 +57,7 @@ var Customers = new Schema({
       rkey:  {
             type: String,
             default: ''
-      },
-      merchants: [mongoose.Schema.Types.ObjectId]
+      }
 },{
    timestamps: true
 });

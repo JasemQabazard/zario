@@ -4,7 +4,8 @@
       <div class="container">
         <h6 class="section-title h2">Merchant Group Data</h6>
         <div class="py-1 px-1 px-sm-0">
-          GROUPS: if you have more than one store location you may want to assign a group to ensure that all your stores are under one umbrella. You are allowed only one group, and your customer collect group wide privilage points when making purchases at any of your store locations.
+          GROUPS: Your first step is to create a GROUP to cater for your colleagues using the system and if you have more than one store location you would assign the group to ensure that all your stores are under one umbrella. 
+          You are allowed only one group, and your customer collect group wide privilage points when making purchases at any of your store locations.
           <div class="card card-form border-warning p-0 ml-0 mr-0 mt-5 col-md-9 mx-auto">
             <div class="card-header">
                 <h4 class="text-center">Add or Maintain Group</h4>
@@ -137,6 +138,120 @@
                         </div>
                     </div><!--/form-group-->
                 </div>
+                <hr class="mt-5">
+                <h5>Strategy Section</h5>
+                <hr>
+                <div class="form-group">
+                    <label for="strategy">Business Strategy</label>
+                    <select id="strategy" class="form-control" formControlName="strategy">
+                    <option *ngFor="let strata of strategy" [value]="strata.strategyName">{{strata.strategyName}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="bronze">Bronze Band</label>
+                            <div [ngClass]="{'has-error':(fg.controls.bronze.errors && fg.controls.bronze.dirty), 'has-success': !fg.controls.bronze.errors}">
+                                <input type="text" name="bronze" class="form-control"
+                                formControlName="bronze" placeholder="9999">
+                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fg.controls.bronze.errors && fg.controls.bronze.dirty">
+                                    <div *ngIf="fg.controls.bronze.errors?.required">
+                                        Bronze Band field is required
+                                    </div>
+                                    <div *ngIf="fg.controls.bronze.errors?.validateValue">
+                                        Bronze Band must be Numeric
+                                    </div>
+                                </div>
+                            </div>
+                        </div>       
+                        <div class="col-sm-6">
+                            <label for="silver">Silver Band</label>
+                            <div [ngClass]="{'has-error':(fg.controls.silver.errors && fg.controls.silver.dirty), 'has-success': !fg.controls.silver.errors}">
+                                <input type="text" name="silver" class="form-control"
+                                formControlName="silver" placeholder="9999">
+                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fg.controls.silver.errors && fg.controls.silver.dirty">
+                                    <div *ngIf="fg.controls.silver.errors?.required">
+                                        Silver Band field is required
+                                    </div>
+                                    <div *ngIf="fg.controls.silver.errors?.validateValue">
+                                        Silver Band must be Numeric 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--/form-group-->
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="gold">Gold Band</label>
+                            <div [ngClass]="{'has-error':(fg.controls.gold.errors && fg.controls.gold.dirty), 'has-success': !fg.controls.gold.errors}">
+                                <input type="text" name="gold" class="form-control"
+                                formControlName="gold" placeholder="9999">
+                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fg.controls.gold.errors && fg.controls.gold.dirty">
+                                    <div *ngIf="fg.controls.gold.errors?.required">
+                                        Gold Band field is required
+                                    </div>
+                                    <div *ngIf="fg.controls.gold.errors?.validateValue">
+                                        Gold Band must be Numeric
+                                    </div>
+                                </div>
+                            </div>
+                        </div>       
+                        <div class="col-sm-6">
+                            <label for="platinum">Platinum Band</label>
+                            <div [ngClass]="{'has-error':(fg.controls.platinum.errors && fg.controls.platinum.dirty), 'has-success': !fg.controls.platinum.errors}">
+                                <input type="text" name="platinum" class="form-control"
+                                formControlName="platinum" placeholder="9999">
+                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fg.controls.platinum.errors && fg.controls.platinum.dirty">
+                                    <div *ngIf="fg.controls.platinum.errors?.required">
+                                            Platinum Band field is required
+                                    </div>
+                                    <div *ngIf="fg.controls.platinum.errors?.validateValue">
+                                            platinum Band must be Numeric 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--/form-group-->
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="pearl">Pearl Band</label>
+                            <div [ngClass]="{'has-error':(fg.controls.pearl.errors && fg.controls.pearl.dirty), 'has-success': !fg.controls.pearl.errors}">
+                                <input type="text" name="pearl" class="form-control"
+                                formControlName="pearl" placeholder="9999">
+                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fg.controls.pearl.errors && fg.controls.pearl.dirty">
+                                    <div *ngIf="fg.controls.pearl.errors?.required">
+                                        Pearl Band field is required
+                                    </div>
+                                    <div *ngIf="fg.controls.pearl.errors?.validateValue">
+                                        pearl Band must be Numeric
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="blackdiamond">blackdiamond Band</label>
+                            <div [ngClass]="{'has-error':(fg.controls.blackdiamond.errors && fg.controls.blackdiamond.dirty) || (fg.errors?.bandSync && fg.controls.blackdiamond.dirty), 'has-success': !fg.controls.blackdiamond.errors || fg.errors?.bandSync}">
+                                <input type="text" name="blackdiamond" class="form-control"
+                                formControlName="blackdiamond" placeholder="9999">
+                                <div class="help-block text-light small bg-danger pl-2" *ngIf="(fg.controls.blackdiamond.errors && fg.controls.blackdiamond.dirty) || (fg.errors?.bandSync && fg.controls.blackdiamond.dirty)">
+                                    <div *ngIf="fg.controls.blackdiamond.errors?.required">
+                                        Blackdiamond Band field is required
+                                    </div>
+                                    <div *ngIf="fg.controls.blackdiamond.errors?.validateValue">
+                                        Blackdiamond Band must be Numeric
+                                    </div>
+                                    <div *ngIf="fg.errors?.bandSync">
+                                        Bands must progressively increase in value
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--/form-group-->
                 <button [disabled]="!fg.valid || notUpdated" type="submit" class="btn btn-primary btn-block mt-4">Submit Group</button>
               </form>
             </div>

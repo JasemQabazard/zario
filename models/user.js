@@ -27,12 +27,6 @@ var User = new Schema({
         type: String, 
         default: ''
     },
-    recruitingmerchant: { 
-        type: String, 
-        default: '', 
-        trim: true, 
-        lowercase:true
-    },
     // set if there is a recruiting merchant for the user
     twofactorauth: {
         type: Boolean, 
@@ -42,6 +36,21 @@ var User = new Schema({
     role: {
         type: String,
         default: 'CUSTOMER'
+    },
+    // the users group _id before creating merchants profile 
+    _gid: { 
+        type: mongoose.Schema.Types.ObjectId,
+        default: null
+    },
+    // the MERCHANT set this merchants_id from the profile to limit working merchant for the user in the group
+    // OR it is the =======recruiting merchant====== for customers
+    _mid: { 
+        type: mongoose.Schema.Types.ObjectId,
+        default: null
+    },
+    lastsignondate: {
+          type: Date,
+          default: Date.now
     }
     // set by ADMIN---> permitted values:(ADMIN, CUSTOMER, MER%CHANT).
 }, {timestamps: true});

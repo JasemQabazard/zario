@@ -45,7 +45,34 @@ var Groups = new Schema({
             type: String, 
             required: true
       },
-      merchants: [mongoose.Schema.Types.ObjectId]
+      strategy: {
+            type: String,
+            default: "VALUE"
+      },
+      bronze: {
+         type: Number,
+         default: null
+      },
+      silver: {
+         type: Number,
+         default: null
+      },
+      gold: {
+         type: Number,
+         default: null
+      },
+      platinum: {
+         type: Number,
+         default: null
+      },
+      pearl: {
+         type: Number,
+         default: null
+      },
+      blackdiamond: {
+         type: Number,
+         default: null
+      }
 },{
    timestamps: true
 });

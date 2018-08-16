@@ -59,6 +59,18 @@ merchantsRouter.route('/')
     }, (err) => next(err))
     .catch((err) => next(err));
 });
+merchantsRouter.route('/bygroup/:gid')
+.get(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+  // Look for username in database
+  console.log("gid : ", req.params.gid);
+  Merchants.find({ _gid: req.params.gid })
+  .then((merchants) => {
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      res.json(merchants);
+  }, (err) => next(err))
+  .catch((err) => next(err));
+});
 
 merchantsRouter.route('/:merchantId')
 .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })

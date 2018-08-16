@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 import { AuthService } from '../../services/auth.service';
 import { ProfileService } from '../../services/profile.service';
-import { MProfile, Group, Codes } from '../../shared/profile';
+import { MProfile, Group, Codes, Strategy } from '../../shared/profile';
 
 import { Subscription } from 'rxjs/Subscription';
 
@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs/Subscription';
 export class GroupComponent implements OnInit, OnDestroy {
   fg: FormGroup;  // group input form control
   codes: Codes[];
+  strategy: Strategy[];
   group: Group;
   profile: MProfile;
   subscription: Subscription;
@@ -25,8 +26,7 @@ export class GroupComponent implements OnInit, OnDestroy {
   messageClass: string;
   notUpdated: boolean = false;
   _gid: string = "";
-  _pid: string = "";
-
+  
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
@@ -47,6 +47,10 @@ export class GroupComponent implements OnInit, OnDestroy {
       {countryCode:"+971 UAE"},
       {countryCode:"+1 USA"}
     ];
+    this.strategy = [
+      {strategyName:"number"},
+      {strategyName:"value"}
+    ];
     this.authService.loadUserCredentials();
     this.subscription = this.authService.getUsername()
       .subscribe(
@@ -59,6 +63,7 @@ export class GroupComponent implements OnInit, OnDestroy {
             if (gp === null) {
               this.nogroup = true;
               this.notUpdated = false;
+              console.log("this.nogroup, this.notUpdated", this.nogroup, this.notUpdated);
             } else {
               this.group = gp;
               this._gid = gp._id;
@@ -70,14 +75,22 @@ export class GroupComponent implements OnInit, OnDestroy {
                 city: this.group.city,
                 countrycode: this.group.countrycode,
                 mobile: this.group.mobile,
-                phone: this.group.phone
+                phone: this.group.phone,
+                strategy: this.group.strategy,
+                bronze: this.group.bronze,
+                silver: this.group.silver,
+                gold: this.group.gold,
+                platinum: this.group.platinum,
+                pearl: this.group.pearl,
+                blackdiamond: this.group.blackdiamond
               });
               this.nogroup = false;
               this.notUpdated = true;
             }
           },
-            errmess => {
-              console.log("error : ", errmess);
+          errormessage => {
+              this.message = <any>errormessage;
+              this.messageClass= "alert alert-danger";
           });
       });
   }
@@ -124,8 +137,33 @@ export class GroupComponent implements OnInit, OnDestroy {
         Validators.minLength(8),
         Validators.maxLength(10),
         this.validateMobile
+      ])],
+      strategy: 'value',
+      bronze: [0, Validators.compose([
+        Validators.required,
+        this.validateValue
+      ])],
+      silver: [0, Validators.compose([
+        Validators.required,
+        this.validateValue
+      ])],
+      gold: [0, Validators.compose([
+        Validators.required,
+        this.validateValue
+      ])],
+      platinum: [0, Validators.compose([
+        Validators.required,
+        this.validateValue
+      ])],
+      pearl: [0, Validators.compose([
+        Validators.required,
+        this.validateValue
+      ])],
+      blackdiamond: [0, Validators.compose([
+        Validators.required,
+        this.validateValue
       ])]
-    });
+    }, {validator: this.bandSync('bronze', 'silver', 'gold', 'platinum', 'pearl', 'blackdiamond')});
     this.onChanges();
   }
   onChanges(): void {
@@ -168,6 +206,35 @@ export class GroupComponent implements OnInit, OnDestroy {
     }
   }
 
+  bandSync(bronze, silver, gold, platinum, pearl, blackdiamond) {
+    return (group: FormGroup) => {
+      if (Number(group.controls[silver].value) <= Number(group.controls[bronze].value)) {
+        return { 'bandSync': true };
+      } else if (Number(group.controls[gold].value) <= Number(group.controls[silver].value)) {
+        return { 'bandSync': true };
+      } else if (Number(group.controls[platinum].value) <= Number(group.controls[gold].value)) {
+        return { 'bandSync': true };
+      } else if (Number(group.controls[pearl].value) <= Number(group.controls[platinum].value)) {
+        return { 'bandSync': true };
+      } else if (Number(group.controls[blackdiamond].value) <= Number(group.controls[pearl].value)) {
+        return { 'bandSync': true };
+      } else {
+        return null;
+      }
+    }
+  }
+
+  validateValue(controls) {
+    // Create a regular expression
+    const regExp = new RegExp(/^\d+$/);
+    // Test Value for numeric against regular expression
+    if (regExp.test(controls.value)) {
+      return null; // Return as valid number
+    } else {
+      return { 'validateValue': true } // Return as invalid number
+    }
+  }
+
   onfgSubmit() {
     this.group = this.fg.value;
     this.group.username = this.username;
@@ -180,32 +247,30 @@ export class GroupComponent implements OnInit, OnDestroy {
           this.messageClass= "alert alert-success";
           this.message="Group Add Successfull";
           console.log("Group Data Added : ", data);
-          this.profileService.getMProfile(this.username)
-          .subscribe(mprofiles => {
-            this.profile = mprofiles[0];
-            console.log("mprofiles[0] : ", this.profile);
-            if (mprofiles.length === 0) {
-              setTimeout(() => {
-                this.router.navigate(['/']); 
-              }, 1500);
-            } else {
-              this.profile.group_id = data._id;
-              this._pid = mprofiles[0]._id;
-              this.profileService.updateMProfile(this._pid, this.profile).subscribe(
-                mp => {
-                  setTimeout(() => {
-                    this.router.navigate(['/']); 
-                  }, 1500);
-                }, 
-                errormessage => {
-                  this.message = <any>errormessage;
-                  this.messageClass= "alert alert-danger";
-                }
-              );
-            }
+          // update the user record with _gid
+          this._gid = data._id;
+          this.authService.getUser(this.username)
+          .subscribe(user => {
+            user._gid = this._gid;
+            console.log("user : ", user);
+            this.authService.updateUser(user._id, user).subscribe(
+              data => {
+                console.log("update data : ", data);
+                this.messageClass= "alert alert-success";
+                this.message="User Data Update Successfull";
+                setTimeout(() => {
+                  this.router.navigate(['/']); 
+                }, 1500);
+              }, 
+              errormessage => {
+                this.message = <any>errormessage;
+                this.messageClass= "alert alert-danger";
+              }
+            );
           },
-            errmess => {
-              console.log("error : ", errmess);
+            errormessage => {
+                this.message = <any>errormessage;
+                this.messageClass= "alert alert-danger";
           });
         }, 
         errormessage => {

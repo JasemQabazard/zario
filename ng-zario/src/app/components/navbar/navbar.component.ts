@@ -13,6 +13,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ADMIN: Boolean = false;
   CUSTOMER: Boolean = false;
   MERCHANT: Boolean = false;
+  merchant: Boolean = false;
   USER: Boolean = true;
 
   username: string = undefined;
@@ -34,17 +35,21 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.ADMIN = false;
         this.CUSTOMER = false;
         this.MERCHANT = false;
+        this.merchant = false;
         this.USER = false;
+        
         if (this.userrole == "CUSTOMER" ) {
           this.CUSTOMER = true;
         } else if (this.userrole == "MERCHANT" ) {
           this.MERCHANT = true;
+        } else if (this.userrole == "merchant" ) {
+          this.merchant = true;
         } else if (this.userrole == "ADMIN" ) {
           this.ADMIN = true;
-        } else if (!this.ADMIN && !this.MERCHANT && !this.CUSTOMER) {
+        } else if (!this.ADMIN && !this.MERCHANT && !this.CUSTOMER && !this.merchant) {
           this.USER = true;
         }
-        console.log(this.CUSTOMER, this.MERCHANT, this.ADMIN, this.USER);
+        console.log("CUSTOMER, MERCHANT, merchant, ADMIN, USER : ", this.CUSTOMER, this.MERCHANT, this.merchant, this.ADMIN, this.USER);
       });
   }
 

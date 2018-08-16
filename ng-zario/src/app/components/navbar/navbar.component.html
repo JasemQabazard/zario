@@ -22,20 +22,44 @@
           </a>
         </li>
         <li class="nav-item px-0" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}" *ngIf="MERCHANT">
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="MERCHANT || merchant">
           <a routerLink="/mpromotions" class="nav-link">
             <i class="fas fa-child"></i> Promotions
           </a>
         </li>
         <li class="nav-item px-0" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}" *ngIf="!USER">
-          <a routerLink="/dashboard" class="nav-link">
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="CUSTOMER">
+          <a routerLink="/cpromotions" class="nav-link">
+            <i class="fas fa-child"></i> Promotions
+          </a>
+        </li>
+        <li class="nav-item px-0" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="ADMIN">
+          <a routerLink="/apromotions" class="nav-link">
+            <i class="fas fa-child"></i> Promotions
+          </a>
+        </li>
+        <li class="nav-item px-0" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="ADMIN">
+          <a routerLink="/adashboard" class="nav-link">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+          </a>
+        </li>
+        <li class="nav-item px-0" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="MERCHANT || merchant">
+          <a routerLink="/mdashboard" class="nav-link">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+          </a>
+        </li>
+        <li class="nav-item px-0" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="CUSTOMER">
+          <a routerLink="/cdashboard" class="nav-link">
             <i class="fas fa-tachometer-alt"></i> Dashboard
           </a>
         </li>
         <li class="nav-item px-0" [routerLinkActive]="['active']"
         [routerLinkActiveOptions]="{exact: true}" *ngIf="!USER">
-          <a routerLink="/transactions" class="nav-link">
+          <a routerLink="/wallet" class="nav-link">
             <i class="fas fa-globe"></i> Wallet</a>
         </li>
         <li class="nav-item px-0" [routerLinkActive]="['active']"
@@ -67,10 +91,16 @@
               <i class="fas fa-building"></i> Group
             </a>
             <a routerLink="/mprofile" class="dropdown-item" *ngIf="MERCHANT">
-              <i class="fas fa-user-plus"></i> Profile
+              <i class="fas fa-cogs"></i> Profile
+            </a>
+            <a routerLink="/maddcustomer" class="dropdown-item" *ngIf="MERCHANT">
+              <i class="fas fa-user-plus"></i> Add Group User/Customer
+            </a>
+            <a routerLink="/maddcustomer" class="dropdown-item" *ngIf="merchant">
+              <i class="fas fa-user-plus"></i> Add Customer
             </a>
             <a routerLink="/cprofile" class="dropdown-item" *ngIf="CUSTOMER">
-              <i class="fas fa-user-plus"></i> Profile
+              <i class="fas fa-cogs"></i> Profile
             </a>
             <a routerLink="/settings" class="dropdown-item" *ngIf="ADMIN">
               <i class="fas fa-cogs"></i> Settings

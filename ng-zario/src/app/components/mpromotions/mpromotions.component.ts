@@ -26,7 +26,7 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
   genres: Genre[];
   categories: Category[];
   promotions: Promotion[];
-  mprofiles: MProfile[];
+  mprofiles: Array<MProfile> = [];
   merchants: Array<Merchant> = [];
   merchant: Merchant;
   promotion: Promotion;
@@ -119,54 +119,93 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
       name => {
         this.username = name;
         this.subscription.unsubscribe();
-        // get merchants BY username. If only one merchant display promotions for that merchant and allow managing promotions. If several merchants === display promotions for the first one then allow the user to select another merchant and display thye promotions for 
-        this.profileService.getMProfile(this.username)
-        .subscribe(mprofiles => {
-          this.mprofiles = mprofiles;
-          console.log("mprofiles : ", mprofiles[0]._id, mprofiles.length);
-          if (mprofiles.length === 0) {
-            this.message = "Please Add a merchant profiles before adding promotions";
+        // get user record 
+        // if _gid === null return error
+        // if _mid === null return error
+        // if MERCHANT fall through existing logic 
+        // if merchant get profiles using _mid get with profile service then fall through existing logic
+        this.authService.getUser(this.username)
+        .subscribe(user => {
+          console.log("user : ", user);
+          if (user._gid === null || user._mid === null) {
+            this.message = "Group Admin must set Group and Merchant Profile before proceeding";
             this.messageClass= "alert alert-danger";
             setTimeout(() => {
               this.router.navigate(['/']); 
             }, 1500);
-          } else if (mprofiles.length > 0) { 
-            this.showMerchantsBox = true;
-            for (var i = 0; i < mprofiles.length; i++) {
-              console.log("merchant i name ", i, mprofiles[i].name);
-              this.merchants.push({
-                "_id":mprofiles[i]._id,
-               "name": mprofiles[i].name
-              });
-            }
-            this.fmSelect.controls['merchant'].setValue(this.merchants[0].name);
-          } 
-          this._mid = this.mprofiles[0]._id;
-          // Use merchant_id and fetch promotions 
-          this.promotionService.getPromotions(this._mid)
-          .subscribe(promotions => {
-            this.promotions = promotions;
-            console.log("promotions : ", this.promotions);
-            for (var x = 0; x < this.promotions.length; x++) {
-              this.komments.push(" ");
-              console.log("building komments i = ", x);
-            }
-            if (this.promotions.length === 0) {
-              this.showPromotionEntry = true;
-              console.log("no promotions display data entry form");
-            } else {
-              console.log("Display promotions on page, allow an edit button, and comment entry by merchant");
-            }
-          },
-            errmess => {
-              this.message = errmess;
+          }
+          if (user.role === "MERCHANT") {
+            this.profileService.getMProfile(this.username)
+            .subscribe(mprofiles => {
+              this.mprofiles = mprofiles;
+              console.log("this.mprofiles : ", this.mprofiles[0]._id, this.mprofiles.length);
+              this.processPromotions();
+            },
+            errormessage => {
+              this.message = <any>errormessage;
               this.messageClass= "alert alert-danger";
-          });
+            });
+          } else if (user.role === "merchant") {
+            console.log("merchant logic here");
+            this.profileService.getMProfileID(user._mid)
+            .subscribe(mprofile => {
+              this.mprofiles[0] = mprofile;
+              console.log("this.mprofiles : ", this.mprofiles[0]);
+              this.processPromotions();
+            },
+            errormessage => {
+              this.message = <any>errormessage;
+              this.messageClass= "alert alert-danger";
+            });
+          }
         },
-          errmess => {
-            this.message = errmess;
-            this.messageClass= "alert alert-danger";
+          errormessage => {
+              this.message = <any>errormessage;
+              this.messageClass= "alert alert-danger";
         });
+        // get merchants BY username only if the role === MERCHANT. If only one merchant display promotions for that merchant and allow managing promotions. If several merchants === display promotions for the first one then allow the user to select another merchant and display the promotions  
+
+    });
+  }
+
+  processPromotions() {
+    if (this.mprofiles.length === 0) {
+      this.message = "Please Add a merchant profiles before adding promotions";
+      this.messageClass= "alert alert-danger";
+      setTimeout(() => {
+        this.router.navigate(['/']); 
+      }, 1500);
+    } else if (this.mprofiles.length > 0) {
+      this.showMerchantsBox = true;
+      for (var i = 0; i < this.mprofiles.length; i++) {
+        console.log("merchant i name ", i, this.mprofiles[i].name);
+        this.merchants.push({
+          "_id":this.mprofiles[i]._id,
+          "name": this.mprofiles[i].name
+        });
+      }
+      this.fmSelect.controls['merchant'].setValue(this.merchants[0].name);
+    } 
+    this._mid = this.mprofiles[0]._id;
+    // Use merchant_id and fetch promotions 
+    this.promotionService.getPromotions(this._mid)
+    .subscribe(promotions => {
+      this.promotions = promotions;
+      console.log("promotions : ", this.promotions);
+      for (var x = 0; x < this.promotions.length; x++) {
+        this.komments.push(" ");
+        console.log("building komments i = ", x);
+      }
+      if (this.promotions.length === 0) {
+        this.showPromotionEntry = true;
+        console.log("no promotions display data entry form");
+      } else {
+        console.log("Display promotions on page, allow an edit button, and comment entry by merchant");
+      }
+    },
+    errormessage => {
+        this.message = <any>errormessage;
+        this.messageClass= "alert alert-danger";
     });
   }
 
@@ -203,8 +242,9 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
         console.log("Display promotions on page, allow an edit button, and comment entry by merchant");
       }
     },
-      errmess => {
-        console.log("error : ", errmess);
+      errormessage => {
+        this.message = <any>errormessage;
+        this.messageClass= "alert alert-danger";
     });
   }
 
@@ -358,6 +398,7 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
   
   clearfp() {
     this.avatarPath = "../../../assets/img/avatardefault.png";
+    this.fp.reset();
     this.fp.setValue ({
       name: "",
       narrative: "",
@@ -380,8 +421,9 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
         this.promotions = promotions;
         console.log("promotions : ", this.promotions);
       },
-        errmess => {
-          console.log("error : ", errmess);
+      errormessage => {
+        this.message = <any>errormessage;
+        this.messageClass= "alert alert-danger";
       });
   }
 
@@ -423,26 +465,30 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
         name: this.realname,
         comment:  this.komments[i]
       }
+      this.komments[i] = "";
       this.promotionService.addComment(this.promotions[i]._id, remark)
       .subscribe(promotion => {
         this.promotions[i] = promotion;
         console.log("promotions : ", this.promotions);
       },
-        errmess => {
-          console.log("error : ", errmess);
+        errormessage => {
+          this.message = <any>errormessage;
+          this.messageClass= "alert alert-danger";
       });
     } else {
       const remark = {
         "comment":  this.komments[i]
       }
+      this.komments[i] = "";
       console.log("remark.comment : ", this.UPDATINGCOMMENT_J, remark);
       this.promotionService.updateComment(this.promotions[i]._id, this.promotions[i].comments[this.UPDATINGCOMMENT_J]._id, remark)
       .subscribe(promotion => {
         this.promotions[i] = promotion;
         console.log("promotions : ", this.promotions);
       },
-        errmess => {
-          console.log("error : ", errmess);
+        errormessage => {
+          this.message = <any>errormessage;
+          this.messageClass= "alert alert-danger";
       });
       if (this.UPDATINGCOMMENT_J) {this.cancelUpdateComments(i)};
     }
@@ -456,8 +502,9 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
       this.promotions[i] = promotion;
       console.log("promotions : ", this.promotions);
     },
-      errmess => {
-        console.log("error : ", errmess);
+      errormessage => {
+        this.message = <any>errormessage;
+        this.messageClass= "alert alert-danger";
     });
   }
 

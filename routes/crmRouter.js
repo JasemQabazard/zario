@@ -1,42 +1,41 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mogoose = require('mongoose');
-const Customers = require('../models/customers');
+const CRM = require('../models/crm');
 const authenticate = require('../authenticate');
 const cors = require('./cors');
 
-const customersRouter = express.Router();
+const crmRouter = express.Router();
 
-customersRouter.use(bodyParser.json());
+crmRouter.use(bodyParser.json());
 
-customersRouter.route('/') 
+crmRouter.route('/')
 .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
 .get(cors.cors, (req, res, next) => {
-   Customers.find({})
-   .then((customers) => {
+   CRM.find({})
+   .then((crms) => {
          res.statusCode = 200;
          res.setHeader('Content-Type', 'application/json');
-         res.json(customers);
+         res.json(crms);
    }, (err) => next(err))
    .catch((err) => next(err));
 })
 .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
-    console.log("req.body: ", req.body);
-   Customers.create(req.body)
-   .then((customer) => {
-         console.log('Customer Created', customer);
+   CRM.create(req.body)
+   .then((crm) => {
+         console.log('CRM Created', crm);
          res.statusCode = 200;
          res.setHeader('Content-Type', 'application/json');
-         res.json(customer);
+         res.json(crm);
    }, (err) => next(err))
    .catch((err) => next(err));
 })
 .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    res.statusCode = 403;
-   res.end('PUT operation not supported on / customers');
+   res.end('PUT operation not supported on / Achievements');
 })
 .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
-   Customers.remove({})
+   CRM.remove({})
    .then((resp) => {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
@@ -45,50 +44,34 @@ customersRouter.route('/')
    .catch((err) => next(err));
 });
 
-  /* ===============================================================
-     Route to get and check if merchant record exists by username provided
-  =============================================================== */
-  customersRouter.route('/byuser/:username')
-  .get(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
-    // Look for username in database
-    console.log("username : ", req.params.username);
-    Customers.findOne({ username: req.params.username })
-    .then((customer) => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(customer);
-    }, (err) => next(err))
-    .catch((err) => next(err));
-});
-
-customersRouter.route('/:customerId')
+crmRouter.route('/:crmId')
 .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
 .get(cors.cors, (req,res,next) => {
-    Customers.findById(req.params.customerId)
-    .then((customer) => {
+   CRM.findById(req.params.crmId)
+    .then((crm) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(customer);
+        res.json(crm);
     }, (err) => next(err))
     .catch((err) => next(err));
 })
 .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
     res.statusCode = 403;
-    res.end('POST operation not supported on /customer/'+ req.params.customerId);
+    res.end('POST operation not supported on /achievement/'+ req.params.crmId);
 })
 .put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
-    Customers.findByIdAndUpdate(req.params.customerId, {
+   CRM.findByIdAndUpdate(req.params.crmId, {
         $set: req.body
     }, { new: true })
-    .then((customer) => {
+    .then((crm) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(customer);
+        res.json(crm);
     }, (err) => next(err))
     .catch((err) => next(err));
 })
 .delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
-    Customers.findByIdAndRemove(req.params.customerId)
+   CRM.findByIdAndRemove(req.params.crmId)
     .then((resp) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -97,4 +80,4 @@ customersRouter.route('/:customerId')
     .catch((err) => next(err));
 });
 
-module.exports = customersRouter;
+module.exports = crmRouter;

@@ -1,0 +1,15 @@
+==================
+USER ============= The user table determines the user role. CUSTOMER is the default while ADMIN and 
+================== MERCHANT are input by the admin staff once all the supporting documentation and papers have been received from the MERCHANT. 
+
+Once the user is assigned as a "MERCHANT", 
+==================HE BECOMES THE ADMINISTRATOR FOR THAT GROUP=================
+
+He must do the following in sequence:
+1- build his GROUP record 
+2- build all Merchant profile records 
+3- he can then add CUSTOMERS and use the CART to add transactions according to customer purchases
+AND
+4- Add other users to his GROUP and assign "merchant" records to them in order for them to work on that  merchant in the group only whoes id is in their USER record 
+5- He can also change the working merchant on any user belongingg to his GROUP and for himself as well since his user group accomodates only one user
+
