@@ -1,33 +1,53 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 // comments schema
-var commentsSchema = new Schema({
-      user_id: { type: mongoose.Schema.Types.ObjectId, required: true},
-      hearted:  {type: Boolean,default: false},
-      comment:  {type: String,default: ''}
+const commentsSchema = new Schema({
+      username: { type: String, required: true },
+      name: {type: String},
+      comment:  {type: String, default: ''},
+      hearts: {
+            type: Number,
+            default: null
+      },
+      // usernames who LOVE the comment
+      hearted:[String],
+      hates: {
+            type: Number,
+            default: null
+      },
+      // usernames who HATE the comment
+      hated:[String],
   }, {timestamps: true});
 //
 
-var Socials = new Schema({
+const Socials = new Schema({
       username: { 
             type: String,
             required: true
       },
-      medialink: {
+      media: {
             type: String,
             required: true,
             trim: true,
+            lowercase: true
+      },
+      category: {
+            type: String,
             lowercase: true
       },
       hearts: {
          type: Number,
          default: null
       },
-      postdate: {
-         type: Date,
-         default: Date.now
+      // usernames who LOVE the blog post
+      hearted:[String],
+      hate: {
+            type: Number,
+            default: null
       },
+      // usernames who HATE the blog post
+      hated:[String],
       title: {
          type: String,
          default: ""
@@ -36,6 +56,20 @@ var Socials = new Schema({
          type: String,
          default: ""
       },
+      access: {
+            allcustomerslevel: {
+                  type: String,
+                  default: 'NO ACCESS'
+               },
+            allmerchantslevel: {
+                  type: String,
+                  default: 'NO ACCESS'
+               },
+            onlymerchantmemberslevel: {
+                  type: String,
+                  default: 'NO ACCESS'
+               }
+           },
       comments: [commentsSchema]
 },{
    timestamps: true

@@ -17,14 +17,14 @@ export class MProfile {
    pearl: Number;
    blackdiamond: Number;
    countrycode: string;
-   mobile:string;
+   mobile: string;
    phone: string;
    longitude:  Number;
    latitude: Number;
    zarios: Number;
    ukey: string;
    rkey: string;
-};
+}
 
 export class CProfile {
    _id: string;
@@ -41,7 +41,7 @@ export class CProfile {
    zarios: Number;
    ukey: string;
    rkey: string;
-};
+}
 
 export class Settings {
       _id: string;
@@ -51,7 +51,7 @@ export class Settings {
       email: string;
       city: string;
       countrycode: string;
-      mobile:string;
+      mobile: string;
       phone: string;
       bronze: Number;
       silver: Number;
@@ -84,7 +84,7 @@ export class Group {
    platinum: Number;
    pearl: Number;
    blackdiamond: Number;
-};
+}
 
 export class CRM {
    _id: string;
@@ -92,28 +92,28 @@ export class CRM {
    _mid: string;
    score: Number;
    vists: Number;
-};
+}
 
 export class Codes {
    countryCode: string;
-};
+}
 
 export class Genders {
    genderCode: string;
-};
+}
 
 export class Socials {
    socialCode: string;
-};
+}
 
 export class Categories {
    categoryName: string;
-};
+}
 
 export class Merchant {
    _id: string;
    name: string;
-};
+}
 
 export class Strategy {
    strategyName: string;

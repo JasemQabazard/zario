@@ -1,22 +1,22 @@
 export class User {
-   _id:string;
-   username: String;
-   email: String;
+   _id: string;
+   username: string;
+   email: string;
    password: string;
-   firstname: String; 
-   lastname:String; 
-   countrycode: String; 
-   mobile: String;
-   role: String;
-   _gid: String;
-   _mid: String;
+   firstname: string;
+   lastname: string;
+   countrycode: string;
+   mobile: string;
+   role: string;
+   _gid: string;
+   _mid: string;
    lastsignondate: Date;
-};
+}
 
 export class Codes {
-   countryCode: String;
-};
+   countryCode: string;
+}
 
 export class ROLES {
-   name: String;
-};
+   name: string;
+}

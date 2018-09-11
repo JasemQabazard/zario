@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { EditorModule } from '@tinymce/tinymce-angular';
 
 import { AgmCoreModule } from '@agm/core';
 import { environment } from '../environments/environment';
@@ -17,6 +18,7 @@ import { PromotionScannerService } from './services/promotion-scanner.service';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { ProfileService } from './services/profile.service';
 import { PromotionService } from './services/promotion.service';
+import { BlogService } from './services/blog.service';
 import { baseURL } from './shared/baseurl';
 
 import { AppComponent } from './app.component';
@@ -78,6 +80,7 @@ import { MDashboardComponent } from './components/mdashboard/mdashboard.componen
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    EditorModule,
     BsDatepickerModule.forRoot(),
     TooltipModule.forRoot(),
     AgmCoreModule.forRoot({
@@ -93,6 +96,7 @@ import { MDashboardComponent } from './components/mdashboard/mdashboard.componen
     PromotionScannerService,
     ProfileService,
     PromotionService,
+    BlogService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

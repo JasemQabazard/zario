@@ -1,6 +1,6 @@
 export class Contact {
-   name: String;
-   email: String;
+   name: string;
+   email: string;
    subject: string;
-   message: String; 
-};
+   message: string;
+}

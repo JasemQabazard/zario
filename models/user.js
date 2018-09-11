@@ -1,10 +1,10 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var passportLocalMongoose = require('passport-local-mongoose');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const passportLocalMongoose = require('passport-local-mongoose');
 
 // password and user name are not mentioned explicitly since passport module takes care of them and imbeds them in the user table automatically  
 
-var User = new Schema({
+const User = new Schema({
     email: { 
         type: String, 
         unique: true, 

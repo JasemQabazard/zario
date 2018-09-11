@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-var Achievements = new Schema({
+const Achievements = new Schema({
       title: {
             type: String,
             required: true,

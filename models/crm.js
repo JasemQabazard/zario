@@ -1,9 +1,9 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 
 // customer merchants relationship management schema
-var CRM = new Schema({
+const CRM = new Schema({
    _cid: { 
          type: mongoose.Schema.Types.ObjectId,
          required: true

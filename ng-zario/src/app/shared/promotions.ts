@@ -3,9 +3,9 @@ export class Promotion {
    _mid: string;
    avatar: string;
    name: string;
-   narrative : string;
+   narrative: string;
    hearts: Number;
-   hearted:[string];
+   hearted: [string];
    genre: string;
    level: string;
    category: string;
@@ -16,24 +16,24 @@ export class Promotion {
    comments: [{
       _id: string,
       username: string,
-      name:string,
+      name: string,
       comment: string,
       createdAt: string,
       updatedAt: string
    }];
-};
+}
 
 export class Genre {
    genreCode: string;
-};
+}
 
 export class Level {
    levelCode: string;
-};
+}
 
 export class Category {
    categoryCode: string;
-};
+}
 
 export class Comment {
    _id: string;

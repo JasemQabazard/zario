@@ -27,17 +27,17 @@ export class MProfileComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   username: string = undefined;
   NOPROFILE: number = null;
-  nogroup: boolean = true;
+  nogroup = true;
   message: string;
   messageClass: string;
-  notUpdated: boolean = false;
-  profileBox: boolean = false;
-  _mid: string = "";
-  _gid: string = "";
-  selectedImageFile: File =null;
-  selectedImageFileName: string = "No New Image Selected";
-  avatarPath: string ="../../../assets/img/avatardefault.png";
-  avatarChanged: boolean = false;
+  notUpdated = false;
+  profileBox = false;
+  _mid = '';
+  _gid = '';
+  selectedImageFile: File = null;
+  selectedImageFileName = 'No New Image Selected';
+  avatarPath = '../../../assets/img/avatardefault.png';
+  avatarChanged = false;
   position: Position;
   clickedPosition: Position;
   currentPosition: Position;
@@ -47,68 +47,68 @@ export class MProfileComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private profileService: ProfileService,
     private router: Router
-  ) { 
+  ) {
     this.createfp();
     this.createfpSelect();
     this.position = {
-      lng:0.0,
-      lat:0.0
+      lng: 0.0,
+      lat: 0.0
     };
     this.clickedPosition = {
-      lng:0.0,
-      lat:0.0
+      lng: 0.0,
+      lat: 0.0
     };
     this.currentPosition = {
-      lng:0.0,
-      lat:0.0
+      lng: 0.0,
+      lat: 0.0
     };
   }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.codes = [
-      {countryCode:"+973 Bahrain"},
-      {countryCode:"+966 KSA"},
-      {countryCode:"+965 Kuwait"},
-      {countryCode:"+968 Oman"},
-      {countryCode:"+974 Qatar"},
-      {countryCode:"+66 Thailand"},
-      {countryCode:"+971 UAE"},
-      {countryCode:"+1 USA"}
+      {countryCode: '+973 Bahrain'},
+      {countryCode: '+966 KSA'},
+      {countryCode: '+965 Kuwait'},
+      {countryCode: '+968 Oman'},
+      {countryCode: '+974 Qatar'},
+      {countryCode: '+66 Thailand'},
+      {countryCode: '+971 UAE'},
+      {countryCode: '+1 USA'}
     ];
     this.categories = [
-      {categoryName:"Cafe"},
-      {categoryName:"Fast Food"},
-      {categoryName:"Arabic Resturant"},
-      {categoryName:"Arabic Fast Food"},
-      {categoryName:"Electronics"},
-      {categoryName:"Gift Shop"},
-      {categoryName:"Franchise Resturant"},
-      {categoryName:"Department Store"},
-      {categoryName:"Education & Training"},
-      {categoryName:"Sports"},
-      {categoryName:"Shoe Shop"},
-      {categoryName:"Franchise Clothes"}
+      {categoryName: 'Cafe'},
+      {categoryName: 'Fast Food'},
+      {categoryName: 'Arabic Resturant'},
+      {categoryName: 'Arabic Fast Food'},
+      {categoryName: 'Electronics'},
+      {categoryName: 'Gift Shop'},
+      {categoryName: 'Franchise Resturant'},
+      {categoryName: 'Department Store'},
+      {categoryName: 'Education & Training'},
+      {categoryName: 'Sports'},
+      {categoryName: 'Shoe Shop'},
+      {categoryName: 'Franchise Clothes'}
     ];
     this.strategy = [
-      {strategyName:"number"},
-      {strategyName:"value"}
+      {strategyName: 'number'},
+      {strategyName: 'value'}
     ];
     this.getUserPosition();
     this.authService.loadUserCredentials();
     this.subscription = this.authService.getUsername()
       .subscribe(
-        name => { 
+        name => {
           this.username = name;
           this.subscription.unsubscribe();
           // group access code
           this.profileService.getGroup(this.username)
           .subscribe(gp => {
-            console.log("group in profile component ", gp);
+            console.log('group in profile component ', gp);
             if (gp === null) {
-              this.message = "You must create a GROUP before adding Merchant Profiles";
-              this.messageClass= "alert alert-danger";
+              this.message = 'You must create a GROUP before adding Merchant Profiles';
+              this.messageClass = 'alert alert-danger';
               setTimeout(() => {
-                this.router.navigate(['/group']); 
+                this.router.navigate(['/group']);
               }, 1500);
             } else {
               this._gid = gp._id;
@@ -117,22 +117,22 @@ export class MProfileComponent implements OnInit, OnDestroy {
           },
             errormessage => {
               this.message = <any>errormessage;
-              this.messageClass= "alert alert-danger";
+              this.messageClass = 'alert alert-danger';
           });
           this.profileService.getMProfile(this.username)
           .subscribe(mprofiles => {
             this.mprofiles = mprofiles;
-            console.log("profiles : ", this.mprofiles);
+            console.log('profiles : ', this.mprofiles);
             if (mprofiles.length === 0) {
               this.notUpdated = false;
-              var x = setInterval(() => {
+              const x = setInterval(() => {
                 if (this.currentPosition.lat) {
                   clearInterval(x);
                   this.position.lng = this.currentPosition.lng;
                   this.position.lat = this.currentPosition.lat;
                   this.fp.patchValue({
-                    longitude:this.currentPosition.lng,
-                    latitude:this.currentPosition.lat
+                    longitude: this.currentPosition.lng,
+                    latitude: this.currentPosition.lat
                   });
                 }
               }, 1000);
@@ -142,10 +142,10 @@ export class MProfileComponent implements OnInit, OnDestroy {
               if (this.mprofiles[0].avatar) {
                 this.avatarPath = `${this.mprofiles[0].avatar}`;
               } else {
-                this.avatarPath = "../../../assets/img/avatardefault.png";
+                this.avatarPath = '../../../assets/img/avatardefault.png';
               }
               this.fp.setValue({
-                username: this.username, 
+                username: this.username,
                 name: this.mprofiles[0].name,
                 category: this.mprofiles[0].category,
                 referral: this.mprofiles[0].referral,
@@ -163,27 +163,27 @@ export class MProfileComponent implements OnInit, OnDestroy {
                 blackdiamond: this.mprofiles[0].blackdiamond,
                 longitude: this.mprofiles[0].longitude,
                 latitude: this.mprofiles[0].latitude
-              })
-              console.log("this.mprofiles[0].longitude ", this.mprofiles[0].longitude);
+              });
+              console.log('this.mprofiles[0].longitude ', this.mprofiles[0].longitude);
               this.position.lng = this.mprofiles[0].longitude;
               this.position.lat = this.mprofiles[0].latitude;
-              console.log("my GPS Position 2 ", this.position);
+              console.log('my GPS Position 2 ', this.position);
               this.NOPROFILE = 0;
               this.notUpdated = true;
-              for (var i = 0; i < mprofiles.length; i++) {
-                console.log("merchant i name ", i, mprofiles[i].name);
+              for (let i = 0; i < mprofiles.length; i++) {
+                console.log('merchant i name ', i, mprofiles[i].name);
                 this.merchants.push({
-                  "_id":mprofiles[i]._id,
-                 "name": mprofiles[i].name
+                  '_id': mprofiles[i]._id,
+                 'name': mprofiles[i].name
                 });
               }
-              console.log("merchants ", this.merchants);
+              console.log('merchants ', this.merchants);
               this.fpSelect.controls['merchant'].setValue(this.merchants[0].name);
             }
           },
             errormessage => {
               this.message = <any>errormessage;
-              this.messageClass= "alert alert-danger";
+              this.messageClass = 'alert alert-danger';
           });
       });
   }
@@ -198,8 +198,8 @@ export class MProfileComponent implements OnInit, OnDestroy {
       navigator.geolocation.getCurrentPosition(pos => {
         this.currentPosition.lat = pos.coords.latitude;
         this.currentPosition.lng = pos.coords.longitude;
-        console.log("pos.coords : ", pos.coords.latitude, pos.coords.longitude);
-        console.log("my GPS Position ", this.currentPosition);
+        console.log('pos.coords : ', pos.coords.latitude, pos.coords.longitude);
+        console.log('my GPS Position ', this.currentPosition);
       });
     }
   }
@@ -210,30 +210,30 @@ export class MProfileComponent implements OnInit, OnDestroy {
     this.position.lng = this.currentPosition.lng;
     this.position.lat = this.currentPosition.lat;
     this.fp.patchValue({
-      longitude:this.currentPosition.lng,
-      latitude:this.currentPosition.lat
+      longitude: this.currentPosition.lng,
+      latitude: this.currentPosition.lat
     });
   }
 
-  mapClicked($event:any) {
+  mapClicked($event: any) {
     this.clickedPosition.lat = $event.coords.lat;
     this.clickedPosition.lng = $event.coords.lng;
     this.fp.patchValue({
-      longitude:this.clickedPosition.lng,
-      latitude:this.clickedPosition.lat
+      longitude: this.clickedPosition.lng,
+      latitude: this.clickedPosition.lat
     });
   }
 
   createfp() {
-    this.fp= this.formBuilder.group({
-      username: this.username, 
+    this.fp = this.formBuilder.group({
+      username: this.username,
       name: ['', Validators.compose([
         Validators.required,
         Validators.minLength(15),
         Validators.maxLength(50),
         this.validateName
       ])],
-      category: "", 
+      category: '',
       referral: false,
       email: ['', Validators.compose([
         Validators.required,
@@ -247,7 +247,7 @@ export class MProfileComponent implements OnInit, OnDestroy {
         Validators.maxLength(20),
         this.validateName
       ])],
-      countrycode: '+965 Kuwait', 
+      countrycode: '+965 Kuwait',
       mobile: ['', Validators.compose([
         Validators.required,
         Validators.minLength(8),
@@ -281,7 +281,7 @@ export class MProfileComponent implements OnInit, OnDestroy {
         Validators.required,
         this.validateValue
       ])],
-      longitude:0,
+      longitude: 0,
       latitude: 0,
       blackdiamond: [0, Validators.compose([
         Validators.required,
@@ -290,7 +290,7 @@ export class MProfileComponent implements OnInit, OnDestroy {
     }, {validator: this.bandSync('bronze', 'silver', 'gold', 'platinum', 'pearl', 'blackdiamond')});
 
     this.onChanges();
-    
+
   }
   onChanges(): void {
     this.fp.valueChanges.subscribe(val => {
@@ -298,9 +298,9 @@ export class MProfileComponent implements OnInit, OnDestroy {
     });
   }
   createfpSelect() {
-    this.fpSelect= this.formBuilder.group({
+    this.fpSelect = this.formBuilder.group({
       merchant: ''
-    })
+    });
   }
 
   imageFileSelected(event: any) {
@@ -309,10 +309,10 @@ export class MProfileComponent implements OnInit, OnDestroy {
       this.selectedImageFileName = `Selected Image: ${this.selectedImageFile.name}`;
       this.avatarChanged = true;
       this.notUpdated = false;
-      var reader = new FileReader();
-      reader.onload = (event:any) => {
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
         this.avatarPath = event.target.result;
-      }
+      };
       reader.readAsDataURL(event.target.files[0]);
     }
   }
@@ -332,7 +332,7 @@ export class MProfileComponent implements OnInit, OnDestroy {
       } else {
         return null;
       }
-    }
+    };
   }
   // Function to validate name is proper format
   validateName(controls) {
@@ -343,7 +343,7 @@ export class MProfileComponent implements OnInit, OnDestroy {
     if (regExp.test(controls.value) || regExpSingle.test(controls.value)) {
       return null; // Return as valid name
     } else {
-      return { 'validateName': true } // Return as invalid name
+      return { 'validateName': true }; // Return as invalid name
     }
   }
   // Function to validate e-mail is proper format
@@ -354,7 +354,7 @@ export class MProfileComponent implements OnInit, OnDestroy {
     if (regExp.test(controls.value)) {
       return null; // Return as valid email
     } else {
-      return { 'validateEmail': true } // Return as invalid email
+      return { 'validateEmail': true }; // Return as invalid email
     }
   }
   // Function to validate name is proper format
@@ -365,7 +365,7 @@ export class MProfileComponent implements OnInit, OnDestroy {
     if (regExp.test(controls.value)) {
       return null; // Return as valid phone
     } else {
-      return { 'validateMobile': true } // Return as invalid Mobile
+      return { 'validateMobile': true }; // Return as invalid Mobile
     }
   }
   validateValue(controls) {
@@ -375,13 +375,14 @@ export class MProfileComponent implements OnInit, OnDestroy {
     if (regExp.test(controls.value)) {
       return null; // Return as valid number
     } else {
-      return { 'validateValue': true } // Return as invalid number
+      return { 'validateValue': true }; // Return as invalid number
     }
   }
 
   changeMerchant() {
-    for ( var ndx = 0; ndx < this.merchants.length; ndx++) {
-       if(this.merchants[ndx].name === this.fpSelect.controls['merchant'].value) {
+    let ndx;
+    for ( ndx = 0; ndx < this.merchants.length; ndx++) {
+       if (this.merchants[ndx].name === this.fpSelect.controls['merchant'].value) {
          break;
        }
     }
@@ -390,10 +391,10 @@ export class MProfileComponent implements OnInit, OnDestroy {
     if (this.mprofiles[ndx].avatar) {
       this.avatarPath = `${this.mprofiles[ndx].avatar}`;
     } else {
-      this.avatarPath = "../../../assets/img/avatardefault.png";
+      this.avatarPath = '../../../assets/img/avatardefault.png';
     }
     this.fp.setValue({
-      username: this.username, 
+      username: this.username,
       name: this.mprofiles[ndx].name,
       category: this.mprofiles[ndx].category,
       referral: this.mprofiles[ndx].referral,
@@ -419,170 +420,115 @@ export class MProfileComponent implements OnInit, OnDestroy {
   }
 
   addMerchant() {
-    this.avatarPath = "../../../assets/img/avatardefault.png";
+    this.avatarPath = '../../../assets/img/avatardefault.png';
     this.fp.setValue({
-      username: this.username, 
-      name: "",
-      category: "",
+      username: this.username,
+      name: '',
+      category: '',
       referral: false,
-      email: "",
-      city: "",
-      countrycode: '+965 Kuwait', 
-      mobile: "",
-      phone: "",
-      strategy: "value",
+      email: '',
+      city: '',
+      countrycode: '+965 Kuwait',
+      mobile: '',
+      phone: '',
+      strategy: 'value',
       bronze: 0,
       silver: 0,
       gold: 0,
       platinum: 0,
       pearl: 0,
       blackdiamond: 0,
-      longitude:this.position.lng,
-      latitude:this.position.lat
+      longitude: this.position.lng,
+      latitude: this.position.lat
     });
     this.NOPROFILE = null;
     this.notUpdated = false;
     this.avatarChanged = false;
-    this._mid = "";
-    this.message = "";
-    this.messageClass = "";
-    this.fpSelect.controls['merchant'].setValue("");
+    this._mid = '';
+    this.message = '';
+    this.messageClass = '';
+    this.fpSelect.controls['merchant'].setValue('');
   }
 
   onfpSubmit() {
     this.profile = this.fp.value;
     this.profile.username = this.username;
     this.profile._gid = this._gid;
-    console.log("storing profile ", this.profile);
+    console.log('storing profile ', this.profile);
       if (this.avatarChanged) {
         const fd = new FormData();
         fd.append('imageFile', this.selectedImageFile);
         this.profileService.imageUpload(fd).subscribe(
           imageData => {
-            this.profile.avatar = "avatars/"+imageData.filename;
+            this.profile.avatar = 'avatars/' + imageData.filename;
             this.profileDataBaseChange();
             setTimeout(() => {
-              this.router.navigate(['/']); 
+              this.router.navigate(['/']);
             }, 1000);
-          }, 
+          },
           errormessage => {
-            this.message = "Accepts image files less than 500KB ONLY, Please try another image";
-            this.messageClass= "alert alert-danger";
+            this.message = 'Accepts image files less than 500KB ONLY, Please try another image';
+            this.messageClass = 'alert alert-danger';
           }
         );
       } else {
         this.profileDataBaseChange();
         setTimeout(() => {
-          this.router.navigate(['/']); 
+          this.router.navigate(['/']);
         }, 1000);
       }
-
     }
 
   profileDataBaseChange() {
     if (this.NOPROFILE === null) {
       this.profileService.addMProfile(this.profile).subscribe(
         data => {
-          this.messageClass= "alert alert-success";
-          this.message="Profile Add Successfull";
-          console.log("Merchant Profile Data Added : ", data);
+          this.messageClass = 'alert alert-success';
+          this.message = 'Profile Add Successfull';
+          console.log('Merchant Profile Data Added : ', data);
           // update the user record with _mid
           this._mid = data._id;
           this.authService.getUser(this.username)
           .subscribe(user => {
-            console.log("user : ", user);
+            console.log('user : ', user);
             if (user._mid === null) {
               user._mid = this._mid;
               this.authService.updateUser(user._id, user).subscribe(
                 data => {
-                  console.log("update data : ", data);
-                  this.messageClass= "alert alert-success";
-                  this.message="User Data Update Successfull";
-                }, 
+                  console.log('update data : ', data);
+                  this.messageClass = 'alert alert-success';
+                  this.message = 'User Data Update Successfull';
+                },
                 errormessage => {
                   this.message = <any>errormessage;
-                  this.messageClass= "alert alert-danger";
+                  this.messageClass = 'alert alert-danger';
                 }
               );
             }
           },
             errormessage => {
                 this.message = <any>errormessage;
-                this.messageClass= "alert alert-danger";
+                this.messageClass = 'alert alert-danger';
           });
-        }, 
+        },
         errormessage => {
           this.message = <any>errormessage;
-          this.messageClass= "alert alert-danger";
+          this.messageClass = 'alert alert-danger';
         }
       );
     } else {
       this.profileService.updateMProfile(this._mid, this.profile).subscribe(
         data => {
-          console.log("data : ", data);
-          this.messageClass= "alert alert-success";
-          this.message="Profile Update Successfull";
-        }, 
+          console.log('data : ', data);
+          this.messageClass = 'alert alert-success';
+          this.message = 'Profile Update Successfull';
+        },
         errormessage => {
           this.message = <any>errormessage;
-          this.messageClass= "alert alert-danger";
+          this.messageClass = 'alert alert-danger';
         }
       );
     }
   }
 
 }
-
-  // AIzaSyBQZFTAbfC2foRcTVmLLCL4RxeXdc4Z4Is ========== Google api key
-
-  // _id: string;
-  // username: string;
-
-  // THIS IS THE ESSENTIAL DETAILS SECTION ================== done
-  // name: string;
-  // referral: Boolean;
-  // category: string;
-  // email: string;
-  // city: string;
-  // countrycode: string;
-  // mobile:string;
-  // phone: string;
-
-  // group_id: string;  ========================================= done
-  //(1)set this up as you create the record if there is a group id then use it if not keep the default. 
-  //(2)when the user tries to add another merchant record make sure he has a group id record created and if he does not let him know that he can not ctreate another merchant record without a group id. 
-  //(3)Also once the/a group id has been created check the merchant by user name and update the group id. 
-
-  // ================= NEW FUTURE IDEA ===========================================================
-  // new not in order to have more than one user per group, the following is a scenario forward on this issue:
-  // 1- must add a _gid to user collection
-  // 2- must modify user with _gid when group is created.
-  // 3- access to group must be by _gid on the user record and not by username
-  // 4- the first user who created the group can create additional users to help him manage a large group of merchants if need be
-  // 5- once additional users are created then they can add new profiles on the same group and can manage them
-  // 6- profile managment can be done by the user who created the profile only for security reasons since we will not be logging chnages to profile with this modoficatoin 
-  // 7- But if we were logging changes to profiles and data by user the we could allow any user to change any profile 
-  // ================================================= NOT DONE ===================================
- 
-  
-  // avatar: string; avatar upload section. ================
-
-
-  // strategy: string; a strategy section. ===================
-  // bronze: Number;
-  // silver: Number;
-  // gold: Number;
-  // platinum: Number;
-  // pearl: Number;
-  // blackdiamond: Number;
-
-  // longitude:  string; this is the location of the merchant store section ===============
-  // latitude: string; allow the user to enter this information but default it to the actual location of his computer. Investigate a utility that can read the location of the computer long and lat. (2) how to generate a QR Code foR the location of the store.
-  
-
-  // ============================================================================================
-  // THIS INFORMATION WILL NOT BE DISPLAYRF HERE =============== BUJT WILL BE DISPLAYERD IN THERE PROPER SECTION
-  // score: Number; on creation  this must default to zero.
-  // zarios: Number; on creation  this must default to zero
-  // ukey: string; How are you going to generate these keys these questions will be answered when we investigate the wallet related issues.
-  // rkey: string;

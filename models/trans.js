@@ -1,9 +1,9 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 require('mongoose-currency').loadType(mongoose);
 const Currency = mongoose.Types.Currency;
 
-var Trans = new Schema({
+const Trans = new Schema({
       customer_id: { 
             type: mongoose.Schema.Types.ObjectId,
             required: true

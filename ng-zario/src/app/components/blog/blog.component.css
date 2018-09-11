@@ -1,0 +1,31 @@
+.blog-image-1 {
+   background: url('../../../assets/img/blog-movement-2203657.png') no-repeat center center fixed;
+   background-size: 100% 100%;
+}
+
+.dark-overlay {
+  background-color:rgba(0,0,0,0.5);
+  min-height:220px;
+}
+
+.bgcontrol {
+  background-color:  #fcfafa;
+}
+
+.picdiv {
+  border: 3px solid #ffc107;
+}
+
+.sidediv{
+  border: 1px solid #ffc107;
+}
+
+.maincard {
+  border: none;
+}
+
+.imageContainer {
+    max-width:250px;
+    max-height:250px;
+    border: 1px solid #ffc107;
+}

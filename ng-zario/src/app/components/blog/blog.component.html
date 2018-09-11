@@ -1,3 +1,214 @@
-<p>
-  blog works!
-</p>
+<section class="blog-image-1">
+  <div class="container dark-overlay pt-5">
+    <div class="row pt-5">
+      <div class="col-sm-12 text-center">
+        <button type="button" class="btn btn-link text-white mt-5 mb-2" (click)="changeCategory('Add Edit Post')">
+          Add Edit Post
+        </button>
+        <button type="button" class="btn btn-link text-white mt-5 mb-2" (click)="changeCategory('Support')">
+          Support
+        </button>
+        <button type="button" class="btn btn-link text-white mt-5 mb-2" (click)="changeCategory('Retailtainment')">
+          Retailtainment
+        </button>
+        <button type="button" class="btn btn-link text-white mt-5 mb-2" (click)="changeCategory('Open Innovation')">
+          Open Innovation
+        </button>
+        <button type="button" class="btn btn-link text-white mt-5 mb-2" (click)="changeCategory('Zario & CryptoCurrency')">
+          Zario & CryptoCurrency
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--
+==========Section for Add Maintain Blog Posts =========
+-->
+<section class="m-5" *ngIf="addEditPost">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12 text-center mb-3">
+        <h3>{{category}}</h3>
+      </div>
+      <div class="col-md-9 my-3 bgcontrol">
+        <input type="text" [(ngModel)]="draftblog.title" class="form-control mb-3">
+        <editor class="mb-3" apiKey="iubcx8nldpaivlt25uvzow0ouwb4a3ot0iqn73fexv6uoml5" [init]="{plugins: 'link', height: '900'}"
+          [(ngModel)]="draftblog.post"></editor>
+      </div>
+      <div class="col-md-3 card card-form border-warning my-3 p-0">
+        <div class="card-header">
+          <h4 class="text-center">Post Parameters</h4>
+        </div>
+        <form [formGroup]="fb">
+          <div class="p-3">
+            <div class="form-group mb-3">
+              <label for="blogcategory" class="mt-3">Blog Category</label>
+              <select id="blogcategory" class="form-control" formControlName="blogcategory">
+                <option *ngFor="let category of blogcategories" [value]="category.blogcategoryname">{{category.blogcategoryname}}</option>
+              </select>
+            </div>
+            <div class="form-group mb-3">
+              <label for="allcustomerslevel" class="mt-3">All Customers Access</label>
+              <select id="allcustomerslevel" class="form-control" formControlName="allcustomerslevel">
+                <option *ngFor="let level of levels" [value]="level.levelCode">{{level.levelCode}}</option>
+              </select>
+            </div>
+            <div class="form-group mb-3">
+              <label for="onlymemberslevel" class="mt-3">Only Members Access</label>
+              <select id="onlymemberslevel" class="form-control" formControlName="onlymemberslevel">
+                <option *ngFor="let level of levels" [value]="level.levelCode">{{level.levelCode}}</option>
+              </select>
+            </div>
+            <div class="form-group mb-3">
+              <label for="allmerchantslevel" class="mt-3">Merchants App Level Access</label>
+              <select id="allmerchantslevel" class="form-control" formControlName="allmerchantslevel">
+                <option *ngFor="let level of levels" [value]="level.levelCode">{{level.levelCode}}</option>
+              </select>
+            </div>
+            <hr>
+            <hr>
+            <div class="row imageContainer mx-auto">
+              <img class="border-warning img-fluid mx-auto imagePreview" [src]="mediaPath" alt="default Media">
+            </div>
+            <div class="row">
+              <label class="center-block bg-light mx-auto">
+                <strong>{{selectedMediaFileName}}</strong>
+              </label>
+            </div>
+            <input type="file" name="mediaFile" style="display:none" (change)="mediaFileSelected($event)" #mediaFile>
+            <button class="btn btn-warning border-dark btn-block mt-3" (click)="mediaFile.click()">Select Post Media </button>
+            <hr>
+            <hr>
+            <button class="btn btn-secondary border-dark btn-block mt-3" (click)="saveDraft()">Save Draft Post</button>
+            <button class="btn btn-primary border-dark btn-block mt-3" (click)="publish()">Publish Post</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- A Save Draft Button
+A Publish Button -->
+
+<!-- I want a form here to have the following items:
+1- Enter the category of the blog post
+2- are all signed in customers/ merchants allowed to comment Y/N
+3- are all signed in merchants allowed to comment Y/N
+4- if the blog post is by a merchant => are his customers only allowed to comment 5- What level of his customers are allowed to comment.
+5- what is the minimum application level for customers who are allowed to comment, if any
+6- Save as Draft Button, only the blog owner can view the un puiblished blog posts, HOW TO HOLD BLOG POSTS WHILE THEY ARE UNDER UPDATE . May be I can hold it in the browsers temporary storage. I can hold ONE blog under update or new post in temp storage untill it is complete and ready to be saved to MONGODB.
+7- Publish Button,
+8- Enter image
+9- or enter a youtube embeded video post --- embedVideo postpond -->
+
+<!--
+      section for showing various blog categories
+-->
+<section class="m-5" *ngIf="!addEditPost">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 text-center mb-3">
+        <h3>{{category}} Category</h3>
+      </div>
+      <div class="col-sm-8 px-0">
+        <div class="card col-sm-12 maincard">
+          <div class="card-header">Blog Title</div>
+          <div class="card-body">
+            <div class="picdiv m-2">
+              <img class="img-fluid" src="../../../assets/img/holiday-shopping.jpg" alt="Blog Media">
+            </div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi quisquam Lorem ipsum dolor sit amet consectetur adipisicing
+            elit. Eligendi quisquam itaque corporis, repellat molestiae omnis recusandae ipsum soluta laboriosam aliquid!
+            Hic ipsa tenetur corporis sint a quam eos consequatur corrupti! Lorem ipsum dolor sit amet consectetur adipisicing
+            elit. Eligendi quisquam itaque corporis, repellat molestiae omnis recusandae ipsum soluta laboriosam aliquid!
+            Hic ipsa tenetur corporis sint a quam eos consequatur corrupti! Lorem ipsum dolor sit amet consectetur adipisicing
+            elit. Eligendi quisquam itaque corporis, repellat molestiae omnis recusandae ipsum soluta laboriosam aliquid!
+            Hic ipsa tenetur corporis sint a quam eos consequatur corrupti!itaque corporis, repellat molestiae omnis recusandae
+            ipsum soluta laboriosam aliquid! Hic ipsa tenetur corporis sint a quam eos consequatur corrupti!
+          </div>
+          <!-- <button type="button" class="btn btn-outline-warning btn-block mb-1" (click)="editPromotion(i)" [disabled]="UPDATINGCOMMENT_J">Edit  Blog Post</button>
+                              <div class="row">
+                                    <button type="button" class="btn btn-link col-sm-2" (click)="editPromotion(i)" [disabled]="UPDATINGCOMMENT_J">Prev</button>
+                                    <button type="button" class="btn btn-link col-sm-2 ml-auto" (click)="editPromotion(i)" [disabled]="UPDATINGCOMMENT_J">Next</button>
+                              </div> -->
+          <button type="button" class="btn btn-outline-warning btn-block mb-1">Edit Blog Post</button>
+          <div class="row">
+            <button type="button" class="btn btn-link col-sm-2">Prev</button>
+            <button type="button" class="btn btn-link col-sm-2 ml-auto">Next</button>
+          </div>
+          <div class="card-footer">Love Hate
+            <hr>
+            <h5>Comments</h5>
+            <hr>
+            <!-- <div class="ml-3" *ngFor="let c of comments; index as j">
+                                          <div class="row">
+                                                <div class="col-md-10 h-50 align-text-top mt-3">
+                                                <p><strong>{{c.name}}</strong> @{{c.createdAt | date:'dd-MMM-yyyy'}}</p>
+                                                </div>
+                                                <div class="btn-group ml-auto col-md-2 h-25 align-bottom"
+                                                *ngIf="realname == c.name">
+                                                <button type="button" class="btn btn-outline-danger btn-sm" (click)="deleteComments(i,j)" placement="top" tooltip="Delete">
+                                                            <i class="far fa-trash-alt fa-xs"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-success btn-sm" (click)="editComments(i,j)" placement="top" tooltip="Edit">
+                                                            <i class="far fa-edit fa-xs"></i>
+                                                </button>
+                                                </div>
+                                                <div class="col-md-10 h-50 align-text-top">
+                                                <p>{{c.comment}}</p>
+                                                </div>
+                                          </div>
+                                    </div> -->
+            <!-- <textarea class="form-control col-sm-12" [(ngModel)]="komments[i]" rows="3" (ngModelChange)="commentNotUpdated = false"></textarea> -->
+            <textarea class="form-control col-sm-12" rows="3"></textarea>
+            <button type="button" class="btn btn-outline-success btn-block btn-sm col-sm-4 ml-auto mt-2">Add/Update Comments</button>
+            <button type="button" class="btn btn-outline-danger btn-block btn-sm col-sm-4 ml-auto">Cancel Edit Comments</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4 sidediv">
+        <div class="card m-3">
+          <div class="card-header">Blog Title</div>
+          <div class="card-body">
+            <div class="picdiv">
+              <img class="img-fluid" src="../../../assets/img/holiday-shopping.jpg" alt="Blog Media">
+            </div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi quisquam Lorem ipsum dolor ----------->Read More
+          </div>
+          <div class="card-footer">Love Hate </div>
+        </div>
+        <hr>
+        <div class="card m-3">
+          <div class="card-header">Blog Title</div>
+          <div class="card-body">
+            <div class="picdiv">
+              <img class="img-fluid" src="../../../assets/img/family-2923690_1280.jpg" alt="Blog Media">
+            </div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi quisquam Lorem ipsum dolor ----------->Read More
+          </div>
+          <div class="card-footer">Love Hate </div>
+        </div>
+        <hr>
+        <div class="card m-3">
+          <div class="card-header">Blog Title</div>
+          <div class="card-body">
+            <div class="picdiv">
+              <img class="img-fluid" src="../../../assets/img/smile-2928326.jpg" alt="Blog Media">
+            </div>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi quisquam Lorem ipsum dolor ----------->Read More
+          </div>
+          <div class="card-footer">Love Hate </div>
+        </div>
+        <hr>
+        <div class="row">
+          <button type="button" class="btn btn-link col-sm-2">Prev</button>
+          <button type="button" class="btn btn-link col-sm-2 ml-auto">Next</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>

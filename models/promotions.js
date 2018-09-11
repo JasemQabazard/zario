@@ -1,17 +1,17 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 require('mongoose-currency').loadType(mongoose);
 const Currency = mongoose.Types.Currency;
 
 // comments schema
-var commentsSchema = new Schema({
+const commentsSchema = new Schema({
       username: { type: String, required: true },
       name: {type: String},
       comment:  {type: String, default: ''}
   }, {timestamps: true});
 //
 
-var Promotions = new Schema({
+const Promotions = new Schema({
       _mid: { 
             type: mongoose.Schema.Types.ObjectId,
             required: true
