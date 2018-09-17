@@ -28,6 +28,7 @@ export class BlogComponent implements OnInit {
   blogcategories: BlogCategory[];
   levels: Level[];
   blogs: Blog[];
+  xblogs: Blog[];
   displayedBlogs: Array<Blog> = new Array(3);
   displayedBlogsNDX: number;
   currentlyDisplayed: Blog;
@@ -175,6 +176,9 @@ export class BlogComponent implements OnInit {
     } else {
       this.addEditPost = false;
       this.displayedBlogsNDX = 0;
+      this.xblogs = this.blogs.filter( (b) => {
+        return b.category === this.category;
+       });
       this.prepareBlogDisplay();
     }
   }
@@ -242,10 +246,24 @@ export class BlogComponent implements OnInit {
         if (this.LOCALSTORAGE) {
           this.cancelDraftPost();
         }
+        this.draftblog = {
+          _id: '',
+          username: '',
+          media: '',
+          category: '',
+          title: '',
+          post: '',
+          access: {
+            allcustomerslevel: '',
+            allmerchantslevel: '',
+            onlymerchantmemberslevel: ''
+           }
+        };
         this.blogService.getBlogs()
         .subscribe(blogs => {
           this.blogs = blogs;
         });
+        this.notUpdated = true;
       });
   }
 
@@ -277,11 +295,25 @@ export class BlogComponent implements OnInit {
         if (this.LOCALSTORAGE) {
           this.cancelDraftPost();
         }
+        this.draftblog = {
+          _id: '',
+          username: '',
+          media: '',
+          category: '',
+          title: '',
+          post: '',
+          access: {
+            allcustomerslevel: '',
+            allmerchantslevel: '',
+            onlymerchantmemberslevel: ''
+           }
+        };
         this._bid = '';
         this.blogService.getBlogs()
         .subscribe(blogs => {
           this.blogs = blogs;
         });
+        this.notUpdated = true;
       });
   }
 
@@ -314,18 +346,18 @@ export class BlogComponent implements OnInit {
       };
     }
     console.log('displayedBlogsNDX Before - ', this.displayedBlogsNDX);
-    for ( let i = this.displayedBlogsNDX; i < this.blogs.length; i++) {
+    for ( let i = this.displayedBlogsNDX; i < this.xblogs.length; i++) {
       if (no === 3) {
         break;
-      } else if (this.blogs[i].category === this.category) {
-        this.displayedBlogs[no] = this.blogs[i];
+      } else {
+        this.displayedBlogs[no] = this.xblogs[i];
         no++;
         this.displayedBlogsNDX++;
       }
     }
    console.log('displayedBlogsNDX After - ', this.displayedBlogsNDX);
    this.currentlyDisplayed = this.displayedBlogs[0];
-   if (this.displayedBlogsNDX < this.blogs.length) {
+   if (this.displayedBlogsNDX < this.xblogs.length) {
     this.NEXT = true;
    } else {
      this.NEXT = false;
@@ -379,10 +411,10 @@ export class BlogComponent implements OnInit {
     this.prepareBlogDisplay();
   }
   lastBlogGroup() {
-    if (this.blogs.length % 3 === 0) {
-      this.displayedBlogsNDX = this.blogs.length - 3;
+    if (this.xblogs.length % 3 === 0) {
+      this.displayedBlogsNDX = this.xblogs.length - 3;
     } else {
-      this.displayedBlogsNDX = this.blogs.length - (this.blogs.length % 3);
+      this.displayedBlogsNDX = this.xblogs.length - (this.xblogs.length % 3);
     }
     this.prepareBlogDisplay();
   }

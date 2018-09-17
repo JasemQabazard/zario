@@ -14,7 +14,7 @@
         <button type="button" class="btn btn-link text-white mt-5 mb-2" (click)="changeCategory('open innovation')">
           Open Innovation
         </button>
-        <button type="button" class="btn btn-link text-white mt-5 mb-2" (click)="changeCategory('zario & cryptoCurrency')">
+        <button type="button" class="btn btn-link text-white mt-5 mb-2" (click)="changeCategory('zario & cryptocurrency')">
           Zario & CryptoCurrency
         </button>
       </div>
@@ -32,7 +32,8 @@
         <h3>{{category}}</h3>
       </div>
       <div class="col-md-9 my-3 bgcontrol">
-        <input type="text" [(ngModel)]="draftblog.title" (change)="changeNotUpdated()" class="form-control mb-3" placeholder="Enter Blog Post Title Here">
+        <input type="text" [(ngModel)]="draftblog.title" (change)="changeNotUpdated()" class="form-control mb-3"
+          placeholder="Enter Blog Post Title Here">
         <editor class="mb-3" apiKey="iubcx8nldpaivlt25uvzow0ouwb4a3ot0iqn73fexv6uoml5" [init]="{plugins: 'link', height: '900'}"
           [(ngModel)]="draftblog.post" (onChange)="changeNotUpdated()"></editor>
       </div>
@@ -81,10 +82,14 @@
             </button>
             <hr>
             <hr>
-            <button class="btn btn-secondary border-dark btn-block mt-3" *ngIf="!LOCALSTORAGE" (click)="saveDraft()">Save Draft Post</button>
-            <button class="btn btn-secondary border-dark btn-block mt-3" *ngIf="LOCALSTORAGE" (click)="cancelDraftPost()">Cancel Saved Draft Post</button>
-            <button class="btn btn-primary border-dark btn-block mt-3" *ngIf="_bid === ''" [disabled]="notUpdated" (click)="publish()">Publish Post</button>
-            <button class="btn btn-primary border-dark btn-block mt-3" *ngIf="_bid !== ''" [disabled]="notUpdated" (click)="updatePost()">Update Post</button>
+            <button class="btn btn-secondary border-dark btn-block mt-3" *ngIf="!LOCALSTORAGE" (click)="saveDraft()">Save
+              Draft Post</button>
+            <button class="btn btn-secondary border-dark btn-block mt-3" *ngIf="LOCALSTORAGE" (click)="cancelDraftPost()">Cancel
+              Saved Draft Post</button>
+            <button class="btn btn-primary border-dark btn-block mt-3" *ngIf="_bid === ''" [disabled]="notUpdated"
+              (click)="publish()">Publish Post</button>
+            <button class="btn btn-primary border-dark btn-block mt-3" *ngIf="_bid !== ''" [disabled]="notUpdated"
+              (click)="updatePost()">Update Post</button>
           </div>
         </form>
       </div>
@@ -165,33 +170,33 @@ A Publish Button -->
         </div>
       </div>
       <div class="col-sm-4 sidediv">
-          <div class="card m-3" *ngFor="let b of displayedBlogs; index as j">
-            <div *ngIf="b.title">
-              <div class="card-header">{{b.title}}</div>
-              <div class="card-body">
-                <div class="picdiv">
-                  <img class="img-fluid" src="../../../assets/img/holiday-shopping.jpg" alt="Blog Media">
-                </div>
-                <div [innerHTML]="(b.post).substring(0,50)">
-                </div>
-                <button class="btn btn-link" (click)="displayThisBlog(j)">more...</button>
+        <div class="card m-3" *ngFor="let b of displayedBlogs; index as j">
+          <div *ngIf="b.title">
+            <div class="card-header">{{b.title}}</div>
+            <div class="card-body">
+              <div class="picdiv">
+                <img class="img-fluid" src="../../../assets/img/holiday-shopping.jpg" alt="Blog Media">
               </div>
-              <div class="card-footer">
-                <strong>
-                  <i class="far fa-heart ml-4" aria-hidden="true" style="font-size:20px;color:red;">71 loves</i>
-                  <i class="far fa-heart ml-5" aria-hidden="true" style="font-size:20px;color:black;">3 hates</i>
-                </strong>
+              <div [innerHTML]="(b.post).substring(0,50)">
               </div>
+              <button class="btn btn-link" (click)="displayThisBlog(j)">more...</button>
+            </div>
+            <div class="card-footer">
+              <strong>
+                <i class="far fa-heart ml-4" aria-hidden="true" style="font-size:20px;color:red;">71 loves</i>
+                <i class="far fa-heart ml-5" aria-hidden="true" style="font-size:20px;color:black;">3 hates</i>
+              </strong>
             </div>
           </div>
-            <div class="row py-3">
-              <div class="btn-group btn-group-sm col-sm-12 border-dark">
-                <button type="button" class="btn btn-outline-success col-sm-3" [disabled]="!PREVIOUS" (click)="firstBlogGroup()">First</button>
-                <button type="button" class="btn btn-outline-primary col-sm-3" [disabled]="!PREVIOUS" (click)="previousBlogGroup()">Prev</button>
-                <button type="button" class="btn btn-outline-primary col-sm-3" [disabled]="!NEXT" (click)="nextBlogGroup()">Next</button>
-                <button type="button" class="btn btn-outline-danger col-sm-3" [disabled]="!NEXT" (click)="lastBlogGroup()">Last</button>
-              </div>
+        </div>
+        <div class="row py-4 px-0">
+            <div class="btn-group btn-group-sm col-sm-12 m-0 p-0">
+              <button type="button" class="btn btn-outline-success col-sm-3 m-0" [disabled]="!PREVIOUS" (click)="firstBlogGroup()">First</button>
+              <button type="button" class="btn btn-outline-primary col-sm-3 m-0" [disabled]="!PREVIOUS" (click)="previousBlogGroup()">Prev</button>
+              <button type="button" class="btn btn-outline-primary col-sm-3 m-0" [disabled]="!NEXT" (click)="nextBlogGroup()">Next</button>
+              <button type="button" class="btn btn-outline-danger col-sm-3 m-0" [disabled]="!NEXT" (click)="lastBlogGroup()">Last</button>
             </div>
+        </div>
       </div>
     </div>
 
