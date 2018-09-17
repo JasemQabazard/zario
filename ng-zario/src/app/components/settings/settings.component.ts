@@ -20,16 +20,16 @@ export class SettingsComponent implements OnInit, OnDestroy {
   settings: Settings;
   subscription: Subscription;
   username: string = undefined;
-  SETTINGS: boolean = false; // is their a Settings records (true) or not (false)
+  SETTINGS = false; // is their a Settings records (true) or not (false)
   message: string;
   messageClass: string;
-  notUpdated: boolean = false;
-  selectedImageFile: File =null;
-  selectedImageFileName: string = "No New Image Selected";
-  avatarPath: string ="../../../assets/img/avatardefault.png";
-  avatarShow: boolean = false;
-  avatarChanged: boolean = false;
-  _sid: string = "";
+  notUpdated = false;
+  selectedImageFile: File = null;
+  selectedImageFileName = 'No New Image Selected';
+  avatarPath = '../../../assets/img/avatardefault.png';
+  avatarShow = false;
+  avatarChanged = false;
+  _sid = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,25 +42,25 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.codes = [
-      {countryCode:"+973 Bahrain"},
-      {countryCode:"+966 KSA"},
-      {countryCode:"+965 Kuwait"},
-      {countryCode:"+968 Oman"},
-      {countryCode:"+974 Qatar"},
-      {countryCode:"+66 Thailand"},
-      {countryCode:"+971 UAE"},
-      {countryCode:"+1 USA"}
+      {countryCode: '+973 Bahrain'},
+      {countryCode: '+966 KSA'},
+      {countryCode: '+965 Kuwait'},
+      {countryCode: '+968 Oman'},
+      {countryCode: '+974 Qatar'},
+      {countryCode: '+66 Thailand'},
+      {countryCode: '+971 UAE'},
+      {countryCode: '+1 USA'}
     ];
     this.authService.loadUserCredentials();
     this.subscription = this.authService.getUsername()
       .subscribe(
-        name => { 
+        name => {
           this.username = name;
           this.subscription.unsubscribe();
           this.profileService.getSettings()
           .subscribe(settings => {
             this.settings = settings[0];
-            console.log("settings : ", settings);
+            console.log('settings : ', settings);
             if (!this.settings) {
               this.notUpdated = false;
             } else {
@@ -68,15 +68,15 @@ export class SettingsComponent implements OnInit, OnDestroy {
               if (this.settings.avatar) {
                 this.avatarPath = `avatars/${this.settings.avatar}`;
               } else {
-                this.avatarPath = "../../../assets/img/avatardefault.png";
+                this.avatarPath = '../../../assets/img/avatardefault.png';
               }
               this.fs.setValue({
-                username: this.username, 
+                username: this.username,
                 name: this.settings.name,
                 email: this.settings.email,
                 city: this.settings.city,
                 countrycode: this.settings.countrycode,
-                mobile:this.settings.mobile,
+                mobile: this.settings.mobile,
                 phone: this.settings.phone,
                 bronze: this.settings.bronze,
                 silver: this.settings.silver,
@@ -94,10 +94,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
               this.SETTINGS = true;
               this.notUpdated = true;
             }
-            console.log("form values: ", this.fs.value);
+            console.log('form values: ', this.fs.value);
           },
             errmess => {
-              console.log("error : ", errmess);
+              console.log('error : ', errmess);
           });
       });
   }
@@ -107,8 +107,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   createfs() {
-    this.fs= this.formBuilder.group({
-      username: this.username, 
+    this.fs = this.formBuilder.group({
+      username: this.username,
       name: ['', Validators.compose([
         Validators.required,
         Validators.minLength(15),
@@ -127,7 +127,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
         Validators.maxLength(20),
         this.validateName
       ])],
-      countrycode: '+965 Kuwait', 
+      countrycode: '+965 Kuwait',
       mobile: ['', Validators.compose([
         Validators.required,
         Validators.minLength(8),
@@ -163,7 +163,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
         blackdiamond: [0, Validators.compose([
           Validators.required,
           this.validateValue
-        ])], 
+        ])],
         nobronze: [0, Validators.compose([
           Validators.required,
           this.validateValue
@@ -187,9 +187,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
         noblackdiamond: [0, Validators.compose([
           Validators.required,
           this.validateValue
-        ])]  
+        ])]
     }, {
-      validator: 
+      validator:
       Validators.compose([
         this.bandSync('bronze', 'silver', 'gold', 'platinum', 'pearl', 'blackdiamond'),
         this.bandnoSync('nobronze', 'nosilver', 'nogold', 'noplatinum', 'nopearl', 'noblackdiamond')
@@ -211,10 +211,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
       this.selectedImageFileName = `Selected Image: ${this.selectedImageFile.name}`;
       this.avatarChanged = true;
       this.notUpdated = false;
-      var reader = new FileReader();
-      reader.onload = (event:any) => {
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
         this.avatarPath = event.target.result;
-      }
+      };
       reader.readAsDataURL(event.target.files[0]);
     }
   }
@@ -234,7 +234,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       } else {
         return null;
       }
-    }
+    };
   }
 
   bandnoSync(nobronze, nosilver, nogold, noplatinum, nopearl, noblackdiamond) {
@@ -252,7 +252,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
       } else {
         return null;
       }
-    }
+    };
   }
 
   // Function to validate name is proper format
@@ -264,7 +264,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     if (regExp.test(controls.value) || regExpSingle.test(controls.value)) {
       return null; // Return as valid name
     } else {
-      return { 'validateName': true } // Return as invalid name
+      return { 'validateName': true }; // Return as invalid name
     }
   }
   // Function to validate e-mail is proper format
@@ -275,7 +275,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     if (regExp.test(controls.value)) {
       return null; // Return as valid email
     } else {
-      return { 'validateEmail': true } // Return as invalid email
+      return { 'validateEmail': true }; // Return as invalid email
     }
   }
   // Function to validate name is proper format
@@ -286,7 +286,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     if (regExp.test(controls.value)) {
       return null; // Return as valid phone
     } else {
-      return { 'validateMobile': true } // Return as invalid Mobile
+      return { 'validateMobile': true }; // Return as invalid Mobile
     }
   }
   validateValue(controls) {
@@ -296,14 +296,14 @@ export class SettingsComponent implements OnInit, OnDestroy {
     if (regExp.test(controls.value)) {
       return null; // Return as valid number
     } else {
-      return { 'validateValue': true } // Return as invalid number
+      return { 'validateValue': true }; // Return as invalid number
     }
   }
-  
+
   onfsSubmit() {
     this.settings = this.fs.value;
     this.settings.username = this.username;
-    console.log("avatarChanged flag : ", this.avatarChanged);
+    console.log('avatarChanged flag : ', this.avatarChanged);
     if (this.avatarChanged) {
       const fd = new FormData();
       fd.append('imageFile', this.selectedImageFile);
@@ -311,10 +311,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
         imageData => {
           this.settings.avatar = imageData.filename;
           this.settingsDataBaseChange();
-        }, 
+        },
         errormessage => {
-          this.message = "Accepts image files less than 500KB ONLY, Please try another image";
-          this.messageClass= "alert alert-danger";
+          this.message = 'Accepts image files less than 500KB ONLY, Please try another image';
+          this.messageClass = 'alert alert-danger';
         }
       );
     } else {
@@ -323,35 +323,35 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   settingsDataBaseChange() {
-    console.log("settings settingsDataBaseChange: ", this.settings);
+    console.log('settings settingsDataBaseChange: ', this.settings);
     if (!this.SETTINGS) {
       this.profileService.addSettings(this.settings).subscribe(
         data => {
-          console.log("added settings data : ", data);
-          this.messageClass= "alert alert-success";
-          this.message="Settings Add Successfull";
+          console.log('added settings data : ', data);
+          this.messageClass = 'alert alert-success';
+          this.message = 'Settings Add Successfull';
           setTimeout(() => {
-            this.router.navigate(['/']); 
+            this.router.navigate(['/']);
           }, 1500);
-        }, 
+        },
         errormessage => {
           this.message = <any>errormessage;
-          this.messageClass= "alert alert-danger";
+          this.messageClass = 'alert alert-danger';
         }
       );
     } else {
         this.profileService.updateSettings(this._sid, this.settings).subscribe(
           data => {
-            console.log("updated settings data : ", data);
-            this.messageClass= "alert alert-success";
-            this.message="Settings Update Successfull";
+            console.log('updated settings data : ', data);
+            this.messageClass = 'alert alert-success';
+            this.message = 'Settings Update Successfull';
             setTimeout(() => {
-              this.router.navigate(['/']); 
+              this.router.navigate(['/']);
             }, 1500);
-          }, 
+          },
           errormessage => {
             this.message = <any>errormessage;
-            this.messageClass= "alert alert-danger";
+            this.messageClass = 'alert alert-danger';
           }
         );
     }
@@ -359,10 +359,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
 }
 
-// _id: string; 
+// _id: string;
 // username: string;
 
-// name: string; 
+// name: string;
 // avatar: string;
 // email: string;
 // city: string;

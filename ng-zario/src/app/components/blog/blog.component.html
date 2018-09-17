@@ -2,19 +2,19 @@
   <div class="container dark-overlay pt-5">
     <div class="row pt-5">
       <div class="col-sm-12 text-center">
-        <button type="button" class="btn btn-link text-white mt-5 mb-2" (click)="changeCategory('Add Edit Post')">
+        <button type="button" class="btn btn-link text-white mt-5 mb-2" *ngIf="userrole" (click)="changeCategory('Add Edit Post')">
           Add Edit Post
         </button>
-        <button type="button" class="btn btn-link text-white mt-5 mb-2" (click)="changeCategory('Support')">
+        <button type="button" class="btn btn-link text-white mt-5 mb-2" (click)="changeCategory('support')">
           Support
         </button>
-        <button type="button" class="btn btn-link text-white mt-5 mb-2" (click)="changeCategory('Retailtainment')">
+        <button type="button" class="btn btn-link text-white mt-5 mb-2" (click)="changeCategory('retailtainment')">
           Retailtainment
         </button>
-        <button type="button" class="btn btn-link text-white mt-5 mb-2" (click)="changeCategory('Open Innovation')">
+        <button type="button" class="btn btn-link text-white mt-5 mb-2" (click)="changeCategory('open innovation')">
           Open Innovation
         </button>
-        <button type="button" class="btn btn-link text-white mt-5 mb-2" (click)="changeCategory('Zario & CryptoCurrency')">
+        <button type="button" class="btn btn-link text-white mt-5 mb-2" (click)="changeCategory('zario & cryptoCurrency')">
           Zario & CryptoCurrency
         </button>
       </div>
@@ -32,9 +32,9 @@
         <h3>{{category}}</h3>
       </div>
       <div class="col-md-9 my-3 bgcontrol">
-        <input type="text" [(ngModel)]="draftblog.title" class="form-control mb-3">
+        <input type="text" [(ngModel)]="draftblog.title" (change)="changeNotUpdated()" class="form-control mb-3" placeholder="Enter Blog Post Title Here">
         <editor class="mb-3" apiKey="iubcx8nldpaivlt25uvzow0ouwb4a3ot0iqn73fexv6uoml5" [init]="{plugins: 'link', height: '900'}"
-          [(ngModel)]="draftblog.post"></editor>
+          [(ngModel)]="draftblog.post" (onChange)="changeNotUpdated()"></editor>
       </div>
       <div class="col-md-3 card card-form border-warning my-3 p-0">
         <div class="card-header">
@@ -77,11 +77,14 @@
               </label>
             </div>
             <input type="file" name="mediaFile" style="display:none" (change)="mediaFileSelected($event)" #mediaFile>
-            <button class="btn btn-warning border-dark btn-block mt-3" (click)="mediaFile.click()">Select Post Media </button>
+            <button class="btn btn-warning border-dark btn-block mt-3" (click)="mediaFile.click()">Select Post Media
+            </button>
             <hr>
             <hr>
-            <button class="btn btn-secondary border-dark btn-block mt-3" (click)="saveDraft()">Save Draft Post</button>
-            <button class="btn btn-primary border-dark btn-block mt-3" (click)="publish()">Publish Post</button>
+            <button class="btn btn-secondary border-dark btn-block mt-3" *ngIf="!LOCALSTORAGE" (click)="saveDraft()">Save Draft Post</button>
+            <button class="btn btn-secondary border-dark btn-block mt-3" *ngIf="LOCALSTORAGE" (click)="cancelDraftPost()">Cancel Saved Draft Post</button>
+            <button class="btn btn-primary border-dark btn-block mt-3" *ngIf="_bid === ''" [disabled]="notUpdated" (click)="publish()">Publish Post</button>
+            <button class="btn btn-primary border-dark btn-block mt-3" *ngIf="_bid !== ''" [disabled]="notUpdated" (click)="updatePost()">Update Post</button>
           </div>
         </form>
       </div>
@@ -114,30 +117,21 @@ A Publish Button -->
       </div>
       <div class="col-sm-8 px-0">
         <div class="card col-sm-12 maincard">
-          <div class="card-header">Blog Title</div>
+          <div class="card-header">{{currentlyDisplayed.title}}</div>
           <div class="card-body">
             <div class="picdiv m-2">
               <img class="img-fluid" src="../../../assets/img/holiday-shopping.jpg" alt="Blog Media">
             </div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi quisquam Lorem ipsum dolor sit amet consectetur adipisicing
-            elit. Eligendi quisquam itaque corporis, repellat molestiae omnis recusandae ipsum soluta laboriosam aliquid!
-            Hic ipsa tenetur corporis sint a quam eos consequatur corrupti! Lorem ipsum dolor sit amet consectetur adipisicing
-            elit. Eligendi quisquam itaque corporis, repellat molestiae omnis recusandae ipsum soluta laboriosam aliquid!
-            Hic ipsa tenetur corporis sint a quam eos consequatur corrupti! Lorem ipsum dolor sit amet consectetur adipisicing
-            elit. Eligendi quisquam itaque corporis, repellat molestiae omnis recusandae ipsum soluta laboriosam aliquid!
-            Hic ipsa tenetur corporis sint a quam eos consequatur corrupti!itaque corporis, repellat molestiae omnis recusandae
-            ipsum soluta laboriosam aliquid! Hic ipsa tenetur corporis sint a quam eos consequatur corrupti!
+            <div [innerHTML]="currentlyDisplayed.post">
+            </div>
           </div>
           <!-- <button type="button" class="btn btn-outline-warning btn-block mb-1" (click)="editPromotion(i)" [disabled]="UPDATINGCOMMENT_J">Edit  Blog Post</button>
                               <div class="row">
                                     <button type="button" class="btn btn-link col-sm-2" (click)="editPromotion(i)" [disabled]="UPDATINGCOMMENT_J">Prev</button>
                                     <button type="button" class="btn btn-link col-sm-2 ml-auto" (click)="editPromotion(i)" [disabled]="UPDATINGCOMMENT_J">Next</button>
                               </div> -->
-          <button type="button" class="btn btn-outline-warning btn-block mb-1">Edit Blog Post</button>
-          <div class="row">
-            <button type="button" class="btn btn-link col-sm-2">Prev</button>
-            <button type="button" class="btn btn-link col-sm-2 ml-auto">Next</button>
-          </div>
+          <button type="button" class="btn btn-outline-warning btn-block mb-3" [disabled]="userrole === undefined || LOCALSTORAGE"
+            (click)="editBlogPost()">Edit Blog Post</button>
           <div class="card-footer">Love Hate
             <hr>
             <h5>Comments</h5>
@@ -163,49 +157,41 @@ A Publish Button -->
                                     </div> -->
             <!-- <textarea class="form-control col-sm-12" [(ngModel)]="komments[i]" rows="3" (ngModelChange)="commentNotUpdated = false"></textarea> -->
             <textarea class="form-control col-sm-12" rows="3"></textarea>
-            <button type="button" class="btn btn-outline-success btn-block btn-sm col-sm-4 ml-auto mt-2">Add/Update Comments</button>
-            <button type="button" class="btn btn-outline-danger btn-block btn-sm col-sm-4 ml-auto">Cancel Edit Comments</button>
+            <button type="button" class="btn btn-outline-success btn-block btn-sm col-sm-4 ml-auto mt-2" [disabled]="userrole === undefined"
+              (click)="addPostComment()">Add/Update Comments</button>
+            <button type="button" class="btn btn-outline-danger btn-block btn-sm col-sm-4 ml-auto" [disabled]="userrole === undefined"
+              (click)="cancelPostComment()">Cancel Edit Comments</button>
           </div>
         </div>
       </div>
       <div class="col-sm-4 sidediv">
-        <div class="card m-3">
-          <div class="card-header">Blog Title</div>
-          <div class="card-body">
-            <div class="picdiv">
-              <img class="img-fluid" src="../../../assets/img/holiday-shopping.jpg" alt="Blog Media">
+          <div class="card m-3" *ngFor="let b of displayedBlogs; index as j">
+            <div *ngIf="b.title">
+              <div class="card-header">{{b.title}}</div>
+              <div class="card-body">
+                <div class="picdiv">
+                  <img class="img-fluid" src="../../../assets/img/holiday-shopping.jpg" alt="Blog Media">
+                </div>
+                <div [innerHTML]="(b.post).substring(0,50)">
+                </div>
+                <button class="btn btn-link" (click)="displayThisBlog(j)">more...</button>
+              </div>
+              <div class="card-footer">
+                <strong>
+                  <i class="far fa-heart ml-4" aria-hidden="true" style="font-size:20px;color:red;">71 loves</i>
+                  <i class="far fa-heart ml-5" aria-hidden="true" style="font-size:20px;color:black;">3 hates</i>
+                </strong>
+              </div>
             </div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi quisquam Lorem ipsum dolor ----------->Read More
           </div>
-          <div class="card-footer">Love Hate </div>
-        </div>
-        <hr>
-        <div class="card m-3">
-          <div class="card-header">Blog Title</div>
-          <div class="card-body">
-            <div class="picdiv">
-              <img class="img-fluid" src="../../../assets/img/family-2923690_1280.jpg" alt="Blog Media">
+            <div class="row py-3">
+              <div class="btn-group btn-group-sm col-sm-12 border-dark">
+                <button type="button" class="btn btn-outline-success col-sm-3" [disabled]="!PREVIOUS" (click)="firstBlogGroup()">First</button>
+                <button type="button" class="btn btn-outline-primary col-sm-3" [disabled]="!PREVIOUS" (click)="previousBlogGroup()">Prev</button>
+                <button type="button" class="btn btn-outline-primary col-sm-3" [disabled]="!NEXT" (click)="nextBlogGroup()">Next</button>
+                <button type="button" class="btn btn-outline-danger col-sm-3" [disabled]="!NEXT" (click)="lastBlogGroup()">Last</button>
+              </div>
             </div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi quisquam Lorem ipsum dolor ----------->Read More
-          </div>
-          <div class="card-footer">Love Hate </div>
-        </div>
-        <hr>
-        <div class="card m-3">
-          <div class="card-header">Blog Title</div>
-          <div class="card-body">
-            <div class="picdiv">
-              <img class="img-fluid" src="../../../assets/img/smile-2928326.jpg" alt="Blog Media">
-            </div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi quisquam Lorem ipsum dolor ----------->Read More
-          </div>
-          <div class="card-footer">Love Hate </div>
-        </div>
-        <hr>
-        <div class="row">
-          <button type="button" class="btn btn-link col-sm-2">Prev</button>
-          <button type="button" class="btn btn-link col-sm-2 ml-auto">Next</button>
-        </div>
       </div>
     </div>
 

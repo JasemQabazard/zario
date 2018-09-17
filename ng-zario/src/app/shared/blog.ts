@@ -1,12 +1,12 @@
 export class Blog {
-   _id: string;
+   _id?: string;
    username: string;
    media: string;    // embeded video or image stored on google S3 Cloud
    category: string;
-   hearts: Number;
-   hearted: [string];
-   hate: Number;
-   hated: [string];
+   hearts?: Number;
+   hearted?: [string];
+   hate?: Number;
+   hated?: [string];
    title: string;
    post: string;
    access: {
@@ -14,7 +14,7 @@ export class Blog {
     allmerchantslevel: string,
     onlymerchantmemberslevel: string
    };
-   comments: [{
+   comments?: [{
       _id: string,
       username: string,
       name: string,
@@ -26,8 +26,8 @@ export class Blog {
       createdAt: string,
       updatedAt: string
    }];
-   createdAt: string;
-   updatedAt: string;
+   createdAt?: string;
+   updatedAt?: string;
 }
 
 export class Comment {
@@ -46,11 +46,12 @@ export class BlogCategory {
 }
 
 export class DraftBlog {
-  _id: string;
+  _id?: string;
+  username: string;
+  media: string;
+  category: string;
   title: string;
   post: string;
-  category: string;
-  media: string;
   access: {
     allcustomerslevel: string,
     allmerchantslevel: string,

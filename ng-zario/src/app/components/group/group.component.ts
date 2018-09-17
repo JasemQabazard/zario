@@ -21,54 +21,54 @@ export class GroupComponent implements OnInit, OnDestroy {
   profile: MProfile;
   subscription: Subscription;
   username: string = undefined;
-  nogroup: boolean = true;
+  nogroup = true;
   message: string;
   messageClass: string;
-  notUpdated: boolean = false;
-  _gid: string = "";
-  
+  notUpdated = false;
+  _gid = '';
+
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private profileService: ProfileService,
     private router: Router
-  ) { 
+  ) {
     this.createfg();
   }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.codes = [
-      {countryCode:"+973 Bahrain"},
-      {countryCode:"+966 KSA"},
-      {countryCode:"+965 Kuwait"},
-      {countryCode:"+968 Oman"},
-      {countryCode:"+974 Qatar"},
-      {countryCode:"+66 Thailand"},
-      {countryCode:"+971 UAE"},
-      {countryCode:"+1 USA"}
+      {countryCode: '+973 Bahrain'},
+      {countryCode: '+966 KSA'},
+      {countryCode: '+965 Kuwait'},
+      {countryCode: '+968 Oman'},
+      {countryCode: '+974 Qatar'},
+      {countryCode: '+66 Thailand'},
+      {countryCode: '+971 UAE'},
+      {countryCode: '+1 USA'}
     ];
     this.strategy = [
-      {strategyName:"number"},
-      {strategyName:"value"}
+      {strategyName: 'number'},
+      {strategyName: 'value'}
     ];
     this.authService.loadUserCredentials();
     this.subscription = this.authService.getUsername()
       .subscribe(
-        name => { 
+        name => {
           this.username = name;
-          this.subscription.unsubscribe(); 
+          this.subscription.unsubscribe();
           this.profileService.getGroup(this.username)
           .subscribe(gp => {
-            console.log("group : ", gp);
+            console.log('group : ', gp);
             if (gp === null) {
               this.nogroup = true;
               this.notUpdated = false;
-              console.log("this.nogroup, this.notUpdated", this.nogroup, this.notUpdated);
+              console.log('this.nogroup, this.notUpdated', this.nogroup, this.notUpdated);
             } else {
               this.group = gp;
               this._gid = gp._id;
               this.fg.setValue({
-                username: this.username, 
+                username: this.username,
                 name: this.group.name,
                 description: this.group.description,
                 email: this.group.email,
@@ -90,7 +90,7 @@ export class GroupComponent implements OnInit, OnDestroy {
           },
           errormessage => {
               this.message = <any>errormessage;
-              this.messageClass= "alert alert-danger";
+              this.messageClass = 'alert alert-danger';
           });
       });
   }
@@ -98,10 +98,10 @@ export class GroupComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
-  
+
   createfg() {
-    this.fg= this.formBuilder.group({
-      username: this.username, 
+    this.fg = this.formBuilder.group({
+      username: this.username,
       name: ['', Validators.compose([
         Validators.required,
         Validators.minLength(12),
@@ -125,7 +125,7 @@ export class GroupComponent implements OnInit, OnDestroy {
         Validators.maxLength(20),
         this.validateName
       ])],
-      countrycode: '+965 Kuwait', 
+      countrycode: '+965 Kuwait',
       mobile: ['', Validators.compose([
         Validators.required,
         Validators.minLength(8),
@@ -180,7 +180,7 @@ export class GroupComponent implements OnInit, OnDestroy {
     if (regExp.test(controls.value) || regExpSingle.test(controls.value)) {
       return null; // Return as valid name
     } else {
-      return { 'validateName': true } // Return as invalid name
+      return { 'validateName': true }; // Return as invalid name
     }
   }
   // Function to validate e-mail is proper format
@@ -191,7 +191,7 @@ export class GroupComponent implements OnInit, OnDestroy {
     if (regExp.test(controls.value)) {
       return null; // Return as valid email
     } else {
-      return { 'validateEmail': true } // Return as invalid email
+      return { 'validateEmail': true }; // Return as invalid email
     }
   }
   // Function to validate name is proper format
@@ -202,7 +202,7 @@ export class GroupComponent implements OnInit, OnDestroy {
     if (regExp.test(controls.value)) {
       return null; // Return as valid phone
     } else {
-      return { 'validateMobile': true } // Return as invalid Mobile
+      return { 'validateMobile': true }; // Return as invalid Mobile
     }
   }
 
@@ -221,7 +221,7 @@ export class GroupComponent implements OnInit, OnDestroy {
       } else {
         return null;
       }
-    }
+    };
   }
 
   validateValue(controls) {
@@ -231,67 +231,67 @@ export class GroupComponent implements OnInit, OnDestroy {
     if (regExp.test(controls.value)) {
       return null; // Return as valid number
     } else {
-      return { 'validateValue': true } // Return as invalid number
+      return { 'validateValue': true }; // Return as invalid number
     }
   }
 
   onfgSubmit() {
     this.group = this.fg.value;
     this.group.username = this.username;
-    console.log("group ", this.group);
+    console.log('group ', this.group);
     if (this.nogroup) {
-      console.log("there is no group");
+      console.log('there is no group');
       // this.group.merchants = [];
       this.profileService.addGroup(this.group).subscribe(
         data => {
-          this.messageClass= "alert alert-success";
-          this.message="Group Add Successfull";
-          console.log("Group Data Added : ", data);
+          this.messageClass = 'alert alert-success';
+          this.message = 'Group Add Successfull';
+          console.log('Group Data Added : ', data);
           // update the user record with _gid
           this._gid = data._id;
           this.authService.getUser(this.username)
           .subscribe(user => {
             user._gid = this._gid;
-            console.log("user : ", user);
+            console.log('user : ', user);
             this.authService.updateUser(user._id, user).subscribe(
               data => {
-                console.log("update data : ", data);
-                this.messageClass= "alert alert-success";
-                this.message="User Data Update Successfull";
+                console.log('update data : ', data);
+                this.messageClass = 'alert alert-success';
+                this.message = 'User Data Update Successfull';
                 setTimeout(() => {
-                  this.router.navigate(['/']); 
+                  this.router.navigate(['/']);
                 }, 1500);
-              }, 
+              },
               errormessage => {
                 this.message = <any>errormessage;
-                this.messageClass= "alert alert-danger";
+                this.messageClass = 'alert alert-danger';
               }
             );
           },
             errormessage => {
                 this.message = <any>errormessage;
-                this.messageClass= "alert alert-danger";
+                this.messageClass = 'alert alert-danger';
           });
-        }, 
+        },
         errormessage => {
           this.message = <any>errormessage;
-          this.messageClass= "alert alert-danger";
+          this.messageClass = 'alert alert-danger';
         }
       );
     } else {
       this.profileService.updateGroup(this._gid, this.group).subscribe(
         data => {
-          this.messageClass= "alert alert-success";
-          this.message="Group Update Successfull";
+          this.messageClass = 'alert alert-success';
+          this.message = 'Group Update Successfull';
           setTimeout(() => {
-            this.message = "";
-            this.messageClass = "";
+            this.message = '';
+            this.messageClass = '';
             this.notUpdated = true;
           }, 1000);
-        }, 
+        },
         errormessage => {
           this.message = <any>errormessage;
-          this.messageClass= "alert alert-danger";
+          this.messageClass = 'alert alert-danger';
         }
       );
     }

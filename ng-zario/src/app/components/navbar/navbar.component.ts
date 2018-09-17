@@ -30,26 +30,26 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.subscription = this.authService.getRealname()
       .subscribe(rname => { console.log(name); this.realname = rname; });
     this.subscription = this.authService.getUserrole()
-      .subscribe(role => { 
-        console.log(role); this.userrole = role; 
+      .subscribe(role => {
+        console.log(role); this.userrole = role;
         this.ADMIN = false;
         this.CUSTOMER = false;
         this.MERCHANT = false;
         this.merchant = false;
         this.USER = false;
-        
-        if (this.userrole == "CUSTOMER" ) {
+
+        if (this.userrole === 'CUSTOMER' ) {
           this.CUSTOMER = true;
-        } else if (this.userrole == "MERCHANT" ) {
+        } else if (this.userrole === 'MERCHANT' ) {
           this.MERCHANT = true;
-        } else if (this.userrole == "merchant" ) {
+        } else if (this.userrole === 'merchant' ) {
           this.merchant = true;
-        } else if (this.userrole == "ADMIN" ) {
+        } else if (this.userrole === 'ADMIN' ) {
           this.ADMIN = true;
         } else if (!this.ADMIN && !this.MERCHANT && !this.CUSTOMER && !this.merchant) {
           this.USER = true;
         }
-        console.log("CUSTOMER, MERCHANT, merchant, ADMIN, USER : ", this.CUSTOMER, this.MERCHANT, this.merchant, this.ADMIN, this.USER);
+        console.log('CUSTOMER, MERCHANT, merchant, ADMIN, USER : ', this.CUSTOMER, this.MERCHANT, this.merchant, this.ADMIN, this.USER);
       });
   }
 

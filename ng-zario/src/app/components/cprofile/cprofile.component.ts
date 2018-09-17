@@ -26,25 +26,25 @@ export class CProfileComponent implements OnInit, OnDestroy {
   NOPROFILE: number = null;
   message: string;
   messageClass: string;
-  notUpdated: boolean = false;
-  _pid: string = "";
-  selectedImageFile: File =null;
-  selectedImageFileName: string = "No New Image Selected";
-  avatarPath: string ="../../../assets/img/avatardefault.png";
-  avatarChanged: boolean = false;
+  notUpdated = false;
+  _pid = '';
+  selectedImageFile: File = null;
+  selectedImageFileName = 'No New Image Selected';
+  avatarPath = '../../../assets/img/avatardefault.png';
+  avatarChanged = false;
   start: Date = new Date();
-  max: Date = new Date(this.start.getFullYear()-10, this.start.getMonth(), this.start.getDate(), 0,0,0);
-  min: Date = new Date(this.start.getFullYear()-100, this.start.getMonth(), this.start.getDate(), 0,0,0);
+  max: Date = new Date(this.start.getFullYear() - 10, this.start.getMonth(), this.start.getDate(), 0, 0, 0);
+  min: Date = new Date(this.start.getFullYear() - 100, this.start.getMonth(), this.start.getDate(), 0, 0, 0);
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private profileService: ProfileService,
     private router: Router
-  ) { 
+  ) {
     console.log(this.min, this.max);
-    this.datePickerConfig = Object.assign( {}, 
-      { 
+    this.datePickerConfig = Object.assign( {},
+      {
         containerClass: 'theme-dark-blue',
         showWeekNumbers: false,
         minDate: this.min,
@@ -57,41 +57,41 @@ export class CProfileComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.socials = [
-      {socialCode:"Single"},
-      {socialCode:"Married"},
-      {socialCode:"Other"}
+      {socialCode: 'Single'},
+      {socialCode: 'Married'},
+      {socialCode: 'Other'}
     ];
 
     this.genders = [
-      {genderCode:"Male"},
-      {genderCode:"Female"}
+      {genderCode: 'Male'},
+      {genderCode: 'Female'}
     ];
 
     this.authService.loadUserCredentials();
     this.subscription = this.authService.getUsername()
       .subscribe(
-        name => { 
+        name => {
           this.username = name;
           this.subscription.unsubscribe();
           this.profileService.getCProfile(this.username)
           .subscribe(cprofile => {
             this.cprofile = cprofile;
-            console.log("profiles : ", this.cprofile);
+            console.log('profiles : ', this.cprofile);
             if (!cprofile) {
               this.notUpdated = false;
               this.fp.patchValue({
-                birthdate:this.max
+                birthdate: this.max
               });
-              console.log("form values: ", this.fp.value);
+              console.log('form values: ', this.fp.value);
             } else {
               this._pid = cprofile._id;
               if (this.cprofile.avatar) {
                 this.avatarPath = `avatars/${this.cprofile.avatar}`;
               } else {
-                this.avatarPath = "../../../assets/img/avatardefault.png";
+                this.avatarPath = '../../../assets/img/avatardefault.png';
               }
               this.fp.setValue({
-                username: this.username, 
+                username: this.username,
                 birthdate: new Date(this.cprofile.birthdate),
                 gender: this.cprofile.gender,
                 social: this.cprofile.social,
@@ -104,10 +104,10 @@ export class CProfileComponent implements OnInit, OnDestroy {
             }
           },
             errmess => {
-              console.log("error : ", errmess);
+              console.log('error : ', errmess);
           });
       });
-    
+
   }
 
   ngOnDestroy() {
@@ -115,11 +115,11 @@ export class CProfileComponent implements OnInit, OnDestroy {
   }
 
   createfp() {
-    this.fp= this.formBuilder.group({
-      username: this.username, 
-      birthdate: "",
-      gender: "Female",
-      social: "Single",
+    this.fp = this.formBuilder.group({
+      username: this.username,
+      birthdate: '',
+      gender: 'Female',
+      social: 'Single',
       occupation: ['', Validators.compose([
         Validators.required,
         Validators.minLength(30)
@@ -135,7 +135,7 @@ export class CProfileComponent implements OnInit, OnDestroy {
     });
 
     this.onChanges();
-    
+
   }
   onChanges(): void {
     this.fp.valueChanges.subscribe(val => {
@@ -150,10 +150,10 @@ export class CProfileComponent implements OnInit, OnDestroy {
       this.selectedImageFileName = `Selected Image: ${this.selectedImageFile.name}`;
       this.avatarChanged = true;
       this.notUpdated = false;
-      var reader = new FileReader();
-      reader.onload = (event:any) => {
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
         this.avatarPath = event.target.result;
-      }
+      };
       reader.readAsDataURL(event.target.files[0]);
     }
   }
@@ -168,10 +168,10 @@ export class CProfileComponent implements OnInit, OnDestroy {
         imageData => {
           this.cprofile.avatar = imageData.filename;
           this.cProfileDataBaseChange();
-        }, 
+        },
         errormessage => {
-          this.message = "Accepts image files less than 500KB ONLY, Please try another image";
-          this.messageClass= "alert alert-danger";
+          this.message = 'Accepts image files less than 500KB ONLY, Please try another image';
+          this.messageClass = 'alert alert-danger';
         }
       );
     } else {
@@ -180,35 +180,35 @@ export class CProfileComponent implements OnInit, OnDestroy {
   }
 
   cProfileDataBaseChange() {
-    console.log("cprofile cProfileDataBaseChange: ", this.cprofile);
+    console.log('cprofile cProfileDataBaseChange: ', this.cprofile);
     if (this.NOPROFILE === null) {
       this.profileService.addCProfile(this.cprofile).subscribe(
         data => {
-          console.log("add data : ", data);
-          this.messageClass= "alert alert-success";
-          this.message="Profile Add Successfull";
+          console.log('add data : ', data);
+          this.messageClass = 'alert alert-success';
+          this.message = 'Profile Add Successfull';
           setTimeout(() => {
-            this.router.navigate(['/']); 
+            this.router.navigate(['/']);
           }, 1500);
-        }, 
+        },
         errormessage => {
           this.message = <any>errormessage;
-          this.messageClass= "alert alert-danger";
+          this.messageClass = 'alert alert-danger';
         }
       );
     } else {
         this.profileService.updateCProfile(this._pid, this.cprofile).subscribe(
           data => {
-            console.log("update data : ", data);
-            this.messageClass= "alert alert-success";
-            this.message="Profile Update Successfull";
+            console.log('update data : ', data);
+            this.messageClass = 'alert alert-success';
+            this.message = 'Profile Update Successfull';
             setTimeout(() => {
-              this.router.navigate(['/']); 
+              this.router.navigate(['/']);
             }, 1500);
-          }, 
+          },
           errormessage => {
             this.message = <any>errormessage;
-            this.messageClass= "alert alert-danger";
+            this.messageClass = 'alert alert-danger';
           }
         );
     }
