@@ -55,7 +55,7 @@
                                     Promotion Name minimum characters: 10, Maximum characters: 50
                                 </div>
                                 <div *ngIf="fp.controls.name.errors?.validateName">
-                                    Valid Promotion Name has no special characters 
+                                    Valid Promotion Name has no special characters
                                 </div>
                                 </div>
                             </div>
@@ -159,12 +159,12 @@
                             <img class="mb-3 border-warning img-fluid mx-auto imagePreview" [src]="p.avatar" alt="product medialink">
                         </div>
                         <div class="col-md-6">
-                                <h5>Promotion Name: {{p.name}}</h5> 
+                                <h5>Promotion Name: {{p.name}}</h5>
                                 <br/>
                                 <p>
                                 <strong>Narrative: </strong>{{p.narrative}}
                                 <br/>
-                                <strong>Type: </strong>{{p.genre}} 
+                                <strong>Type: </strong>{{p.genre}}
                                 <br/>
                                 <strong>Level: </strong>{{p.level}}
                                 <br/>
@@ -185,7 +185,6 @@
                             <div *ngIf="p.hearts">
                                 <strong>
                                     <i class="far fa-heart" style="font-size:40px;color:red;">  {{p.hearts}}</i>
-                                    <!-- <i class="fas fa-heartbeat" style="font-size:40px;color:red;"></i> {{p.hearts}} -->
                                 </strong>
                                 <select size="7" disabled>
                                     <option *ngFor="let heart of p.hearted">{{heart}}</option>
@@ -198,11 +197,11 @@
                     <hr>
                     <div class="ml-3" *ngFor="let c of p.comments; index as j">
                         <div class="row">
-                            <div class="col-md-10 h-50 align-text-top mt-3">
+                            <div class="col-md-10 h-50 align-text-top my-3">
                                 <p><strong>{{c.name}}</strong> @{{c.createdAt | date:'dd-MMM-yyyy'}}</p>
                             </div>
                             <div class="btn-group ml-auto col-md-2 h-25 align-bottom"
-                            *ngIf="realname == c.name">
+                            *ngIf="realname === c.name">
                                 <button type="button" class="btn btn-outline-danger btn-sm" (click)="deleteComments(i,j)" placement="top" tooltip="Delete">
                                         <i class="far fa-trash-alt fa-xs"></i>
                                 </button>

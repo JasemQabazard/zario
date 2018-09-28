@@ -101,6 +101,7 @@ socialsRouter.route('/:socialId/comments')
     .catch((err) => next(err));
 })
 .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+    console.log(req.params.socialId, req.body);
     Socials.findById(req.params.socialId)
     .then((social) => {
         if (social != null) {
@@ -180,9 +181,6 @@ socialsRouter.route('/:socialId/comments/:commentId')
     Socials.findById(req.params.socialId)
     .then((social) => {
         if (social != null && social.comments.id(req.params.commentId) != null) {
-            if (req.body.hearted) {
-                social.comments.id(req.params.commentId).hearted = req.body.hearted;
-            }
             if (req.body.comment) {
                 social.comments.id(req.params.commentId).comment = req.body.comment;                
             }

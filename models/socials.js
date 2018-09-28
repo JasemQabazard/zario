@@ -38,13 +38,13 @@ const Socials = new Schema({
       },
       hearts: {
          type: Number,
-         default: null
+         default: 0
       },
       // usernames who LOVE the blog post
       hearted:[String],
-      hate: {
+      hates: {
             type: Number,
-            default: null
+            default: 0
       },
       // usernames who HATE the blog post
       hated:[String],

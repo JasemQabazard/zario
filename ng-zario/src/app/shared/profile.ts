@@ -8,20 +8,20 @@ export class MProfile {
    category: string;
    email: string;
    city: string;
-   score: Number;
+   score: number;
    strategy: string;
-   bronze: Number;
-   silver: Number;
-   gold: Number;
-   platinum: Number;
-   pearl: Number;
-   blackdiamond: Number;
+   bronze: number;
+   silver: number;
+   gold: number;
+   platinum: number;
+   pearl: number;
+   blackdiamond: number;
    countrycode: string;
    mobile: string;
    phone: string;
-   longitude:  Number;
-   latitude: Number;
-   zarios: Number;
+   longitude:  number;
+   latitude: number;
+   zarios: number;
    ukey: string;
    rkey: string;
 }
@@ -36,9 +36,9 @@ export class CProfile {
    education: string;
    work: string;
    avatar: string;
-   score: Number;
+   score: number;
    initialflag: boolean;
-   zarios: Number;
+   zarios: number;
    ukey: string;
    rkey: string;
 }
@@ -53,18 +53,18 @@ export class Settings {
       countrycode: string;
       mobile: string;
       phone: string;
-      bronze: Number;
-      silver: Number;
-      gold: Number;
-      platinum: Number;
-      pearl: Number;
-      blackdiamond: Number;
-      nobronze: Number;
-      nosilver: Number;
-      nogold: Number;
-      noplatinum: Number;
-      nopearl: Number;
-      noblackdiamond: Number;
+      bronze: number; // merchasnt application bands
+      silver: number;
+      gold: number;
+      platinum: number;
+      pearl: number;
+      blackdiamond: number;
+      cbronze: number;  // customer application bands
+      csilver: number;
+      cgold: number;
+      cplatinum: number;
+      cpearl: number;
+      cblackdiamond: number;
 }
 
 export class Group {
@@ -77,21 +77,22 @@ export class Group {
    countrycode: string;
    mobile: string;
    phone: string;
+   score: number;
    strategy: string;
-   bronze: Number;
-   silver: Number;
-   gold: Number;
-   platinum: Number;
-   pearl: Number;
-   blackdiamond: Number;
+   bronze: number;
+   silver: number;
+   gold: number;
+   platinum: number;
+   pearl: number;
+   blackdiamond: number;
 }
 
 export class CRM {
    _id: string;
    _cid: string;
    _mid: string;
-   score: Number;
-   vists: Number;
+   score: number;
+   vists: number;
 }
 
 export class Codes {
@@ -120,6 +121,6 @@ export class Strategy {
 }
 
 export class Position {
-   lng: Number;
-   lat: Number;
+   lng: number;
+   lat: number;
 }

@@ -48,7 +48,7 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
   selectedImageFileName = 'No New Image Selected';
   avatarPath = '../../../assets/img/avatardefault.png';
   avatarChanged = false;
-  komments: Array<string> = [];
+  komments: Array<string> = []; // since i am displaying all the promotions for the _mid then i need a field for each comment box in the display so i am using this field for that
 
   constructor(
     private formBuilder: FormBuilder,

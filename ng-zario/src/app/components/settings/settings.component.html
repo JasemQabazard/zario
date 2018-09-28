@@ -78,7 +78,7 @@
                                   <select id="countrycode" class="form-control" formControlName="countrycode">
                                   <option *ngFor="let code of codes" [value]="code.countryCode">{{code.countryCode}}</option>
                                   </select>
-                              </div>       
+                              </div>
                               <div class="col-sm-6">
                                   <label for="city">City</label>
                                   <div [ngClass]="{'has-error':(fs.controls.city.errors && fs.controls.city.dirty), 'has-success': !fs.controls.city.errors}">
@@ -117,7 +117,7 @@
                                           </div>
                                       </div>
                                   </div>
-                              </div>       
+                              </div>
                               <div class="col-sm-6">
                                   <label for="phone">Phone Number</label>
                                   <div [ngClass]="{'has-error':(fs.controls.phone.errors && fs.controls.phone.dirty), 'has-success': !fs.controls.phone.errors}">
@@ -140,7 +140,7 @@
                       </div><!--/form-group-->
                     </div>
                     <hr class="mt-5">
-                    <h5>Value Strategy Section</h5>
+                    <h5>Merchant Bands Section</h5>
                     <hr>
                     <div class="form-group">
                       <div class="row">
@@ -158,7 +158,7 @@
                                       </div>
                                   </div>
                               </div>
-                          </div>       
+                          </div>
                           <div class="col-sm-6">
                               <label for="silver">Silver Band</label>
                               <div [ngClass]="{'has-error':(fs.controls.silver.errors && fs.controls.silver.dirty), 'has-success': !fs.controls.silver.errors}">
@@ -169,7 +169,7 @@
                                           Silver Band field is required
                                       </div>
                                       <div *ngIf="fs.controls.silver.errors?.validateValue">
-                                          Silver Band must be Numeric 
+                                          Silver Band must be Numeric
                                       </div>
                                   </div>
                               </div>
@@ -192,7 +192,7 @@
                                       </div>
                                   </div>
                               </div>
-                          </div>       
+                          </div>
                           <div class="col-sm-6">
                               <label for="platinum">Platinum Band</label>
                               <div [ngClass]="{'has-error':(fs.controls.platinum.errors && fs.controls.platinum.dirty), 'has-success': !fs.controls.platinum.errors}">
@@ -203,7 +203,7 @@
                                               Platinum Band field is required
                                       </div>
                                       <div *ngIf="fs.controls.platinum.errors?.validateValue">
-                                              platinum Band must be Numeric 
+                                              platinum Band must be Numeric
                                       </div>
                                   </div>
                               </div>
@@ -226,20 +226,20 @@
                                       </div>
                                   </div>
                               </div>
-                          </div>       
+                          </div>
                           <div class="col-sm-6">
                               <label for="blackdiamond">blackdiamond Band</label>
-                              <div [ngClass]="{'has-error':(fs.controls.blackdiamond.errors && fs.controls.blackdiamond.dirty) || (fs.errors?.bandSync && fs.controls.blackdiamond.dirty), 'has-success': !fs.controls.blackdiamond.errors || fs.errors?.bandSync}">
+                              <div [ngClass]="{'has-error':(fs.controls.blackdiamond.errors && fs.controls.blackdiamond.dirty) || (fs.errors?.bandmSync && fs.controls.blackdiamond.dirty), 'has-success': !fs.controls.blackdiamond.errors || fs.errors?.bandmSync}">
                                   <input type="text" name="blackdiamond" class="form-control"
                                   formControlName="blackdiamond" placeholder="9999">
-                                  <div class="help-block text-light small bg-danger pl-2" *ngIf="(fs.controls.blackdiamond.errors && fs.controls.blackdiamond.dirty) || (fs.errors?.bandSync && fs.controls.blackdiamond.dirty)">
+                                  <div class="help-block text-light small bg-danger pl-2" *ngIf="(fs.controls.blackdiamond.errors && fs.controls.blackdiamond.dirty) || (fs.errors?.bandmSync && fs.controls.blackdiamond.dirty)">
                                       <div *ngIf="fs.controls.blackdiamond.errors?.required">
                                           Blackdiamond Band field is required
                                       </div>
                                       <div *ngIf="fs.controls.blackdiamond.errors?.validateValue">
                                           Blackdiamond Band must be Numeric
                                       </div>
-                                      <div *ngIf="fs.errors?.bandSync">
+                                      <div *ngIf="fs.errors?.bandmSync">
                                           Bands must progressively increase in value
                                       </div>
                                   </div>
@@ -248,36 +248,36 @@
                       </div>
                     </div>
                     <hr class="mt-5">
-                    <h5>Number Based Strategy Section</h5>
+                    <h5>Customer Bands Section</h5>
                     <hr>
                     <div class="form-group">
                     <div class="row">
                         <div class="col-sm-6">
-                            <label for="nobronze">Bronze Band</label>
-                            <div [ngClass]="{'has-error':(fs.controls.nobronze.errors && fs.controls.nobronze.dirty), 'has-success': !fs.controls.nobronze.errors}">
-                                <input type="text" name="nobronze" class="form-control"
-                                formControlName="nobronze" placeholder="9999">
-                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fs.controls.nobronze.errors && fs.controls.nobronze.dirty">
-                                    <div *ngIf="fs.controls.nobronze.errors?.required">
+                            <label for="cbronze">Bronze Band</label>
+                            <div [ngClass]="{'has-error':(fs.controls.cbronze.errors && fs.controls.cbronze.dirty), 'has-success': !fs.controls.cbronze.errors}">
+                                <input type="text" name="cbronze" class="form-control"
+                                formControlName="cbronze" placeholder="9999">
+                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fs.controls.cbronze.errors && fs.controls.cbronze.dirty">
+                                    <div *ngIf="fs.controls.cbronze.errors?.required">
                                         Bronze Band field is required
                                     </div>
-                                    <div *ngIf="fs.controls.nobronze.errors?.validateValue">
+                                    <div *ngIf="fs.controls.cbronze.errors?.validateValue">
                                         Bronze Band must be Numeric
                                     </div>
                                 </div>
                             </div>
-                        </div>       
+                        </div>
                         <div class="col-sm-6">
-                            <label for="nosilver">Silver Band</label>
-                            <div [ngClass]="{'has-error':(fs.controls.nosilver.errors && fs.controls.nosilver.dirty), 'has-success': !fs.controls.nosilver.errors}">
-                                <input type="text" name="nosilver" class="form-control"
-                                formControlName="nosilver" placeholder="9999">
-                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fs.controls.nosilver.errors && fs.controls.nosilver.dirty">
-                                    <div *ngIf="fs.controls.nosilver.errors?.required">
+                            <label for="csilver">Silver Band</label>
+                            <div [ngClass]="{'has-error':(fs.controls.csilver.errors && fs.controls.csilver.dirty), 'has-success': !fs.controls.csilver.errors}">
+                                <input type="text" name="csilver" class="form-control"
+                                formControlName="csilver" placeholder="9999">
+                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fs.controls.csilver.errors && fs.controls.csilver.dirty">
+                                    <div *ngIf="fs.controls.csilver.errors?.required">
                                         Silver Band field is required
                                     </div>
-                                    <div *ngIf="fs.controls.nosilver.errors?.validateValue">
-                                        Silver Band must be Numeric 
+                                    <div *ngIf="fs.controls.csilver.errors?.validateValue">
+                                        Silver Band must be Numeric
                                     </div>
                                 </div>
                             </div>
@@ -287,31 +287,31 @@
                     <div class="form-group">
                     <div class="row">
                         <div class="col-sm-6">
-                            <label for="nogold">Gold Band</label>
-                            <div [ngClass]="{'has-error':(fs.controls.nogold.errors && fs.controls.nogold.dirty), 'has-success': !fs.controls.nogold.errors}">
-                                <input type="text" name="nogold" class="form-control"
-                                formControlName="nogold" placeholder="9999">
-                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fs.controls.nogold.errors && fs.controls.nogold.dirty">
-                                    <div *ngIf="fs.controls.nogold.errors?.required">
+                            <label for="cgold">Gold Band</label>
+                            <div [ngClass]="{'has-error':(fs.controls.cgold.errors && fs.controls.cgold.dirty), 'has-success': !fs.controls.cgold.errors}">
+                                <input type="text" name="cgold" class="form-control"
+                                formControlName="cgold" placeholder="9999">
+                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fs.controls.cgold.errors && fs.controls.cgold.dirty">
+                                    <div *ngIf="fs.controls.cgold.errors?.required">
                                         Gold Band field is required
                                     </div>
-                                    <div *ngIf="fs.controls.nogold.errors?.validateValue">
+                                    <div *ngIf="fs.controls.cgold.errors?.validateValue">
                                         Gold Band must be Numeric
                                     </div>
                                 </div>
                             </div>
-                        </div>       
+                        </div>
                         <div class="col-sm-6">
-                            <label for="noplatinum">Platinum Band</label>
-                            <div [ngClass]="{'has-error':(fs.controls.noplatinum.errors && fs.controls.noplatinum.dirty), 'has-success': !fs.controls.noplatinum.errors}">
-                                <input type="text" name="noplatinum" class="form-control"
-                                formControlName="noplatinum" placeholder="9999">
-                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fs.controls.noplatinum.errors && fs.controls.noplatinum.dirty">
-                                    <div *ngIf="fs.controls.noplatinum.errors?.required">
+                            <label for="cplatinum">Platinum Band</label>
+                            <div [ngClass]="{'has-error':(fs.controls.cplatinum.errors && fs.controls.cplatinum.dirty), 'has-success': !fs.controls.cplatinum.errors}">
+                                <input type="text" name="cplatinum" class="form-control"
+                                formControlName="cplatinum" placeholder="9999">
+                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fs.controls.cplatinum.errors && fs.controls.cplatinum.dirty">
+                                    <div *ngIf="fs.controls.cplatinum.errors?.required">
                                             Platinum Band field is required
                                     </div>
-                                    <div *ngIf="fs.controls.noplatinum.errors?.validateValue">
-                                            platinum Band must be Numeric 
+                                    <div *ngIf="fs.controls.cplatinum.errors?.validateValue">
+                                            platinum Band must be Numeric
                                     </div>
                                 </div>
                             </div>
@@ -321,33 +321,33 @@
                     <div class="form-group">
                     <div class="row">
                         <div class="col-sm-6">
-                            <label for="nopearl">Pearl Band</label>
-                            <div [ngClass]="{'has-error':(fs.controls.nopearl.errors && fs.controls.nopearl.dirty), 'has-success': !fs.controls.nopearl.errors}">
-                                <input type="text" name="nopearl" class="form-control"
-                                formControlName="nopearl" placeholder="9999">
-                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fs.controls.nopearl.errors && fs.controls.nopearl.dirty">
-                                    <div *ngIf="fs.controls.nopearl.errors?.required">
+                            <label for="cpearl">Pearl Band</label>
+                            <div [ngClass]="{'has-error':(fs.controls.cpearl.errors && fs.controls.cpearl.dirty), 'has-success': !fs.controls.cpearl.errors}">
+                                <input type="text" name="cpearl" class="form-control"
+                                formControlName="cpearl" placeholder="9999">
+                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fs.controls.cpearl.errors && fs.controls.cpearl.dirty">
+                                    <div *ngIf="fs.controls.cpearl.errors?.required">
                                         Pearl Band field is required
                                     </div>
-                                    <div *ngIf="fs.controls.nopearl.errors?.validateValue">
+                                    <div *ngIf="fs.controls.cpearl.errors?.validateValue">
                                         pearl Band must be Numeric
                                     </div>
                                 </div>
                             </div>
-                        </div>       
+                        </div>
                         <div class="col-sm-6">
-                            <label for="noblackdiamond">blackdiamond Band</label>
-                            <div [ngClass]="{'has-error':(fs.controls.noblackdiamond.errors && fs.controls.noblackdiamond.dirty) || (fs.errors?.bandnoSync && fs.controls.noblackdiamond.dirty), 'has-success': !fs.controls.noblackdiamond.errors || fs.errors?.bandnoSync}">
-                                <input type="text" name="noblackdiamond" class="form-control"
-                                formControlName="noblackdiamond" placeholder="9999">
-                                <div class="help-block text-light small bg-danger pl-2" *ngIf="(fs.controls.noblackdiamond.errors && fs.controls.noblackdiamond.dirty) || (fs.errors?.bandnoSync && fs.controls.noblackdiamond.dirty)">
-                                    <div *ngIf="fs.controls.noblackdiamond.errors?.required">
+                            <label for="cblackdiamond">blackdiamond Band</label>
+                            <div [ngClass]="{'has-error':(fs.controls.cblackdiamond.errors && fs.controls.cblackdiamond.dirty) || (fs.errors?.bandcSync && fs.controls.cblackdiamond.dirty), 'has-success': !fs.controls.cblackdiamond.errors || fs.errors?.bandcSync}">
+                                <input type="text" name="cblackdiamond" class="form-control"
+                                formControlName="cblackdiamond" placeholder="9999">
+                                <div class="help-block text-light small bg-danger pl-2" *ngIf="(fs.controls.cblackdiamond.errors && fs.controls.cblackdiamond.dirty) || (fs.errors?.bandcSync && fs.controls.cblackdiamond.dirty)">
+                                    <div *ngIf="fs.controls.cblackdiamond.errors?.required">
                                         Blackdiamond Band field is required
                                     </div>
-                                    <div *ngIf="fs.controls.noblackdiamond.errors?.validateValue">
+                                    <div *ngIf="fs.controls.cblackdiamond.errors?.validateValue">
                                         Blackdiamond Band must be Numeric
                                     </div>
-                                    <div *ngIf="fs.errors?.bandnoSync">
+                                    <div *ngIf="fs.errors?.bandcSync">
                                         Bands must progressively increase in value
                                     </div>
                                 </div>

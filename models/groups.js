@@ -45,6 +45,10 @@ const Groups = new Schema({
             type: String, 
             required: true
       },
+      score: {
+            type: Number,
+            default: 0
+         },
       strategy: {
             type: String,
             default: "VALUE"

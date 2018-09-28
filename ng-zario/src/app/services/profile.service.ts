@@ -34,7 +34,7 @@ export class ProfileService {
   }
 
   getMProfile(username: string): Observable<MProfile[]> {
-    console.log('profile service username: ', username);
+    console.log('profile service merchant username: ', username);
     return  this.http.get(baseURL + '/merchants/byuser/' + username)
                     .catch(error => this.processHttpmsgService.handleError(error));
   }
@@ -51,7 +51,7 @@ export class ProfileService {
   }
 
   getCProfile(username: string): Observable<CProfile> {
-    console.log('profile service username: ', username);
+    console.log('profile service customer username: ', username);
     return  this.http.get(baseURL + '/customers/byuser/' + username)
                     .catch(error => this.processHttpmsgService.handleError(error));
   }
@@ -64,6 +64,11 @@ export class ProfileService {
 
   updateGroup(gid: string, group: any) {
     return this.http.put(baseURL + '/groups/' + gid , group)
+      .catch(error => this.processHttpmsgService.handleError(error));
+  }
+
+  getGroupById(gid: string): Observable<Group> {
+    return this.http.get(baseURL + '/groups/' + gid)
       .catch(error => this.processHttpmsgService.handleError(error));
   }
 
@@ -93,6 +98,11 @@ export class ProfileService {
   addCRM(crm): Observable<CRM> {
     return this.http.post(baseURL + '/crms', crm)
       .catch(error => this.processHttpmsgService.handleError(error));
+  }
+  getCRM(cid: string): Observable<CRM[]> {
+    console.log('crm service by cid: ', cid);
+    return  this.http.get(baseURL + '/crms/bycid/' + cid)
+                    .catch(error => this.processHttpmsgService.handleError(error));
   }
 
   // adding new group tp database on the server

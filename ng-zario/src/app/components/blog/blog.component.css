@@ -30,7 +30,7 @@
     border: 1px solid #ffc107;
 }
 
-.btn-group{
+#btn-bar{
     position: absolute;
     bottom: 0;
     right: 0;

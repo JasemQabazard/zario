@@ -84,12 +84,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
                 platinum: this.settings.platinum,
                 pearl: this.settings.pearl,
                 blackdiamond: this.settings.blackdiamond,
-                nobronze: this.settings.nobronze,
-                nosilver: this.settings.nosilver,
-                nogold: this.settings.nogold,
-                noplatinum: this.settings.noplatinum,
-                nopearl: this.settings.nopearl,
-                noblackdiamond: this.settings.noblackdiamond
+                cbronze: this.settings.cbronze,
+                csilver: this.settings.csilver,
+                cgold: this.settings.cgold,
+                cplatinum: this.settings.cplatinum,
+                cpearl: this.settings.cpearl,
+                cblackdiamond: this.settings.cblackdiamond
               });
               this.SETTINGS = true;
               this.notUpdated = true;
@@ -164,35 +164,35 @@ export class SettingsComponent implements OnInit, OnDestroy {
           Validators.required,
           this.validateValue
         ])],
-        nobronze: [0, Validators.compose([
+        cbronze: [0, Validators.compose([
           Validators.required,
           this.validateValue
         ])],
-        nosilver: [0, Validators.compose([
+        csilver: [0, Validators.compose([
           Validators.required,
           this.validateValue
         ])],
-        nogold: [0, Validators.compose([
+        cgold: [0, Validators.compose([
           Validators.required,
           this.validateValue
         ])],
-        noplatinum: [0, Validators.compose([
+        cplatinum: [0, Validators.compose([
           Validators.required,
           this.validateValue
         ])],
-        nopearl: [0, Validators.compose([
+        cpearl: [0, Validators.compose([
           Validators.required,
           this.validateValue
         ])],
-        noblackdiamond: [0, Validators.compose([
+        cblackdiamond: [0, Validators.compose([
           Validators.required,
           this.validateValue
         ])]
     }, {
       validator:
       Validators.compose([
-        this.bandSync('bronze', 'silver', 'gold', 'platinum', 'pearl', 'blackdiamond'),
-        this.bandnoSync('nobronze', 'nosilver', 'nogold', 'noplatinum', 'nopearl', 'noblackdiamond')
+        this.bandmSync('bronze', 'silver', 'gold', 'platinum', 'pearl', 'blackdiamond'),
+        this.bandcSync('cbronze', 'csilver', 'cgold', 'cplatinum', 'cpearl', 'cblackdiamond')
       ])
     });
 
@@ -219,36 +219,36 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
   }
 
-  bandSync(bronze, silver, gold, platinum, pearl, blackdiamond) {
+  bandmSync(bronze, silver, gold, platinum, pearl, blackdiamond) {
     return (group: FormGroup) => {
       if (Number(group.controls[silver].value) <= Number(group.controls[bronze].value)) {
-        return { 'bandSync': true };
+        return { 'bandmSync': true };
       } else if (Number(group.controls[gold].value) <= Number(group.controls[silver].value)) {
-        return { 'bandSync': true };
+        return { 'bandmSync': true };
       } else if (Number(group.controls[platinum].value) <= Number(group.controls[gold].value)) {
-        return { 'bandSync': true };
+        return { 'bandmSync': true };
       } else if (Number(group.controls[pearl].value) <= Number(group.controls[platinum].value)) {
-        return { 'bandSync': true };
+        return { 'bandmSync': true };
       } else if (Number(group.controls[blackdiamond].value) <= Number(group.controls[pearl].value)) {
-        return { 'bandSync': true };
+        return { 'bandmSync': true };
       } else {
         return null;
       }
     };
   }
 
-  bandnoSync(nobronze, nosilver, nogold, noplatinum, nopearl, noblackdiamond) {
+  bandcSync(cbronze, csilver, cgold, cplatinum, cpearl, cblackdiamond) {
     return (group: FormGroup) => {
-      if (Number(group.controls[nosilver].value) <= Number(group.controls[nobronze].value)) {
-        return { 'bandnoSync': true };
-      } else if (Number(group.controls[nogold].value) <= Number(group.controls[nosilver].value)) {
-        return { 'bandnoSync': true };
-      } else if (Number(group.controls[noplatinum].value) <= Number(group.controls[nogold].value)) {
-        return { 'bandnoSync': true };
-      } else if (Number(group.controls[nopearl].value) <= Number(group.controls[noplatinum].value)) {
-        return { 'bandnoSync': true };
-      } else if (Number(group.controls[noblackdiamond].value) <= Number(group.controls[nopearl].value)) {
-        return { 'bandnoSync': true };
+      if (Number(group.controls[csilver].value) <= Number(group.controls[cbronze].value)) {
+        return { 'bandcSync': true };
+      } else if (Number(group.controls[cgold].value) <= Number(group.controls[csilver].value)) {
+        return { 'bandcSync': true };
+      } else if (Number(group.controls[cplatinum].value) <= Number(group.controls[cgold].value)) {
+        return { 'bandcSync': true };
+      } else if (Number(group.controls[cpearl].value) <= Number(group.controls[cplatinum].value)) {
+        return { 'bandcSync': true };
+      } else if (Number(group.controls[cblackdiamond].value) <= Number(group.controls[cpearl].value)) {
+        return { 'bandcSync': true };
       } else {
         return null;
       }
@@ -358,33 +358,3 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
 }
-
-// _id: string;
-// username: string;
-
-// name: string;
-// avatar: string;
-// email: string;
-// city: string;
-// countrycode: string;
-// mobile:string;
-// phone: string;
-
-// nocustomers: Number; ==========> +1 Updated by customer add component
-// nomerchants: Number; ==========> +1 Updated by merchant add component
-
-// Value Based Bands ================>
-// bronze: Number;
-// silver: Number;
-// gold: Number;
-// platinum: Number;
-// pearl: Number;
-// blackdiamond: Number;
-
-// Number Based Bands ================>
-// nobronze: Number;
-// nosilver: Number;
-// nogold: Number;
-// noplatinum: Number;
-// nopearl: Number;
-// noblackdiamond: Number;

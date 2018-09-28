@@ -20,16 +20,16 @@ export class UsersamendComponent implements OnInit, OnDestroy {
   user: User;
   codes: Codes[];
   username: string = undefined;
-  existingEmail: string = "";
+  existingEmail = '';
   message: string;
   messageClass: string;
-  emailValid: boolean = true;
+  emailValid = true;
   emailMessage: string;
-  notUpdated: boolean = false;
-  _uid: string = "";
+  notUpdated = false;
+  _uid = '';
   timeleft: number;
-  showverifyemail: boolean = false;
-  processing: boolean = false;
+  showverifyemail = false;
+  processing = false;
   verifycode: string = this.commonRoutinesService.codeGen();
 
 
@@ -38,32 +38,32 @@ export class UsersamendComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private commonRoutinesService: CommonRoutinesService,
     private router: Router
-  ) { 
+  ) {
     this.createfu();
     this.createForm2();
   }
 
   ngOnInit() {
     this.codes = [
-      {countryCode:"+973 Bahrain"},
-      {countryCode:"+966 KSA"},
-      {countryCode:"+965 Kuwait"},
-      {countryCode:"+968 Oman"},
-      {countryCode:"+974 Qatar"},
-      {countryCode:"+66 Thailand"},
-      {countryCode:"+971 UAE"},
-      {countryCode:"+1 USA"}
+      {countryCode: '+973 Bahrain'},
+      {countryCode: '+966 KSA'},
+      {countryCode: '+965 Kuwait'},
+      {countryCode: '+968 Oman'},
+      {countryCode: '+974 Qatar'},
+      {countryCode: '+66 Thailand'},
+      {countryCode: '+971 UAE'},
+      {countryCode: '+1 USA'}
     ];
     this.authService.loadUserCredentials();
     this.subscription = this.authService.getUsername()
     .subscribe(
-      name => { 
+      name => {
         this.username = name;
         this.subscription.unsubscribe();
         this.authService.getUser(this.username)
         .subscribe(user => {
           this.user = user;
-          console.log("user : ", this.user);
+          console.log('user : ', this.user);
           this._uid = user._id;
           this.fu.setValue({
             email: user.email,
@@ -76,7 +76,7 @@ export class UsersamendComponent implements OnInit, OnDestroy {
           this.existingEmail = user.email;
         },
           errmess => {
-            console.log("error : ", errmess);
+            console.log('error : ', errmess);
         });
     });
   }
@@ -94,7 +94,7 @@ export class UsersamendComponent implements OnInit, OnDestroy {
       }, {
         validator: this.emailVerification(this.verifycode, 'verifyInput')
       }
-    )
+    );
   }
   emailVerification(vcode, verifyInput) {
     console.log(vcode, verifyInput);
@@ -102,13 +102,13 @@ export class UsersamendComponent implements OnInit, OnDestroy {
       if (vcode === group.controls[verifyInput].value) {
         return null; // Return as valid Verification Code { 'emailVerification': false }
       } else {
-        return { 'emailVerification': true } // Return as invalid Verification Code
+        return { 'emailVerification': true }; // Return as invalid Verification Code
       }
-    }
+    };
   }
 
   createfu() {
-    this.fu= this.formBuilder.group({
+    this.fu = this.formBuilder.group({
       email: ['', Validators.compose([
         Validators.required,
         Validators.minLength(5),
@@ -127,7 +127,7 @@ export class UsersamendComponent implements OnInit, OnDestroy {
         Validators.maxLength(15),
         this.validateName
       ])],
-      countrycode: '+965 Kuwait', 
+      countrycode: '+965 Kuwait',
       mobile: ['', Validators.compose([
         Validators.required,
         Validators.minLength(8),
@@ -152,10 +152,10 @@ export class UsersamendComponent implements OnInit, OnDestroy {
     if (regExp.test(controls.value)) {
       return null; // Return as valid name
     } else {
-      return { 'validateName': true } // Return as invalid name
+      return { 'validateName': true }; // Return as invalid name
     }
   }
-  
+
   // Function to validate name is proper format
   validateMobile(controls) {
     // Create a regular expression
@@ -164,7 +164,7 @@ export class UsersamendComponent implements OnInit, OnDestroy {
     if (regExp.test(controls.value)) {
       return null; // Return as valid phone
     } else {
-      return { 'validateMobile': true } // Return as invalid Mobile
+      return { 'validateMobile': true }; // Return as invalid Mobile
     }
   }
 
@@ -176,15 +176,15 @@ export class UsersamendComponent implements OnInit, OnDestroy {
     if (regExp.test(controls.value)) {
       return null; // Return as valid email
     } else {
-      return { 'validateEmail': true } // Return as invalid email
+      return { 'validateEmail': true }; // Return as invalid email
     }
   }
 
     // Function to check if e-mail is taken
     checkEmail() {
       // Function from authentication file to check if e-mail is taken
-      if (this.fu.get('email').value === "" || 
-              this.fu.get('email').value == this.existingEmail) return;
+      if (this.fu.get('email').value === '' ||
+              this.fu.get('email').value === this.existingEmail) { return; }
       this.emailValid = false;
       this.authService.checkEmail(this.fu.get('email').value).subscribe(
         data => {
@@ -195,31 +195,31 @@ export class UsersamendComponent implements OnInit, OnDestroy {
           } else {
             this.emailValid = true; // Return email as valid
           }
-        }, 
+        },
         errormessage => {
           this.message = <any>errormessage;
-          this.messageClass= "alert alert-danger";
+          this.messageClass = 'alert alert-danger';
         }
       );
     }
 
     onUpdateSubmit() {
-      if (this.existingEmail == this.fu.get('email').value) {
+      if (this.existingEmail === this.fu.get('email').value) {
               this.onVerifyClick();
       } else {
         const codeData = {
           email: '',
           vcode: ''
-        }
-        codeData.email= this.fu.get('email').value;
-        codeData.vcode=this.verifycode;
+        };
+        codeData.email = this.fu.get('email').value;
+        codeData.vcode = this.verifycode;
         this.authService.mailVerification(codeData).subscribe(
           data => {
             this.processing = true;
             this.disableForm();
             this.showverifyemail = true;
             this.timeleft = 90;
-            var x = setInterval(() => {
+            const x = setInterval(() => {
                     --this.timeleft;
                     if (this.timeleft === 0) {
                       clearInterval(x);
@@ -228,37 +228,37 @@ export class UsersamendComponent implements OnInit, OnDestroy {
                       this.enableForm();
                     }
                   }, 1000);
-          }, 
+          },
           errormessage => {
             this.message = <any>errormessage;
-            this.messageClass= "alert alert-danger";
+            this.messageClass = 'alert alert-danger';
           }
         );
       }
     }
-  
+
     onVerifyClick() {
       this.enableForm();
       const user = this.fu.value;
       console.log(user);
       this.authService.updateUser(this._uid, user).subscribe(
         data => {
-          console.log("update data : ", data);
-          this.messageClass= "alert alert-success";
-          this.message="User Data Update Successfull";
+          console.log('update data : ', data);
+          this.messageClass = 'alert alert-success';
+          this.message = 'User Data Update Successfull';
           setTimeout(() => {
-            this.router.navigate(['/']); 
+            this.router.navigate(['/']);
           }, 1500);
-        }, 
+        },
         errormessage => {
           this.message = <any>errormessage;
-          this.messageClass= "alert alert-danger";
+          this.messageClass = 'alert alert-danger';
           this.processing = false;
           this.showverifyemail = false;
         }
       );
     }
-  
+
     enableForm() {
       this.fu.controls['email'].enable();
       this.fu.controls['firstname'].enable();
@@ -266,7 +266,7 @@ export class UsersamendComponent implements OnInit, OnDestroy {
       this.fu.controls['countrycode'].enable();
       this.fu.controls['mobile'].enable();
     }
-  
+
     disableForm() {
       this.fu.controls['email'].disable();
       this.fu.controls['firstname'].disable();
@@ -277,11 +277,11 @@ export class UsersamendComponent implements OnInit, OnDestroy {
 
 }
 
-// username: String; 
+// username: String;
 // password: string;
 // ========================= Amendable fields ==================
 // email: String;
-// firstname: String; 
-// lastname:String; 
-// countrycode: String; 
+// firstname: String;
+// lastname:String;
+// countrycode: String;
 // mobile: String;

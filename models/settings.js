@@ -49,59 +49,59 @@ const Settings = new Schema({
       },
       nocustomers: {
             type: Number,
-            default: null
+            default: 0
       },
       nomerchants: {
          type: Number,
-         default: null
+         default: 0
       },
       bronze: {
          type: Number,
-         default: null
+         default: 0
       },
       silver: {
          type: Number,
-         default: null
+         default: 0
       },
       gold: {
          type: Number,
-         default: null
+         default: 0
       },
       platinum: {
          type: Number,
-         default: null
+         default: 0
       },
       pearl: {
          type: Number,
-         default: null
+         default: 0
       },
       blackdiamond: {
          type: Number,
-         default: null
+         default: 0
       },
-      nobronze: {
-      type: Number,
-      default: null
+      cbronze: {
+            type: Number,
+            default: 0
       },
-      nosilver: {
-      type: Number,
-      default: null
+      csilver: {
+            type: Number,
+            default: 0
       },
-      nogold: {
-      type: Number,
-      default: null
+      cgold: {
+            type: Number,
+            default: 0
       },
-      noplatinum: {
-      type: Number,
-      default: null
+      cplatinum: {
+            type: Number,
+            default: 0
       },
-      nopearl: {
-      type: Number,
-      default: null
+      cpearl: {
+            type: Number,
+            default: 0
       },
-      noblackdiamond: {
-      type: Number,
-      default: null
+      cblackdiamond: {
+            type: Number,
+            default: 0
       },
       distributedzarios: {
          type: Number,

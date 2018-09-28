@@ -34,6 +34,7 @@ export class BlogService {
   }
 
   addComment(bid: string, remark: any) {
+    console.log('2 bid, remark', bid, remark);
     return this.http.post(baseURL + '/socials/' + bid + '/comments', remark)
       .catch(error => this.processHttpmsgService.handleError(error));
   }
@@ -44,7 +45,7 @@ export class BlogService {
   }
 
   updateComment(bid: string, cid: string, comment: any) {
-    console.log('updateComment Service comment : ', comment);
+    console.log('updateComment Service comment : ', bid, cid, comment);
     return this.http.put(baseURL + '/socials/' + bid + '/comments/' + cid, comment)
       .catch(error => this.processHttpmsgService.handleError(error));
   }

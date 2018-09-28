@@ -4,11 +4,11 @@ const Schema = mongoose.Schema;
 
 // customer merchants relationship management schema
 const CRM = new Schema({
-   _cid: { 
+   _cid: {                          // CProfile _id
          type: mongoose.Schema.Types.ObjectId,
          required: true
    },
-   _mid: { 
+   _mid: {                          // MProfile _id
       type: mongoose.Schema.Types.ObjectId,
       required: true
    },
