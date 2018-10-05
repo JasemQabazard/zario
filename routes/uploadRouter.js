@@ -5,6 +5,16 @@ const authenticate = require('../authenticate');
 const multer = require('multer');
 const cors = require('./cors');
 
+// s3 
+const AWS = require('aws-sdk');
+const uuid = require('uuid/v1');
+const Keys = require('../config');
+const s3 = new AWS.S3({
+    accessKeyId: Keys.accessKeyId,
+    secretAccessKey: Keys.secretAccessKey,
+    region: 'ap-southeast-1'
+});
+// arn:aws:s3:::zarioio-blog-media
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, './public/avatars/');
@@ -42,6 +52,21 @@ uploadRouter.route('/')
             res.json(req.file);
         }
     });
-}); 
+});
+
+uploadRouter.route('/aws/:specs')
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
+.get(cors.corsWithOptions, authenticate.verifyUser, (req, res) => {
+    // 5ba9d7c194951222300ea8cbjpeg
+    const uid = req.params.specs.substring(0, 24);
+    const fileext = req.params.specs.substring(24);
+    const key = `${uid}/${uuid()}.${fileext}`;
+    console.log(fileext, req.params.specs, key);
+    s3.getSignedUrl('putObject', {
+       Bucket: 'zarioio-blog-media',
+       ContentType: `image/${fileext}`,
+       Key: key
+    }, (err, url) => res.send({key, url}));
+});
 
 module.exports = uploadRouter;

@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { BlogService } from '../../services/blog.service';
 import { ProfileService } from '../../services/profile.service';
-import { Blog, Comment, BlogCategory, DraftBlog } from '../../shared/blog';
+import { Blog, Comment, BlogCategory, DraftBlog, awsMediaPath } from '../../shared/blog';
 import { MProfile, CProfile, Group, Settings } from '../../shared/profile';
 import { Level } from '../../shared/promotions';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
@@ -41,9 +41,11 @@ export class BlogComponent implements OnInit, OnDestroy {
   _bid = '';
   _cid = '';
   _mid = '';
-  selectedMediaFile: File = null;
-  selectedMediaFileName = 'No New Media Selected';
-  mediaPath = '../../../assets/img/blog-movement-2203657.png';
+  _uid = '';
+  _gid = '';
+  selectedMediaFile = null;
+  selectedMediaFileName = 'No Media Selected';
+  mediaPath = awsMediaPath + 'blog-movement-2203657.png';
   mediaChanged = false;
   draftblog: DraftBlog = new DraftBlog;
   blogKey: string;
@@ -61,10 +63,14 @@ export class BlogComponent implements OnInit, OnDestroy {
   komment: string;
   secureCLHDisplay = true;    // security for Comment Love Hate display and access
   score = 0;
-  _gid = '';
   settings: Settings;
   noProfile = false;
   mprofile: MProfile;
+  btnSupport = 'btn-outline-warning';
+  btnAddEditPost = 'btn-link';
+  btnRetailtainment = 'btn-link';
+  btnOpenInnovation = 'btn-link';
+  btnZarioCryptoCurrency = 'btn-link';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -135,10 +141,10 @@ export class BlogComponent implements OnInit, OnDestroy {
     this.blogService.getBlogs()
     .subscribe(blogs => {
       this.blogs = blogs;
-      console.log('get all blogs in the system: ', blogs);
+      console.log('%c get all blogs in the system: ', 'background: #222; color: #bada55', blogs);
       setTimeout(() => {
         if (this.username === undefined) {
-          console.log('1- changecategory at blog read time out');
+          console.log('&c 1- changecategory at blog read time out', 'background: #222; color: #bada55');
           this.changeCategory('support');
         }
       }, 1000);
@@ -152,20 +158,18 @@ export class BlogComponent implements OnInit, OnDestroy {
     this.profileService.getSettings()
     .subscribe(settings => {
       this.settings = settings[0];
-      console.log('settings : ', this.settings);
+      console.log('%c settings : ', 'background: #222; color: #bada55', this.settings);
     });
     this.subscription = this.authService.getUsername()
     .subscribe(
       name => {
-        console.log('name ', name);
         this.username = name;
         const draft: DraftBlog = this.loadDraftBlog();
         if (draft === null) {
-          console.log('NO DRAFT BLOG EXISTS ');
+          console.log('$c NO DRAFT BLOG EXISTS ', 'background: #222; color: #bada55');
         } else {
           this.draftblog = draft;
           this._bid = this.draftblog._id;
-          console.log('loadDraftBlog: ', this.draftblog);
           this.LOCALSTORAGE = true;
           this.fb.setValue({
             blogcategory: this.draftblog.category,
@@ -173,16 +177,16 @@ export class BlogComponent implements OnInit, OnDestroy {
             allmerchantslevel: this.draftblog.access.allmerchantslevel,
             onlymemberslevel: this.draftblog.access.onlymerchantmemberslevel
           });
-          // this.selectedMediaFile = <File>this.draftblog.media;
-          // this.displayMediaFile();
+          if (this.draftblog.media !== '') {
+            this.mediaPath = awsMediaPath + this.draftblog.media;
+          }
         }
         this.authService.getUser(this.username)
         .subscribe(user => {
-          console.log('user : ', user);
           this.userrole = user.role;
           this._gid = user._gid;
           this._mid = user._mid;
-          console.log('this viewer _gid', this._gid);
+          this._uid = user._id;
           if (this.userrole === 'CUSTOMER') {
             this.profileService.getCProfile(this.username)
             .subscribe(cprofile => {
@@ -190,7 +194,7 @@ export class BlogComponent implements OnInit, OnDestroy {
                   this.score = cprofile.score;
                   this._cid = cprofile._id;
                 }
-                console.log('2- changecategory at userrole customer');
+                console.log('%c 2- changecategory at userrole customer', 'background: #222; color: #bada55');
                 this.changeCategory('support');
               });
           } else if (this.userrole === 'MERCHANT' || this.userrole === 'merchant') {
@@ -198,7 +202,7 @@ export class BlogComponent implements OnInit, OnDestroy {
               this.profileService.getGroupById(this._gid)
               .subscribe(group => {
                 this.score = group.score;
-                console.log('3- changecategory at userrole === merchnat');
+                console.log('%c 3- changecategory at userrole === merchnat', 'background: #222; color: #bada55');
                 this.changeCategory('support');
                 if (this._mid !== null) {
                   this.profileService.getMProfileID(this._mid)
@@ -212,11 +216,11 @@ export class BlogComponent implements OnInit, OnDestroy {
               });
             } else {
               this.noProfile = false;
-              console.log('4- changecategory at userrole === merchnat but with null _gid');
+              console.log('%c 4- changecategory at userrole === merchnat but with null _gid',  'background: #222; color: #bada55');
               this.changeCategory('support');
             }
           } else {
-            console.log('5- changecategory at userrole admin probably', this.userrole);
+            console.log('%c 5- changecategory at userrole admin probably', 'background: #222; color: #bada55', this.userrole);
             this.changeCategory('support');
           }
         });
@@ -245,36 +249,84 @@ export class BlogComponent implements OnInit, OnDestroy {
   }
 
   changeCategory(category) {
-    this.category = category;
-    if (this.category === 'Add Edit Post') {
-      this.addEditPost = true;
-    } else {
-      this.addEditPost = false;
-      this.displayedBlogsNDX = 0;
-      this.xblogs = this.blogs.filter( (b) => {
-        return b.category === this.category;
-       });
-      this.prepareBlogDisplay();
+    if (this.category !== category) {
+      this.btnSupport = 'btn-link';
+      this.btnAddEditPost = 'btn-link';
+      this.btnRetailtainment = 'btn-link';
+      this.btnOpenInnovation = 'btn-link';
+      this.btnZarioCryptoCurrency = 'btn-link';
+      this.category = category;
+      if (this.category === 'Add Edit Post') {
+        this.addEditPost = true;
+        this.btnAddEditPost = 'btn-outline-warning';
+      } else {
+        if (category === 'support') {
+          this.btnSupport = 'btn-outline-warning';
+        } else if (category === 'retailtainment') {
+          this.btnRetailtainment = 'btn-outline-warning';
+        } else if (category === 'open innovation') {
+          this.btnOpenInnovation = 'btn-outline-warning';
+        } else if (category === 'zario & cryptocurrency') {
+          this.btnZarioCryptoCurrency = 'btn-outline-warning';
+        }
+        this.addEditPost = false;
+        this.displayedBlogsNDX = 0;
+        this.xblogs = [];
+        this.xblogs = this.blogs.filter( (b) => {
+          return b.category === this.category;
+         });
+        this.prepareBlogDisplay();
+      }
     }
   }
 
   mediaFileSelected(event: any) {
     if (event.target.files && event.target.files[0]) {
-      this.selectedMediaFile = <File>event.target.files[0];
+      this.selectedMediaFile = event.target.files[0];
       this.displayMediaFile();
     }
   }
 
   displayMediaFile() {
-    this.selectedMediaFileName = `Selected Image: ${this.selectedMediaFile.name}`;
     this.mediaChanged = true;
-    this.notUpdated = false;
+    this.selectedMediaFileName = 'Image selected but not Uploaded';
+    function imageExists(url, callback) {
+      const img = new Image();
+      img.onload = function() { callback(true); };
+      img.onerror = function() { callback(false); };
+      img.src = url;
+    }
     const reader = new FileReader();
     reader.onload = (event: any) => {
-      this.mediaPath = event.target.result;
+      imageExists(event.target.result, (exists) => {
+        if (exists) {
+          this.mediaPath = event.target.result;
+        } else {
+          this.selectedMediaFileName = 'Your selection is not an Image File';
+          this.mediaPath = awsMediaPath + 'blog-movement-2203657.png';
+        }
+      });
     };
-    console.log(this.selectedMediaFileName, this.selectedMediaFile);
-    reader.readAsDataURL(<File>this.selectedMediaFile);
+    reader.readAsDataURL(this.selectedMediaFile);
+  }
+
+  uploadMediaFile() {
+    const fileext = this.selectedMediaFile.type.slice(this.selectedMediaFile.type.indexOf('/') + 1);
+    const specs = this._uid + fileext;
+    this.blogService.postAWSMediaURL(specs)
+              .subscribe(uploadConfig => {
+                this.blogService.putAWSMedia(uploadConfig.url , this.selectedMediaFile)
+                .subscribe(resp => {
+                  this.mediaPath = awsMediaPath + uploadConfig.key;
+                  this.draftblog.media = uploadConfig.key;
+                  this.selectedMediaFileName = '';
+                  this.mediaChanged = false;
+                  this.changeNotUpdated();
+                },
+                errormessage => {
+                  console.log('error--->message', errormessage);
+                });
+        });
   }
 
   saveDraft() {
@@ -283,7 +335,6 @@ export class BlogComponent implements OnInit, OnDestroy {
     this.draftblog.access.allcustomerslevel = this.fb.controls['allcustomerslevel'].value;
     this.draftblog.access.allmerchantslevel = this.fb.controls['allmerchantslevel'].value;
     this.draftblog.access.onlymerchantmemberslevel = this.fb.controls['onlymemberslevel'].value;
-    // this.draftblog.media = this.selectedMediaFile;
     this.storeDraftBlog();
     this.LOCALSTORAGE = true;
   }
@@ -296,7 +347,7 @@ export class BlogComponent implements OnInit, OnDestroy {
   publish() {
     this.blog = {
       username: this.username,
-      media: 'for later work',
+      media: this.draftblog.media,
       category: this.fb.controls['blogcategory'].value,
       title: this.draftblog.title,
       post: this.draftblog.post,
@@ -310,7 +361,6 @@ export class BlogComponent implements OnInit, OnDestroy {
       data => {
         this.messageClass = 'alert alert-success';
         this.message = 'Blog Add Successfull';
-        console.log('Blog Data Added : ', data);
         this.fb.reset();
         this.fb.setValue ({
           blogcategory: 'support',
@@ -334,6 +384,8 @@ export class BlogComponent implements OnInit, OnDestroy {
             onlymerchantmemberslevel: ''
            }
         };
+        this.selectedMediaFileName = 'No Media Selected';
+        this.mediaPath = awsMediaPath + 'blog-movement-2203657.png';
         this.blogs.push(data);
         this.notUpdated = true;
       });
@@ -342,7 +394,7 @@ export class BlogComponent implements OnInit, OnDestroy {
   updatePost() {
     this.blog = {
       username: this.username,
-      media: 'for later work',
+      media: this.draftblog.media,
       category: this.fb.controls['blogcategory'].value,
       title: this.draftblog.title,
       post: this.draftblog.post,
@@ -356,7 +408,6 @@ export class BlogComponent implements OnInit, OnDestroy {
       data => {
         this.messageClass = 'alert alert-success';
         this.message = 'Blog Update Successfull';
-        console.log('Blog Data Updated : ', data);
         this.fb.reset();
         this.fb.setValue ({
           blogcategory: 'support',
@@ -384,6 +435,8 @@ export class BlogComponent implements OnInit, OnDestroy {
           return b._id === this._bid;
         });
         this._bid = '';
+        this.selectedMediaFileName = 'No Media Selected';
+        this.mediaPath = awsMediaPath + 'blog-movement-2203657.png';
         this.blogs[ndx] = data;
         this.notUpdated = true;
       });
@@ -396,7 +449,6 @@ export class BlogComponent implements OnInit, OnDestroy {
   }
 
   storeDraftBlog() {
-    console.log('storeDraftBlog ', this.draftblog);
     localStorage.setItem(this.blogKey, JSON.stringify(this.draftblog));
   }
 
@@ -417,22 +469,23 @@ export class BlogComponent implements OnInit, OnDestroy {
         }
       };
     }
-    console.log('displayedBlogsNDX Before - ', this.displayedBlogsNDX);
     for ( let i = this.displayedBlogsNDX; i < this.xblogs.length; i++) {
       if (no === 3) {
         break;
       } else {
-        this.displayedBlogs[no] = this.xblogs[i];
+        this.displayedBlogs[no] = Object.assign({}, this.xblogs[i]);
+        this.displayedBlogs[no].media = awsMediaPath + this.displayedBlogs[no].media;
         no++;
         this.displayedBlogsNDX++;
       }
     }
-    console.log('displayedBlogsNDX After - ', this.displayedBlogsNDX);
     this.currentlyDisplayed = this.displayedBlogs[0];
     this.currentlyDisplayedNDX = 0;
-    this.secureCLH();
-    this.setHateLove();
-    this._bid = this.currentlyDisplayed._id;
+    this.secureCLHDisplay = true;
+    if (this.xblogs.length !== 0) {
+      this.secureCLH();
+      this.setHateLove();
+    }
     this._cid = '';
     this.komment = '';
     this.commentNotUpdated = true;
@@ -453,13 +506,11 @@ export class BlogComponent implements OnInit, OnDestroy {
   }
 
   secureCLH() {
-    this.secureCLHDisplay = true;
     if (this.userrole === 'ADMIN') {
       this.secureCLHDisplay = false;
     } else if (this.userrole === 'MERCHANT' || this.userrole === 'merchant') {
       this.authService.getUser(this.currentlyDisplayed.username)
       .subscribe(user => {
-        console.log('this bolg creator _gid', user._gid);
         if (user._gid === this._gid) {
           this.secureCLHDisplay = false;
         } else if (this.currentlyDisplayed.access.allmerchantslevel !== 'NO ACCESS') {
@@ -494,7 +545,6 @@ export class BlogComponent implements OnInit, OnDestroy {
               this.profileService.getMProfileID(user._mid)
               .subscribe(mprofile => {
                 this.mprofile = mprofile;
-                console.log('this.mprofile for blog creator', this.mprofile);
                 if (score !== null) {
                   this.mapCustomer2Merchant(score, this.currentlyDisplayed.access.onlymerchantmemberslevel);
                 } else {
@@ -579,7 +629,7 @@ export class BlogComponent implements OnInit, OnDestroy {
     this.draftblog = {
       _id: this.currentlyDisplayed._id,
       username: this.currentlyDisplayed.username,
-      media: this.currentlyDisplayed.media,
+      media: this.currentlyDisplayed.media.substring(59),
       category: this.currentlyDisplayed.category,
       title: this.currentlyDisplayed.title,
       post: this.currentlyDisplayed.post,
@@ -589,7 +639,6 @@ export class BlogComponent implements OnInit, OnDestroy {
         onlymerchantmemberslevel: this.currentlyDisplayed.access.onlymerchantmemberslevel
        }
     };
-    this.changeCategory('Add Edit Post');
     this._bid = this.currentlyDisplayed._id;
     this.fb.setValue ({
       blogcategory: this.draftblog.category,
@@ -597,8 +646,9 @@ export class BlogComponent implements OnInit, OnDestroy {
       allmerchantslevel: this.draftblog.access.allmerchantslevel,
       onlymemberslevel: this.draftblog.access.onlymerchantmemberslevel
     });
-    console.log('draftblog : ', this.draftblog);
     this.notUpdated = true;
+    this.mediaPath = this.currentlyDisplayed.media;
+    this.changeCategory('Add Edit Post');
   }
 
   firstBlogGroup() {
@@ -628,14 +678,15 @@ export class BlogComponent implements OnInit, OnDestroy {
     this.currentlyDisplayedNDX = j;
     this.secureCLH();
     this.setHateLove();
-    this._bid = this.currentlyDisplayed._id;
     this._cid = '';
     this.komment = '';
     this.commentNotUpdated = true;
   }
 
   changeNotUpdated() {
-    if (this.draftblog.title !== '' && this.draftblog.post !== '') {
+    if (this.draftblog.title !== ''
+      && this.draftblog.post !== ''
+      && this.draftblog.media !== '') {
       this.notUpdated = false;
     }
   }
@@ -650,7 +701,6 @@ export class BlogComponent implements OnInit, OnDestroy {
     } else {
       this.iHate = true;
     }
-    console.log('this.realname, this.iHate, this.iLove ', this.realname, this.iHate, this.iLove);
   }
   toggleLove() {
     if (this.iLove) {
@@ -691,11 +741,10 @@ export class BlogComponent implements OnInit, OnDestroy {
       hates: this.currentlyDisplayed.hates,
       hated: this.currentlyDisplayed.hated
     };
-    this.blogService.updateBlog(this._bid, blog).subscribe(
+    this.blogService.updateBlog(this.currentlyDisplayed._id, blog).subscribe(
       data => {
-        console.log('Blog Data Updated : ', data);
         const ndx = this.blogs.findIndex((b) => {
-          return b._id === this._bid;
+          return b._id === this.currentlyDisplayed._id;
         });
         this.blogs[ndx] = data;
         this.xblogs = this.blogs.filter( (b) => {
@@ -711,13 +760,11 @@ export class BlogComponent implements OnInit, OnDestroy {
         name: this.realname,
         comment:  this.komment
       };
-      console.log('remark : ', remark, this._bid);
-      this.blogService.addComment(this._bid, remark)
+      this.blogService.addComment(this.currentlyDisplayed._id, remark)
       .subscribe(blog => {
         this.currentlyDisplayed = blog;
-        console.log('currentlyDisplayed : ', this.currentlyDisplayed);
         const ndx = this.blogs.findIndex((b) => {
-          return b._id === this._bid;
+          return b._id === this.currentlyDisplayed._id;
         });
         this.blogs[ndx] = blog;
         this.xblogs = this.blogs.filter( (b) => {
@@ -733,12 +780,11 @@ export class BlogComponent implements OnInit, OnDestroy {
       const remark = {
         'comment':  this.komment
       };
-      this.blogService.updateComment(this._bid, this._cid, remark)
+      this.blogService.updateComment(this.currentlyDisplayed._id, this._cid, remark)
       .subscribe(blog => {
         this.currentlyDisplayed = blog;
-        console.log('currentlyDisplayed : ', this.currentlyDisplayed);
         const ndx = this.blogs.findIndex((b) => {
-          return b._id === this._bid;
+          return b._id === this.currentlyDisplayed._id;
         });
         this.blogs[ndx] = blog;
         this.xblogs = this.blogs.filter( (b) => {
@@ -756,18 +802,16 @@ export class BlogComponent implements OnInit, OnDestroy {
     this._cid = '';
   }
   cancelPostComment() {
-    console.log('canceling post comment');
     this._cid = '';
     this.komment = '';
     this.commentNotUpdated = true;
   }
   deleteComments(j) {
-    this.blogService.deleteComment(this._bid, this.currentlyDisplayed.comments[j]._id)
+    this.blogService.deleteComment(this.currentlyDisplayed._id, this.currentlyDisplayed.comments[j]._id)
     .subscribe(blog => {
       this.currentlyDisplayed = blog;
-      console.log('currentlyDisplayed : ', this.currentlyDisplayed);
       const ndx = this.blogs.findIndex((b) => {
-        return b._id === this._bid;
+        return b._id === this.currentlyDisplayed._id;
       });
       this.blogs[ndx] = blog;
       this.xblogs = this.blogs.filter( (b) => {
@@ -783,7 +827,7 @@ export class BlogComponent implements OnInit, OnDestroy {
   editComments(j) {
     this.komment = this.currentlyDisplayed.comments[j].comment;
     this._cid = this.currentlyDisplayed.comments[j]._id;
-    console.log(j, this._bid, this._cid);
+    console.log(j, this.currentlyDisplayed._id, this._cid);
     this.commentNotUpdated = true;
   }
 }

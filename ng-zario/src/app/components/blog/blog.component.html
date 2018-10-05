@@ -2,19 +2,19 @@
   <div class="container dark-overlay pt-5">
     <div class="row pt-5">
       <div class="col-sm-12 text-center">
-        <button type="button" class="btn btn-link text-white mt-5 mb-2" *ngIf="userrole" (click)="changeCategory('Add Edit Post')">
+        <button type="button" class="btn text-white mt-5 mb-2" [ngClass]="btnAddEditPost" *ngIf="userrole" (click)="changeCategory('Add Edit Post')">
           Add Edit Post
         </button>
-        <button type="button" class="btn btn-link text-white mt-5 mb-2" (click)="changeCategory('support')">
+        <button type="button" class="btn text-white mt-5 mb-2" [ngClass]="btnSupport"  (click)="changeCategory('support')">
           Support
         </button>
-        <button type="button" class="btn btn-link text-white mt-5 mb-2" (click)="changeCategory('retailtainment')">
+        <button type="button" class="btn text-white mt-5 mb-2" [ngClass]="btnRetailtainment"  (click)="changeCategory('retailtainment')">
           Retailtainment
         </button>
-        <button type="button" class="btn btn-link text-white mt-5 mb-2" (click)="changeCategory('open innovation')">
+        <button type="button" class="btn text-white mt-5 mb-2" [ngClass]="btnOpenInnovation"  (click)="changeCategory('open innovation')">
           Open Innovation
         </button>
-        <button type="button" class="btn btn-link text-white mt-5 mb-2" (click)="changeCategory('zario & cryptocurrency')">
+        <button type="button" class="btn text-white mt-5 mb-2" [ngClass]="btnZarioCryptoCurrency"  (click)="changeCategory('zario & cryptocurrency')">
           Zario & CryptoCurrency
         </button>
       </div>
@@ -28,9 +28,6 @@
 <section class="m-5" *ngIf="addEditPost">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-sm-12 text-center mb-3">
-        <h3>{{category}}</h3>
-      </div>
       <div class="col-md-9 my-3 bgcontrol">
         <input type="text" [(ngModel)]="draftblog.title" (change)="changeNotUpdated()" class="form-control mb-3"
           placeholder="Enter Blog Post Title Here">
@@ -77,18 +74,20 @@
                 <strong>{{selectedMediaFileName}}</strong>
               </label>
             </div>
-            <input type="file" name="mediaFile" style="display:none" (change)="mediaFileSelected($event)" #mediaFile>
-            <button class="btn btn-warning border-dark btn-block mt-3" (click)="mediaFile.click()">Select Post Media
+            <input type="file" name="mediaFile" style="display:none" accept="image/*" (change)="mediaFileSelected($event)" #mediaFile>
+            <button class="btn btn-secondary btn-small border-dark btn-block mt-1" (click)="mediaFile.click()">Select Post Media
+            </button>
+            <button class="btn btn-primary btn-small border-dark btn-block" [disabled]="!mediaChanged" (click)="uploadMediaFile()">Upload Post Media
             </button>
             <hr>
             <hr>
-            <button class="btn btn-secondary border-dark btn-block mt-3" *ngIf="!LOCALSTORAGE" (click)="saveDraft()">Save
+            <button class="btn btn-secondary btn-small border-dark btn-block mt-5" [disabled]="!draftblog.title || !draftblog.post" (click)="saveDraft()">Save
               Draft Post</button>
-            <button class="btn btn-secondary border-dark btn-block mt-3" *ngIf="LOCALSTORAGE" (click)="cancelDraftPost()">Cancel
+            <button class="btn btn-danger btn-small border-dark btn-block mt-3" [disabled]="!LOCALSTORAGE" (click)="cancelDraftPost()">Cancel
               Saved Draft Post</button>
-            <button class="btn btn-primary border-dark btn-block mt-3" *ngIf="_bid === ''" [disabled]="notUpdated"
+            <button class="btn btn-primary btn-small border-dark btn-block mt-3" *ngIf="_bid === ''" [disabled]="notUpdated"
               (click)="publish()">Publish Post</button>
-            <button class="btn btn-primary border-dark btn-block mt-3" *ngIf="_bid !== ''" [disabled]="notUpdated"
+            <button class="btn btn-primary btn-small border-dark btn-block mt-3" *ngIf="_bid !== ''" [disabled]="notUpdated"
               (click)="updatePost()">Update Post</button>
           </div>
         </form>
@@ -97,37 +96,19 @@
   </div>
 </section>
 
-<!-- A Save Draft Button
-A Publish Button -->
-
-<!-- I want a form here to have the following items:
-1- Enter the category of the blog post
-2- are all signed in customers/ merchants allowed to comment Y/N
-3- are all signed in merchants allowed to comment Y/N
-4- if the blog post is by a merchant => are his customers only allowed to comment 5- What level of his customers are allowed to comment.
-5- what is the minimum application level for customers who are allowed to comment, if any
-6- Save as Draft Button, only the blog owner can view the un puiblished blog posts, HOW TO HOLD BLOG POSTS WHILE THEY ARE UNDER UPDATE . May be I can hold it in the browsers temporary storage. I can hold ONE blog under update or new post in temp storage untill it is complete and ready to be saved to MONGODB.
-7- Publish Button,
-8- Enter image
-9- or enter a youtube embeded video post --- embedVideo postpond -->
-
-<!--
-      section for showing various blog categories
--->
-<section class="m-5" *ngIf="!addEditPost">
-  <div class="container">
+<section class="my-1" *ngIf="!addEditPost">
+  <div class="container-fluid">
     <div class="row">
-      <div class="col-sm-12 text-center mb-3">
-        <h3>{{category}} Category</h3>
+      <div class="col-sm-12 imageBG" [ngStyle]="{'background-image': 'url(' + currentlyDisplayed.media + ')', 'background-position': 'center center', 'background-size': 'cover'}">
+        <!-- <img class="img-fluid picdiv" src={{currentlyDisplayed.media}} alt="Blog Media">
+        ng-style="{'background-image':'url({{speaker.img}})', 'background-position': 'center center', 'background-size': 'cover'
+        -->
       </div>
-      <div class="col-sm-8 px-0">
+      <div class="col-sm-9 px-0">
         <div class="card col-sm-12 maincard">
-          <div class="card-header">{{currentlyDisplayed.title}}</div>
+          <div class="card-header"><h3>{{currentlyDisplayed.title}}</h3></div>
           <div class="card-body">
-            <div class="picdiv m-2">
-              <img class="img-fluid" src="../../../assets/img/holiday-shopping.jpg" alt="Blog Media">
-            </div>
-            <div [innerHTML]="currentlyDisplayed.post">
+            <div class="mt-2" [innerHTML]="currentlyDisplayed.post">
             </div>
           </div>
           <hr>
@@ -196,20 +177,20 @@ A Publish Button -->
             </div>
             <textarea class="form-control col-sm-12" rows="3" [(ngModel)]="komment" (ngModelChange)="commentNotUpdated = false"
               [disabled]="userrole === undefined || secureCLHDisplay"></textarea>
-            <button type="button" class="btn btn-outline-success btn-block btn-sm col-sm-6 ml-auto mt-2" [disabled]="userrole === undefined || commentNotUpdated || secureCLHDisplay" *ngIf="_cid === ''" (click)="addPostComment()">Add Comment</button>
-              <button type="button" class="btn btn-outline-success btn-block btn-sm col-sm-6 ml-auto mt-2" [disabled]="userrole === undefined || commentNotUpdated || secureCLHDisplay" *ngIf="_cid !== ''" (click)="addPostComment()">Update Comment</button>
-            <button type="button" class="btn btn-outline-danger btn-block btn-sm col-sm-6 ml-auto" [disabled]="userrole === undefined || commentNotUpdated || secureCLHDisplay"
+            <button type="button" class="btn btn-outline-success btn-block btn-sm col-sm-4 ml-auto mt-2" [disabled]="userrole === undefined || commentNotUpdated || secureCLHDisplay" *ngIf="_cid === ''" (click)="addPostComment()">Add Comment</button>
+              <button type="button" class="btn btn-outline-success btn-block btn-sm col-sm-4 ml-auto mt-2" [disabled]="userrole === undefined || commentNotUpdated || secureCLHDisplay" *ngIf="_cid !== ''" (click)="addPostComment()">Update Comment</button>
+            <button type="button" class="btn btn-outline-danger btn-block btn-sm col-sm-4 ml-auto" [disabled]="userrole === undefined || commentNotUpdated || secureCLHDisplay"
               (click)="cancelPostComment()">Cancel Editing</button>
           </div>
         </div>
       </div>
-      <div class="col-sm-4 sidediv">
+      <div class="col-sm-3 sidediv">
         <div class="card m-3" *ngFor="let b of displayedBlogs; index as j">
           <div *ngIf="b.title">
-            <div class="card-header">{{b.title}}</div>
+            <div class="card-header"><h4>{{b.title}}</h4></div>
             <div class="card-body">
               <div class="picdiv">
-                <img class="img-fluid" src="../../../assets/img/holiday-shopping.jpg" alt="Blog Media">
+                <img class="img-fluid" src="{{b.media}}" alt="Blog Media">
               </div>
               <div [innerHTML]="(b.post).substring(0,50)">
               </div>

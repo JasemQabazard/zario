@@ -90,3 +90,11 @@ https://www.youtube.com/watch?v=2Dom1t1WVn0
 ==========add-db-Models=======git branch============
    - add all db structures and models for your data
 ==========add-design-home=======git branch============
+
+
+<!-- coloring console.log in chrome =============================================
+console.log('%c draftblog', 'background: #222; color: #bada55', this.draftblog);
+
+link: https://stackoverflow.com/questions/7505623/colors-in-javascript-console
+
+ -->

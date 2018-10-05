@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Blog, Comment } from '../shared/blog';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpBackend } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { baseURL } from '../shared/baseurl';
@@ -14,8 +14,12 @@ export class BlogService {
 
   constructor(
     private http: HttpClient,
+    private httb: HttpClient,
+    private httpBackend: HttpBackend,
     private processHttpmsgService: ProcessHttpmsgService
-  ) { }
+  ) {
+    this.httb = new HttpClient(httpBackend);
+  }
 
   getBlogs(): Observable<Blog[]> {
     return  this.http.get(baseURL + '/socials')
@@ -45,9 +49,18 @@ export class BlogService {
   }
 
   updateComment(bid: string, cid: string, comment: any) {
-    console.log('updateComment Service comment : ', bid, cid, comment);
     return this.http.put(baseURL + '/socials/' + bid + '/comments/' + cid, comment)
       .catch(error => this.processHttpmsgService.handleError(error));
   }
 
+  postAWSMediaURL(specs): Observable<any> {
+    return  this.http.get(baseURL + '/upload/aws/' + specs)
+                    .catch(error => this.processHttpmsgService.handleError(error));
+  }
+  putAWSMedia(url , file) {
+    console.log('blog service putting aws media' , url, file);
+    return this.httb.put(url, file, {headers:
+      {'Content-Type': file.type}})
+      .catch(error => this.processHttpmsgService.handleError(error));
+  }
 }

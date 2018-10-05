@@ -14,7 +14,9 @@ export class ProcessHttpmsgService {
     let errMsg: string;
     if (error.error instanceof Error) {
       errMsg = error.error.message;
+      console.log('errMsg-1 : ', errMsg);
     } else {
+      console.log('error-2 : ', error, error.status, error.statusText, error.error);
       if (error.error.err.name) {
         errMsg = `${error.status} - ${error.error.status || ''} ${error.error.err.name}`;
       } else {

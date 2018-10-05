@@ -59,3 +59,5 @@ export class DraftBlog {
     onlymerchantmemberslevel: string
    };
 }
+
+export const awsMediaPath = 'https://s3-ap-southeast-1.amazonaws.com/zarioio-blog-media/';
