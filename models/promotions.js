@@ -34,33 +34,41 @@ const Promotions = new Schema({
             trim: true,
             lowercase: true
       },
+      generated: {
+            type: Boolean,
+            default: false,
+      },
+      activity: {
+            type: Boolean,
+            default: false,
+      },
       hearts: {
          type: Number,
          default: null
       },
       // usernames who like the promotion
       hearted:[String],
-  // {"All"},===========> all customers, non customers
-  // {"Customer"},======> customers only where level is all or a certain band
-  // {"Daily"},=========> Its a deily purchasing quest randomly gigen to a customer restircted to a time period of 24 hours
-  // {"Game"},==========> Its a winable item in a non Hunt game like scratch and win 
-  // {"Hunt"},==========> Its winnable in a the treasure Hunt game 
-  // {"Initial"},=======> Initial Customer Sign on deal
-  // {"Level"},=========> its a Level jump reward if level is all then all jumps are rewarded if level set to band then only jumping from that band is rewarded
-  // {"Monthly"},=======> its offered for a month only 
-  // {"Weekly"},========> its offered for a week only 
-      genre: { 
+  //
+  // ==========> timing restriction (initial hourly daily weekly monthly )
+  //
+      timing: { 
          type: String,
          default: '',
          required: true
       },
+      // ==========> Action (hunt initial hurchase hollow heveling hame)
+      action: { 
+            type: String,
+            default: '',
+            required: true
+         },      
       // All / Bronze/ Silver/ Gold/ Platinum/ Pesrl/ Blackdiamond
       level: { 
          type: String,
          default: '',
          required: true
       },
-      // All, Zario, Prodcut, Service, Purchase
+      // All, Zario, Prodcut, Service
       category: { 
             type: String,
             default: '',
@@ -72,10 +80,23 @@ const Promotions = new Schema({
             type: String,
             default: ""
       },
-      price: {
-            type: Currency,
-            default: null,
+      meritsonpurchase: {
+            type: Boolean,
+            default: false,
+      },
+      merits: {
+            type: Number,
+            default: 0,
             min: 0
+      },
+      zarios: {
+            type: Number,
+            default: 0,
+            min: 0
+      },
+      productservicecode: {
+            type: String,
+            default: ""
       },
       description: {
          type: String,

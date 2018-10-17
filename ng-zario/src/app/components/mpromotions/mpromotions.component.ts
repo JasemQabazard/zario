@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { PromotionService } from '../../services/promotion.service';
 import { ProfileService } from '../../services/profile.service';
-import { Promotion, Genre, Level, Category } from '../../shared/promotions';
+import { Promotion, Timing, Action, Level, Category } from '../../shared/promotions';
 import { MProfile, Merchant } from '../../shared/profile';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
@@ -23,7 +23,8 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
   fp: FormGroup;  // initial promotion input form control
   fmSelect: FormGroup;
   levels: Level[];
-  genres: Genre[];
+  timings: Timing[];
+  actions: Action[];
   categories: Category[];
   promotions: Promotion[];
   mprofiles: Array<MProfile> = [];
@@ -48,6 +49,8 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
   selectedImageFileName = 'No New Image Selected';
   avatarPath = '../../../assets/img/avatardefault.png';
   avatarChanged = false;
+  generated: boolean;
+  ADDFLAG = false;
   komments: Array<string> = []; // since i am displaying all the promotions for the _mid then i need a field for each comment box in the display so i am using this field for that
 
   constructor(
@@ -68,16 +71,22 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.genres = [
-      {genreCode: 'All'},
-      {genreCode: 'Customer'},
-      {genreCode: 'Daily'},
-      {genreCode: 'Game'},
-      {genreCode: 'Hunt'},
-      {genreCode: 'Initial'},
-      {genreCode: 'Level'},
-      {genreCode: 'Monthly'},
-      {genreCode: 'Weekly'}
+    this.generated = false;    // if the promotion created date is the same as the mprofile created date.
+    this.timings = [
+      {timeCode: 'initial'},
+      {timeCode: 'hourly'},
+      {timeCode: 'daily'},
+      {timeCode: 'weekly'},
+      {timeCode: 'monthly'},
+      {timeCode: 'day2day'}
+    ];
+    this.actions = [
+      {actionCode: 'treasurehunt'},
+      {actionCode: 'purchase'},
+      {actionCode: 'follow'},
+      {actionCode: 'transition'},
+      {actionCode: 'game'},
+      {actionCode: 'visit'}
     ];
     this.levels = [
       {levelCode: 'All'},
@@ -89,11 +98,10 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
       {levelCode: 'Blackdiamond'}
     ];
     this.categories = [
-      {categoryCode: 'All'},
-      {categoryCode: 'Product'},
-      {categoryCode: 'Service'},
-      {categoryCode: 'Purchase'},
-      {categoryCode: 'Zario'}
+      {categoryCode: 'product'},
+      {categoryCode: 'service'},
+      {categoryCode: 'application'},
+      {categoryCode: 'membership'}
     ];
     this.authService.loadUserCredentials();
     this.subscription = this.authService.getRealname()
@@ -179,7 +187,7 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
       }
       if (this.promotions.length === 0) {
         this.showPromotionEntry = true;
-        console.log('no promotions display data entry form');
+        console.log('no promotions display data entry form : generated ===> ', this.generated);
       } else {
         console.log('Display promotions on page, allow an edit button, and comment entry by merchant');
       }
@@ -201,6 +209,14 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
   AddNewPromotion() {
     this.NEWPROMOTION = true;
     this.notUpdated = true;
+    this.fp.controls['name'].enable();
+    this.fp.controls['narrative'].enable();
+    this.fp.controls['timing'].enable();
+    this.fp.controls['level'].enable();
+    this.fp.controls['category'].enable();
+    this.fp.controls['action'].enable();
+    this.generated = false;
+    this.ADDFLAG = false;
   }
 
   changeMerchant(mvalue) {
@@ -209,7 +225,7 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
       if (this.merchants[ndx].name === this.fmSelect.controls['merchant'].value) {
         break;
       }
-   }
+    }
     this.fmSelect.controls['merchant'].setValue(this.merchants[ndx].name);
     this._mid = this.mprofiles[ndx]._id;
     // Use merchant_id and fetch promotions
@@ -245,9 +261,11 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
         this.validateName
       ])],
       narrative: '',
-      genre: 'All',
+      activity: false,
+      timing: 'day2day',
+      action: 'purchase',
       level: 'All',
-      category: 'All',
+      category: 'membership',
       daterange: [null, Validators.compose([
         Validators.required
       ])],
@@ -255,7 +273,8 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
         Validators.required,
         this.validateNumericFloat
       ])],
-      price: [0, Validators.compose([
+      meritsonpurchase: true,
+      merits: [0, Validators.compose([
         Validators.required,
         this.validateNumericFloat
       ])],
@@ -316,6 +335,7 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
 
     this.promotion = this.fp.value;
     this.promotion._mid = this._mid;
+    this.promotion.avatar = this.avatarPath;
     console.log(this.promotion);
 
     if (this.avatarChanged) {
@@ -338,6 +358,7 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
 
   promotionsDataBaseChange() {
     if (this.NEWPROMOTION) {
+      this.promotion.generated = false;
       this.promotionService.addPromotion(this.promotion).subscribe(
         data => {
           console.log('add data : ', data);
@@ -384,12 +405,15 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
     this.fp.setValue ({
       name: '',
       narrative: '',
-      genre: 'All',
+      activity: false,
+      timing: 'day2day',
+      action: 'purchase',
       level: 'All',
-      category: 'All',
+      category: 'membership',
       daterange: null,
       discount: 0,
-      price: 0,
+      meritsonpurchase: true,
+      merits: 0,
       description: ''
     });
     this.AddNewPromotion();
@@ -414,6 +438,7 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
     // allow for change and update when requested.
     console.log('promotion index : ', i);
     this._pid = this.promotions[i]._id;
+    this.generated = this.promotions[i].generated;
     if (this.promotions[i].avatar) {
       this.avatarPath = this.promotions[i].avatar;
     } else {
@@ -426,18 +451,30 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
     this.fp.setValue ({
       name: this.promotions[i].name,
       narrative: this.promotions[i].narrative,
-      genre: this.promotions[i].genre,
+      activity: this.promotions[i].activity,
+      timing: this.promotions[i].timing,
+      action: this.promotions[i].action,
       level: this.promotions[i].level,
       category: this.promotions[i].category,
       daterange: dates,
       discount: this.promotions[i].discount,
-      price: this.promotions[i].price,
+      meritsonpurchase: this.promotions[i].meritsonpurchase,
+      merits: this.promotions[i].merits,
       description: this.promotions[i].description
     });
+    if (this.generated) {
+      this.fp.controls['name'].disable();
+      this.fp.controls['narrative'].disable();
+      this.fp.controls['timing'].disable();
+      this.fp.controls['level'].disable();
+      this.fp.controls['category'].disable();
+      this.fp.controls['action'].disable();
+    }
     console.log('date range : ', this.fp.value.daterange);
     this.NEWPROMOTION = false;
     this.notUpdated = true;
     this.showPromotionEntry = true;
+    this.ADDFLAG = true;
   }
 
   addUpdateComments(i) {

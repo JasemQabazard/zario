@@ -1,6 +1,7 @@
 ==================
 USER ============= The user table determines the user role. CUSTOMER is the default while ADMIN and 
 ================== MERCHANT are input by the admin staff once all the supporting documentation and papers have been received from the MERCHANT. 
+this is a future change where the MERCHANT will upload his papers and request being accepted the status of MERCHANT
 
 Once the user is assigned as a "MERCHANT", 
 ==================HE BECOMES THE ADMINISTRATOR FOR THAT GROUP=================
@@ -11,5 +12,65 @@ He must do the following in sequence:
 3- he can then add CUSTOMERS and use the CART to add transactions according to customer purchases
 AND
 4- Add other users to his GROUP and assign "merchant" records to them in order for them to work on that  merchant in the group only whoes id is in their USER record 
-5- He can also change the working merchant on any user belongingg to his GROUP and for himself as well since his user group accomodates only one user
+5- He can also change the working merchant on any user belongingg to his GROUP and for himself as well since his user group accomodates only one user. 
+====>security<==== 
+6- Change required is to allow the MERCHANT to deactivate merchant, and prevent him from creating promotions
 
+==============================================================
+====================PROMOTION PROMOTION PROMOTION ============
+==============================================================
+
+
+====timing====    ====Action====    ==== Level====    ====category====
+   initial           treasurehunt      Bronze            membership
+   hourly            purchase          Silver            product
+   daily             follow            Gold              service
+   weekly            transition        Platinum          application 
+   monthly           game              Pearl             
+   day2day           visit             Blackdiamond
+
+ALL FLAGS HAVE A NA SETTING FOR NOT APPLICABALE
+add merits to the promotion record                                              
+
+
+1- initially joining a merchant (merchant group, and profile records):
+   a- timing: initial, Action: follow, Level: Bronze, category: membership.
+            hence user becomes a member with the merchant and gets merit points for following, he is now Bronze level. (merits = points, zarios, or a gift in the description)
+   b- timing: initial, Action: purchase, Level: Bronze, category: membership.
+            if the user purchases anything from the merchant he becomes a member as well, he is now Bronze level. (merits = point, discount= same for existing Bronze members, zarios= taken from merchant account and rewarded to customer member)
+2- merchant Day2day bussiness
+   c- timing: day2day, Action: purchase, Level: Bronze, category: membership.
+            when the member customer is at the bronze level and he makes a members interaction with the merchant then he may get all or some of the following ===at least the discount==== (merits = point, discount= same for existing Bronze members, zarios= taken from merchant account and rewarded to customer member). 
+            A merchant will have a different record type-(c) per level 
+   d- timing: day2day, Action: transitioning, Level: Silver, category: membership.
+            when the member transitions to a new level as indicated in level then he may be rewarded by the merchant on any or a combination of the following (merits = point, discount= same for existing Bronze members, zarios= taken from merchant account and rewarded to customer member)
+   e- Product or Service promotions sets the product or the service code promoted in the promotion record
+      timing: could be any of the setting- when set to 
+      =day2day: means the discount on the product or service is available all the time when the promotion is active.
+      =hourly or any timimg indicator mean the product or service is available for one hour/ one day/ one week/ one month during that day to each signed in customer to the promotions. 
+      Action: purchase, 
+      Level: set the level if applicable to certain category or set to all for all members 
+      category: must be set to product or service.
+            use this type of settings to promot a discount on a specific product or service where you enter the code number of the product or service, describe it in the promotion desctription, and include its avatar.
+   f- Game promotions
+      timing: could be any of the setting- when set to 
+      =day2day: means the discount on the product or service is available all the time when the promotion is active.
+      =hourly or any timimg indicator mean sthe product or service is available for one hour/ one day/ one week/ one month during that day to each signed in customer to the promotions. 
+      Action: treasurehunt for the hunt game only and or game for any other game promotion, 
+      Level: set the level if applicable to certain category or set to all for all members 
+      category: membership.
+      this setting is for retailtainment games either the apps main game treasure hunt which is about finding items on the map as you go through our merchant stores or when you go to prominent locations in your area. The cutsomer starts his promotions offers or enters the treasure hunt game and may stumble upon this kind of game promotions. This will make him visit your store if he wishes to use the discount offered on the item product or service you are promoting. He may also make some extra merit points or zarios as he finds the item. Gives him a good feeling about you as a merchant.  
+   g- Visit our Store 
+      timing: hourly, Action: visit, Level: all, category: all.
+      Once you visit our store and open your apps customer promotion tab and options the app will detect your proximity to our merchant store and grant you thye merit/ zario/ gift described in the promotion. The merchant can use this to promot visit by customers to his store on certain day or time like when he has an event.
+3- ADMIN Application Global promotions record in DB table
+    a- timing: day2day, Action: purchase, Level: all, category: application.
+            A record for the general global rewarding of zario points to the customer for any purchase he/ she makes. merit points and zarios are rewarded towards customer applicationm bands in his profile record. Same points are also rewarded to MERCHANT profile records.
+    b- Game promotions
+      timing: could be any of the setting- when set to 
+      =day2day: means the discount on the product or service is available all the time when the promotion is active.
+      =hourly or any timimg indicator mean sthe product or service is available for one hour/ one day/ one week/ one month during that day to each signed in customer to the promotions. 
+      Action: treasurehunt for the hunt game only and or game for any other game promotion, 
+      Level: set the level if applicable to certain category or set to all for all members 
+      category: application.
+            this setting is for retailtainment games either the apps main game treasure hunt which is about finding items on the map as you go through our merchant stores or when you go to prominent locations in your area. The cutsomer starts his promotions offers or enters the treasure hunt game and may stumble upon this kind of game promotions. The customer makes extra application merit points or/and  zarios as he finds the item. Gives him a good feeling about the app.

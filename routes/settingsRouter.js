@@ -10,8 +10,8 @@ const settingsRouter = express.Router();
 settingsRouter.use(bodyParser.json());
 
 settingsRouter.route('/') 
-.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
-.get(cors.cors, (req, res, next) => {
+.options(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res) => { res.sendStatus(200); })
+.get(cors.cors, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
    Settings.find({})
    .then((settings) => {
          res.statusCode = 200;
@@ -20,7 +20,7 @@ settingsRouter.route('/')
    }, (err) => next(err))
    .catch((err) => next(err));
 })
-.post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+.post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     console.log("post settings req-body : ", req.body);
    Settings.create(req.body)
    .then((setting) => {
@@ -37,11 +37,11 @@ settingsRouter.route('/')
                 next(err);
     });
 })
-.put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+.put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
    res.statusCode = 403;
    res.end('PUT operation not supported on / setting');
 })
-.delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+.delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
    Settings.remove({})
    .then((resp) => {
       res.statusCode = 200;
@@ -52,8 +52,8 @@ settingsRouter.route('/')
 });
 
 settingsRouter.route('/:settingId')
-.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
-.get(cors.cors, (req,res,next) => {
+.options(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res) => { res.sendStatus(200); })
+.get(cors.cors, authenticate.verifyUser, authenticate.verifyAdmin, (req,res,next) => {
    Settings.findById(req.params.settingId)
     .then((setting) => {
         res.statusCode = 200;
@@ -62,11 +62,11 @@ settingsRouter.route('/:settingId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+.post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     res.statusCode = 403;
     res.end('POST operation not supported on /setting/'+ req.params.settingId);
 })
-.put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+.put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
    Settings.findByIdAndUpdate(req.params.settingId, {
         $set: req.body
     }, { new: true })
@@ -77,7 +77,7 @@ settingsRouter.route('/:settingId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+.delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
    Settings.findByIdAndRemove(req.params.settingId)
     .then((resp) => {
         res.statusCode = 200;

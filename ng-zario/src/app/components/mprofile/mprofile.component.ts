@@ -6,7 +6,9 @@ import { AgmCoreModule } from '@agm/core';
 
 import { AuthService } from '../../services/auth.service';
 import { ProfileService } from '../../services/profile.service';
+import { PromotionService } from '../../services/promotion.service';
 import { MProfile, Codes, Categories, Merchant, Strategy, Position } from '../../shared/profile';
+import { merchantpromotions, apppromotions } from '../../shared/promotions';
 
 import { Subscription } from 'rxjs/Subscription';
 
@@ -46,6 +48,7 @@ export class MProfileComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private profileService: ProfileService,
+    private promotionService: PromotionService,
     private router: Router
   ) {
     this.createfp();
@@ -93,6 +96,7 @@ export class MProfileComponent implements OnInit, OnDestroy {
       {strategyName: 'number'},
       {strategyName: 'value'}
     ];
+    console.log('merchant promotions array length', merchantpromotions.length);
     this.getUserPosition();
     this.authService.loadUserCredentials();
     this.subscription = this.authService.getUsername()
@@ -495,9 +499,21 @@ export class MProfileComponent implements OnInit, OnDestroy {
               user._mid = this._mid;
               this.authService.updateUser(user._id, user).subscribe(
                 data => {
-                  console.log('update data : ', data);
+                  console.log('update USER data : ', data);
                   this.messageClass = 'alert alert-success';
                   this.message = 'User Data Update Successfull';
+                  for (let i = 0; i < merchantpromotions.length; i++) {
+                    merchantpromotions[i]._mid = this._mid;
+                    this.promotionService.addPromotion(merchantpromotions[i]).subscribe(
+                      data => {
+                        console.log('adding i = ', i);
+                      },
+                      errormessage => {
+                        this.message = <any>errormessage;
+                        this.messageClass = 'alert alert-danger';
+                      }
+                    );
+                  }
                 },
                 errormessage => {
                   this.message = <any>errormessage;

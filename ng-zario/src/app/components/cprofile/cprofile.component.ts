@@ -66,7 +66,6 @@ export class CProfileComponent implements OnInit, OnDestroy {
       {genderCode: 'Male'},
       {genderCode: 'Female'}
     ];
-
     this.authService.loadUserCredentials();
     this.subscription = this.authService.getUsername()
       .subscribe(

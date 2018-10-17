@@ -57,17 +57,31 @@ amend user date should be a quick component
    - MERCHANT can record a CUSTOMER to the application. Along with the recording of customer transactions on the system.
    - This CUSTOMER will be flaged as recruited by that MERCHANT and hence he will not be able to see any competiotion for that MERCHANT based to type of bussiness attribute. The ONLY way to open another MERCHANT with the same category of type of business is if that new MERCHANT also recruites the same customer. 
 =================================================================================
-===  branchName:blog == start:15Aug2018== Completed: 99 June 2018 ====
+===  branchName:blog == start:15Aug2018== Completed: 05 Oct 2018 ====
 ================================================================================= 
 https://www.youtube.com/watch?v=2Dom1t1WVn0
 - blog
+
+=================================================================================
+===  branchName:Adminpro == start:17Oct2018== Completed: 99 June 2018 ====
+================================================================================= 
+Administration Promotions:
+first we start by updating/ amending merchant promotions which is done.
+next we envisage that the app admin staff will need promotions data entry to 
+1- maintain application promotions, such as:
+      - general zario and merit point update for merchants and customers alike.
+      - maintain general game promotions
+      - maintain treasure hunt promotions.
+2- maintain promotions on behalf of merchants.
 =================================================================================
 ===  branchName:Customer-Promotions == start:01June2018== Completed: 99 June 2018 ====
 ================================================================================= 
    - promotions will display map of all MERCHANTS + logo card for each MERCHANT. Promotions will also dsiplay dailies and weekly purchases that are special and daily achievements for each MERCHANT.
    - Once CUSTOMER clicks on map location or MERCHANT Card will get a display for MERCHANT details of basic promotions
    - when CUSTOMER press the ===MyPromotions=== button he gets same views with only the promotions he is subscribed to. The "You May Like This" MERCHANTS and promotions will also be displayed to teh CUSTOMER as a form of suggestive purchases. This will be an entry to AI.
-
+=================================================================================
+===  branchName:Cart == start:01June2018== Completed: 99 June 2018 ====
+================================================================================= 
 
    - Wallet design considerations and research. Wallet to allow purc hase of zario coins as well as show price of zario, ethereum, bitcoin on display
    - Wallet to show the amount of zarion and the transaction history for the CUSTOMER and MERCHANT that lead to this.

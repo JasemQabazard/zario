@@ -18,6 +18,11 @@ section .section-title {
    color: rgb(70, 65, 65);
 }
 
+.my_checkbox {
+  width:3vw;
+  height:3vh;
+}
+
 #tabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
    color:rgb(70, 65, 65);
    background-color: transparent;
@@ -68,7 +73,7 @@ background-color : #f1f7fc;
   border: 1px solid #ffc107;
 }
 
-/* .hsr { 
+/* .hsr {
   color: #ffc107;
   height: 1px;
   background-color: #ffc107;

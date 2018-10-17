@@ -24,6 +24,7 @@ export class MProfile {
    zarios: number;
    ukey: string;
    rkey: string;
+   createdAt?: Date;
 }
 
 export class CProfile {

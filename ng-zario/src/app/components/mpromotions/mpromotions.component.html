@@ -16,8 +16,8 @@
                 </form>
                 <div class="row m-1 p-1">
                     <button class="btn btn-danger mt-2 ml-2 col-md-3" (click)="togglePromotionEntry()">Show/Hide Promotion Form</button>
-                    <button class="btn btn-outline-success mt-2 ml-2 col-md-3" (click)="AddNewPromotion()" [disabled]="!ADDFLAG"
-                        *ngIf="showPromotionEntry">Add New Promotion</button>
+                    <button class="btn btn-outline-success mt-2 ml-2 col-md-5" (click)="AddNewPromotion()" [disabled]="!ADDFLAG"
+                        *ngIf="showPromotionEntry">Copy, Change Promotion Being Updated then Add as New</button>
                 </div>
                 <hr>
             </div>
@@ -67,9 +67,9 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-md-4">
-                            <label for="genre">Promotion Type</label>
-                            <select id="genre" class="form-control" formControlName="genre">
-                            <option *ngFor="let genre of genres" [value]="genre.genreCode">{{genre.genreCode}}</option>
+                            <label for="timing">Promotion Timing</label>
+                            <select id="timing" class="form-control" formControlName="timing">
+                            <option *ngFor="let time of timings" [value]="time.timeCode">{{time.timeCode}}</option>
                             </select>
                         </div>
                         <div class="form-group col-md-4">
@@ -86,6 +86,20 @@
                         </div>
                     </div>
                     <div class="row">
+                      <div class="form-group col-md-4">
+                        <label for="action">Promotion Action</label>
+                        <select id="action" class="form-control" formControlName="action">
+                        <option *ngFor="let action of actions" [value]="action.actionCode">{{action.actionCode}}</option>
+                        </select>
+                      </div>
+                        <div class="form-group col-md-6 mt-4">
+                            <label for="activity" class="text-light bg-danger col-md-7">
+                                Set this promotion to Active or Not Active
+                            </label>
+                          <input class="my_checkbox col-md-1" type="checkbox" formControlName="activity">
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="form-group col-md-4">
                             <label for="daterange">Date Range: Start Date - End Date</label>
                             <div [ngClass]="{'has-error':(fp.controls.daterange.errors && fp.controls.daterange.dirty), 'has-success': !fp.controls.daterange.errors}">
@@ -97,19 +111,25 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group col-md-6 mt-4">
+                          <label for="meritsonpurchase" class="text-light bg-secondary col-md-7">
+                              Set this promotion to grant merits on purchase amount
+                          </label>
+                        <input class="my_checkbox col-md-1" type="checkbox" formControlName="meritsonpurchase">
+                      </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-4">
-                            <label for="price">Promotion Amount</label>
-                            <div [ngClass]="{'has-error':(fp.controls.price.errors && fp.controls.price.dirty), 'has-success': !fp.controls.price.errors}">
-                                <input type="text" name="price" class="form-control"
-                                formControlName="price" placeholder="9999">
-                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fp.controls.price.errors && fp.controls.price.dirty">
-                                    <div *ngIf="fp.controls.price.errors?.required">
-                                        Amount field is required
+                            <label for="merits">Promotion Extra Merit Points</label>
+                            <div [ngClass]="{'has-error':(fp.controls.merits.errors && fp.controls.merits.dirty), 'has-success': !fp.controls.merits.errors}">
+                                <input type="text" name="merits" class="form-control"
+                                formControlName="merits" placeholder="9999">
+                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fp.controls.merits.errors && fp.controls.merits.dirty">
+                                    <div *ngIf="fp.controls.merits.errors?.required">
+                                        Extra Merits field is required
                                     </div>
-                                    <div *ngIf="fp.controls.price.errors?.validateNumericFloat">
-                                        Amount must be Numeric
+                                    <div *ngIf="fp.controls.merits.errors?.validateNumericFloat">
+                                        Extra Merits must be Numeric
                                     </div>
                                 </div>
                             </div>
@@ -143,9 +163,17 @@
                             </div>
                             </div>
                         </div>
+                        <div class="mt-3" *ngIf="generated">
+                          <strong class="bg-warning">Note: </strong>
+                          <p>This promotion is system generated to convey an example of how to structure similar propmotions. As such some of its fields are read only in order to preserve its function for its type of promotion.</p>
+                          <p *ngIf="fp.controls['name'].value.indexOf('promotion') === -1">You are advised to change it to suite your needs, then activate it and use it in your group of offered promotions to your customer members. You do not need to copy or do a similar promotion since there should always be one active promotion of this type.</p>
+                          <p *ngIf="fp.controls['name'].value.indexOf('promotion') !== -1">You can have several or none of these type of promotions. As such, you are welcome to use this generic system generated promotion after you change it and activate it. If you needed more of this type of promotion: copy it, change it, and activate it.</p>
+                        </div>
                     </div>
                     <button [disabled]="!fp.valid || notUpdated" type="submit" class="btn btn-primary btn-block mt-5"
                     (click)="onfpSubmit()" >Submit  Promotion</button>
+                    <button type="submit" class="btn btn-primary btn-block mt-5"
+                    (click)="clearfp()" >Reset Promotion Entry</button>
                 </form>
             </div>
           </div>
@@ -164,7 +192,13 @@
                                 <p>
                                 <strong>Narrative: </strong>{{p.narrative}}
                                 <br/>
-                                <strong>Type: </strong>{{p.genre}}
+                                <strong>Generated: </strong>{{p.generated ? "Yes" : "No"}}
+                                <br/>
+                                <strong>Currently Active: </strong>{{p.activity ? "Yes" : "No"}}
+                                <br/>
+                                <strong>Timing: </strong>{{p.timing}}
+                                <br/>
+                                <strong>Action: </strong>{{p.action}}
                                 <br/>
                                 <strong>Level: </strong>{{p.level}}
                                 <br/>
@@ -174,7 +208,9 @@
                                 <br/>
                                 <strong>Discount: </strong>{{p.discount}}
                                 <br/>
-                                <strong>Price: </strong>{{p.price}}
+                                <strong>Merits on Purchase: </strong>{{p.meritsonpurchase ? "Yes" : "No"}}
+                                <br/>
+                                <strong>Extra Mertis: </strong>{{p.merits}}
                                 <br/>
                                 <strong>Description: </strong>{{p.description}}
                             </p>

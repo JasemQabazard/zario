@@ -48,7 +48,7 @@ promotionsRouter.route('/')
   /* ===============================================================
      Route to get all merchant promotion records by _mid
   =============================================================== */
-  promotionsRouter.route('/bymid/:mid')
+promotionsRouter.route('/bymid/:mid')
   .get(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
     // Look for _mid in Promotions
     console.log("mmid : ", req.params.mid);
