@@ -11,7 +11,8 @@ const Merchants = new Schema({
             required: true,
             trim: true,
             lowercase: true,
-            minlength: 1
+            minlength: 1,
+            index: true
       },
       _gid: {
          type: mongoose.Schema.Types.ObjectId,

@@ -258,7 +258,7 @@ merchantpromotions[8] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: ',05',
+                  discount: '.05',
                   meritsonpurchase: true,
                   merits: 20,
                   zarios: 0,
@@ -281,7 +281,7 @@ merchantpromotions[9] = {
                   new Date('1954-09-09 13:22:22.000'),
                   new Date('2104-09-09 00:00:00.000')
                   ],
-                discount: ',05',
+                discount: '.05',
                 meritsonpurchase: true,
                 merits: 20,
                 zarios: 0,
@@ -304,7 +304,7 @@ merchantpromotions[10] = {
                 new Date('1954-09-09 13:22:22.000'),
                 new Date('2104-09-09 00:00:00.000')
                 ],
-              discount: ',05',
+              discount: '.05',
               meritsonpurchase: true,
               merits: 20,
               zarios: 0,
@@ -327,7 +327,7 @@ merchantpromotions[11] = {
               new Date('1954-09-09 13:22:22.000'),
               new Date('2104-09-09 00:00:00.000')
               ],
-            discount: ',05',
+            discount: '.05',
             meritsonpurchase: true,
             merits: 20,
             zarios: 0,
@@ -350,7 +350,7 @@ merchantpromotions[12] = {
             new Date('1954-09-09 13:22:22.000'),
             new Date('2104-09-09 00:00:00.000')
             ],
-          discount: ',05',
+          discount: '.05',
           meritsonpurchase: true,
           merits: 20,
           zarios: 0,
@@ -480,13 +480,12 @@ merchantpromotions[17] = {
                   productservicecode: '',
                   description: 'A general rewarding strategy for visiting our shop. You will receive a free gift, snaks, and drinks, plus extra merit points if you purchase from us during this promotion. Merits will be added to your profile band at both merchant and application levels.'
                };
-
 export const apppromotions = [];
 apppromotions[0] = {
                   _mid: '',
                   avatar: '../../../assets/img/avatardefault.png',
-                  name: 'global purchase promotion',
-                  narrative: 'application promotion',
+                  name: 'global Bronze purchase',
+                  narrative: 'application Purchase promotion for Bronze Loyalty Band',
                   generated: true,
                   activity: true,
                   hearts: 0,
@@ -500,12 +499,133 @@ apppromotions[0] = {
                     new Date('2104-09-09 00:00:00.000')
                     ],
                   discount: '',
+                  meritsonpurchase: true,
                   merits: 10,
                   zarios: 0.1,
                   productservicecode: '',
                   description: 'A general global rewarding of zario points and application based merits to the customer for any purchase made from our member merchants in the Zario & the Black Diamond Loyalty Application. Merit points and zarios are rewarded towards customer application bands in his profile. Same bonus points are also rewarded to MERCHANT profile as well. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
                };
 apppromotions[1] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'global Silver purchase',
+                  narrative: 'application Purchase promotion for Silver Loyalty Band',
+                  generated: true,
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  timing: 'day2day',
+                  action: 'purchase',
+                  level: 'Silver',
+                  category: 'application',
+                  daterange: [
+                    new Date('1954-09-09 13:22:22.000'),
+                    new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: '',
+                  meritsonpurchase: true,
+                  merits: 12,
+                  zarios: 0.2,
+                  productservicecode: '',
+                  description: 'A general global rewarding of zario points and application based merits to the customer for any purchase made from our member merchants in the Zario & the Black Diamond Loyalty Application. Merit points and zarios are rewarded towards customer application bands in his profile. Same bonus points are also rewarded to MERCHANT profile as well. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
+              };
+apppromotions[2] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'global Gold purchase',
+                  narrative: 'application purchase promotion for Gold Loyalty Band',
+                  generated: true,
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  timing: 'day2day',
+                  action: 'purchase',
+                  level: 'Gold',
+                  category: 'application',
+                  daterange: [
+                    new Date('1954-09-09 13:22:22.000'),
+                    new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: '',
+                  meritsonpurchase: true,
+                  merits: 14,
+                  zarios: 0.3,
+                  productservicecode: '',
+                  description: 'A general global rewarding of zario points and application based merits to the customer for any purchase made from our member merchants in the Zario & the Black Diamond Loyalty Application. Merit points and zarios are rewarded towards customer application bands in his profile. Same bonus points are also rewarded to MERCHANT profile as well. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
+              };
+apppromotions[3] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'global Platinum purchase',
+                  narrative: 'application purchase promotion for Platinum Loyalty Band',
+                  generated: true,
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  timing: 'day2day',
+                  action: 'purchase',
+                  level: 'Platinum',
+                  category: 'application',
+                  daterange: [
+                    new Date('1954-09-09 13:22:22.000'),
+                    new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: '',
+                  meritsonpurchase: true,
+                  merits: 16,
+                  zarios: 0.4,
+                  productservicecode: '',
+                  description: 'A general global rewarding of zario points and application based merits to the customer for any purchase made from our member merchants in the Zario & the Black Diamond Loyalty Application. Merit points and zarios are rewarded towards customer application bands in his profile. Same bonus points are also rewarded to MERCHANT profile as well. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
+                };
+apppromotions[4] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'global Pearl purchase',
+                  narrative: 'application purchase promotion for Pearl Loyalty Band',
+                  generated: true,
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  timing: 'day2day',
+                  action: 'purchase',
+                  level: 'Pearl',
+                  category: 'application',
+                  daterange: [
+                    new Date('1954-09-09 13:22:22.000'),
+                    new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: '',
+                  meritsonpurchase: true,
+                  merits: 18,
+                  zarios: 0.5,
+                  productservicecode: '',
+                  description: 'A general global rewarding of zario points and application based merits to the customer for any purchase made from our member merchants in the Zario & the Black Diamond Loyalty Application. Merit points and zarios are rewarded towards customer application bands in his profile. Same bonus points are also rewarded to MERCHANT profile as well. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
+              };
+apppromotions[5] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'global Blackdiamond purchase',
+                  narrative: 'application purchase promotion for blackdiamond Loyalty Band',
+                  generated: true,
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  timing: 'day2day',
+                  action: 'purchase',
+                  level: 'Blackdiamond',
+                  category: 'application',
+                  daterange: [
+                    new Date('1954-09-09 13:22:22.000'),
+                    new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: '',
+                  meritsonpurchase: true,
+                  merits: 20,
+                  zarios: 1,
+                  productservicecode: '',
+                  description: 'A general global rewarding of zario points and application based merits to the customer for any purchase made from our member merchants in the Zario & the Black Diamond Loyalty Application. Merit points and zarios are rewarded towards customer application bands in his profile. Same bonus points are also rewarded to MERCHANT profile as well. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
+              };
+apppromotions[6] = {
                   _mid: '',
                   avatar: '../../../assets/img/avatardefault.png',
                   name: 'Treasure Hunt Discount',
@@ -523,12 +643,13 @@ apppromotions[1] = {
                     new Date('2104-09-09 00:00:00.000')
                     ],
                   discount: '',
+                  meritsonpurchase: false,
                   merits: 5,
                   zarios: 0.1,
                   productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
                   description: 'Find product discounts, services, merit points, zarios, and gifts item in our treasure hunt game in your promotions page  on the map as you go through our merchant stores or when you go to prominent locations in your area. You may stumble upon this reward offer when you least expect. Visit our stores if you wish to find this reward discount offered, or find the merit points and zarios associated with the reward. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
                };
-apppromotions[2] = {
+apppromotions[7] = {
                   _mid: '',
                   avatar: '../../../assets/img/avatardefault.png',
                   name: 'General Game Promotion',
@@ -546,29 +667,148 @@ apppromotions[2] = {
                     new Date('2104-09-09 00:00:00.000')
                     ],
                   discount: '',
+                  meritsonpurchase: false,
                   merits: 5,
                   zarios: 0.1,
                   productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
                   description: 'Win this reward in one of our offered games. You may play these games as they are offered to you when you level up your band with the application and with our merchant stores. Visit our stores for more discounts and rewards. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
                };
-
-
-              //  name: 'Generic initial follow',
-              //  name: 'Generic initial purchase',
-              //  name: 'Bronze purchase',
-              //  name: 'Silver purchase',
-              //  name: 'Gold purchase',
-              //  name: 'Platinum purchase',
-              //  name: 'Pearl purchase',
-              //  name: 'Blackdiamond purchase',
-              //  name: 'Transitioning to Silver',
-              //  name: 'Transitioning to Gold',
-              //  name: 'Transitioning to Platinum',
-              //  name: 'Transitioning to Pearl',
-              //  name: 'Transitioning to Blackdiamond',
-              //  name: 'Visit our store location',
-
-              //  name: 'Specific Special Product Promotion',
-              //  name: 'Specific Special Service Promotion',
-              //  name: 'Treasure Hunt Promotion',
-              //  name: 'General Game Promotion'
+apppromotions[8] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'Visit our store location promotion',
+                  narrative: 'Visit our store',
+                  generated: true,
+                  hearts: 0,
+                  hearted: [],
+                  timing: 'hourly',    // usually hourly or daily for a certain event promotion
+                  action: 'visit',
+                  level: 'All',
+                  category: 'all',
+                  daterange: [
+                        new Date('1954-09-09 13:22:22.000'),
+                        new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: '',
+                  meritsonpurchase: false,
+                  merits: 5,
+                  zarios: 0.05,
+                  productservicecode: '',
+                  description: 'A general rewarding strategy for visiting any of our merchants. You will receive extra merit points. Merits and Zarios will be added to your profile band at the application levels.'
+                };
+// =======> Transitioning to a new level. this record will be duplicated for each band other than Silver, it will be changed and posted to the promotions table for Gold, Platinum, Pearl, and Blackdiamond. The discount will be .06, .08, .1, and .15 respectively. The merits will be 24, 26, 28, 30. zarioos will be .15, .2, .25, .3
+apppromotions[9] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'Transitioning to Silver Application Loyalty Band',
+                  narrative: 'Level Transitions Silver Application Loyalty Band',
+                  generated: true,
+                  hearts: 0,
+                  hearted: [],
+                  timing: 'day2day',
+                  action: 'transitioning',
+                  level: 'Silver',        // from Bronze to Silver
+                  category: 'application',
+                  daterange: [
+                    new Date('1954-09-09 13:22:22.000'),
+                    new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: '',
+                  meritsonpurchase: true,
+                  merits: 20,
+                  zarios: 0.1,
+                  productservicecode: '',
+                  description: 'When you become a member and transitions from Bronze to Silver Application loyalty bands. You will receive the indicated merits point, zarios, or gifts as a reward for your contribution. As you keep adding value to the Zario & the Black Diamond Loyalty application and to our merchasnt establishments you will be rewarded merit points from your purchases and interactions to advance your loyalty levels with both the application and merchants.'
+                };
+apppromotions[10] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'Transitioning to Gold Application Loyalty Band',
+                  narrative: 'Level Transitions to Application Gold Loyalty Band',
+                  generated: true,
+                  hearts: 0,
+                  hearted: [],
+                  timing: 'day2day',
+                  action: 'transitioning',
+                  level: 'Gold',        // from Silver to Gold
+                  category: 'application',
+                  daterange: [
+                    new Date('1954-09-09 13:22:22.000'),
+                    new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: '',
+                  meritsonpurchase: true,
+                  merits: 20,
+                  zarios: 0.2,
+                  productservicecode: '',
+                  description: 'When you become a member and transitions from Silver to Gold Application loyalty bands. You will receive the indicated merits point, zarios, or gifts as a reward for your contribution. As you keep adding value to the Zario & the Black Diamond Loyalty application and to our merchasnt establishments you will be rewarded merit points from your purchases and interactions to advance your loyalty levels with both the application and merchants.'
+                };
+apppromotions[11] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'Transitioning to Platinum application Loyalty Band',
+                  narrative: 'Level Transitions to Platinum application Loyalty Band',
+                  generated: true,
+                  hearts: 0,
+                  hearted: [],
+                  timing: 'day2day',
+                  action: 'transitioning',
+                  level: 'Platinum',        // from Gold Platinum
+                  category: 'application',
+                  daterange: [
+                  new Date('1954-09-09 13:22:22.000'),
+                  new Date('2104-09-09 00:00:00.000')
+                  ],
+                  discount: '',
+                  meritsonpurchase: true,
+                  merits: 20,
+                  zarios: 0.3,
+                  productservicecode: '',
+                  description: 'When you become a member and transitions from Gold to Platinum Application loyalty bands. You will receive the indicated merits point, zarios, or gifts as a reward for your contribution. As you keep adding value to the Zario & the Black Diamond Loyalty application and to our merchasnt establishments you will be rewarded merit points from your purchases and interactions to advance your loyalty levels with both the application and merchants.'
+                };
+apppromotions[12] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'Transitioning to Pearl application Loyalty Band',
+                  narrative: 'Level Transitions to Pearl application Loyalty Band',
+                  generated: true,
+                  hearts: 0,
+                  hearted: [],
+                  timing: 'day2day',
+                  action: 'transitioning',
+                  level: 'Pearl',        // from Platinum to Pearl
+                  category: 'application',
+                  daterange: [
+                  new Date('1954-09-09 13:22:22.000'),
+                  new Date('2104-09-09 00:00:00.000')
+                  ],
+                  discount: '',
+                  meritsonpurchase: true,
+                  merits: 20,
+                  zarios: 0.4,
+                  productservicecode: '',
+                  description: 'When you become a member and transitions from Platinum to Pearl Application loyalty bands. You will receive the indicated merits point, zarios, or gifts as a reward for your contribution. As you keep adding value to the Zario & the Black Diamond Loyalty application and to our merchasnt establishments you will be rewarded merit points from your purchases and interactions to advance your loyalty levels with both the application and merchants.'
+                };
+apppromotions[13] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'Transitioning to Blackdiamond application Loyalty Band',
+                  narrative: 'Level Transitions to Blackdiamond application Loyalty Band',
+                  generated: true,
+                  hearts: 0,
+                  hearted: [],
+                  timing: 'day2day',
+                  action: 'transitioning',
+                  level: 'Blackdiamond',        // from Pearl to Blackdiamond
+                  category: 'application',
+                  daterange: [
+                  new Date('1954-09-09 13:22:22.000'),
+                  new Date('2104-09-09 00:00:00.000')
+                  ],
+                  discount: '',
+                  meritsonpurchase: true,
+                  merits: 20,
+                  zarios: 0.5,
+                  productservicecode: '',
+                  description: 'When you become a member and transitions from Pearl to Blackdiamond Application loyalty bands. You will receive the indicated merits point, zarios, or gifts as a reward for your contribution. As you keep adding value to the Zario & the Black Diamond Loyalty application and to our merchasnt establishments you will be rewarded merit points from your purchases and interactions to advance your loyalty levels with both the application and merchants.'
+                };

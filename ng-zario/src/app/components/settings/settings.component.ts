@@ -4,7 +4,9 @@ import { Router } from '@angular/router';
 
 import { AuthService } from '../../services/auth.service';
 import { ProfileService } from '../../services/profile.service';
+import { PromotionService } from '../../services/promotion.service';
 import { Settings, Codes } from '../../shared/profile';
+import { apppromotions } from '../../shared/promotions';
 
 import { Subscription } from 'rxjs/Subscription';
 
@@ -35,6 +37,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private profileService: ProfileService,
+    private promotionService: PromotionService,
     private router: Router
   ) {
     this.createfs();
@@ -330,6 +333,40 @@ export class SettingsComponent implements OnInit, OnDestroy {
           console.log('added settings data : ', data);
           this.messageClass = 'alert alert-success';
           this.message = 'Settings Add Successfull';
+          // data._id should be placed in the user record for _gid & _mid for the admin staff
+          this.authService.getUser(this.username)
+          .subscribe(user => {
+            console.log('user : ', user);
+            user._mid = data._id;
+            user._gid = data._id;
+            this.authService.updateUser(user._id, user).subscribe(
+              data => {
+                console.log('update USER data : ', data);
+                this.messageClass = 'alert alert-success';
+                this.message = 'User Data Update Successfull';
+                for (let i = 0; i < apppromotions.length; i++) {
+                  apppromotions[i]._mid = user._mid;
+                  this.promotionService.addPromotion(apppromotions[i]).subscribe(
+                    data => {
+                      console.log('adding admin promotions i = ', i);
+                    },
+                    errormessage => {
+                      this.message = <any>errormessage;
+                      this.messageClass = 'alert alert-danger';
+                    }
+                  );
+                }
+              },
+              errormessage => {
+                this.message = <any>errormessage;
+                this.messageClass = 'alert alert-danger';
+              }
+            );
+          },
+            errormessage => {
+                this.message = <any>errormessage;
+                this.messageClass = 'alert alert-danger';
+          });
           setTimeout(() => {
             this.router.navigate(['/']);
           }, 1500);

@@ -17,12 +17,12 @@
         </li>
         <li class="nav-item" [routerLinkActive]="['active']"
         [routerLinkActiveOptions]="{exact: true}">
-          <a routerLink="/blog" class="nav-link"> 
+          <a routerLink="/blog" class="nav-link">
             <i class="fab fa-blogger"></i> Blog
           </a>
         </li>
         <li class="nav-item px-0" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}" *ngIf="MERCHANT || merchant">
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="MERCHANT || merchant || ADMIN">
           <a routerLink="/mpromotions" class="nav-link">
             <i class="fas fa-child"></i> Promotions
           </a>
@@ -30,12 +30,6 @@
         <li class="nav-item px-0" [routerLinkActive]="['active']"
         [routerLinkActiveOptions]="{exact: true}" *ngIf="CUSTOMER">
           <a routerLink="/cpromotions" class="nav-link">
-            <i class="fas fa-child"></i> Promotions
-          </a>
-        </li>
-        <li class="nav-item px-0" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}" *ngIf="ADMIN">
-          <a routerLink="/apromotions" class="nav-link">
             <i class="fas fa-child"></i> Promotions
           </a>
         </li>
@@ -110,7 +104,7 @@
             </a>
             <a routerLink="/passwordchange" class="dropdown-item">
               <i class="fas fa-angle-double-right"></i> Change Password
-            </a> 
+            </a>
           </div>
         </li>
         <li class="nav-item px-0" [routerLinkActive]="['active']"

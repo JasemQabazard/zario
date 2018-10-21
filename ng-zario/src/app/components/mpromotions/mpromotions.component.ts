@@ -29,7 +29,7 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
   promotions: Promotion[];
   mprofiles: Array<MProfile> = [];
   merchants: Array<Merchant> = [];
-  merchant: Merchant;
+  // merchant: Merchant;
   promotion: Promotion;
   subscription: Subscription;
   username: string = undefined;
@@ -110,51 +110,91 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
         this.realname = rname;
       });
 
-    this.subscription = this.authService.getUsername()
-    .subscribe(
-      name => {
-        this.username = name;
-        this.subscription.unsubscribe();
-        this.authService.getUser(this.username)
-        .subscribe(user => {
-          console.log('user : ', user);
-          if (user._gid === null || user._mid === null) {
-            this.message = 'Group Admin must set Group and Merchant Profile before proceeding';
-            this.messageClass = 'alert alert-danger';
-            setTimeout(() => {
-              this.router.navigate(['/']);
-            }, 1500);
-          }
-          if (user.role === 'MERCHANT') {
-            this.profileService.getMProfile(this.username)
-            .subscribe(mprofiles => {
-              this.mprofiles = mprofiles;
-              console.log('this.mprofiles : ', this.mprofiles[0]._id, this.mprofiles.length);
-              this.processPromotions();
-            },
+      this.subscription = this.authService.getUsername()
+      .subscribe(
+        name => {
+          this.username = name;
+          this.subscription.unsubscribe();
+          this.authService.getUser(this.username)
+          .subscribe(user => {
+            console.log('user : ', user);
+            if (user._gid === null || user._mid === null) {
+              if (user.role === 'ADMIN') {
+                this.message = 'You must setup the System parameter option before proceeding';
+              } else {
+                this.message = 'Group Admin must set Group and Merchant Profile before proceeding';
+              }
+              this.messageClass = 'alert alert-danger';
+              setTimeout(() => {
+                this.router.navigate(['/']);
+              }, 1500);
+            }
+            if (user.role === 'MERCHANT') {
+              this.profileService.getMProfile(this.username)
+              .subscribe(mprofiles => {
+                this.mprofiles = mprofiles;
+                console.log('this.mprofiles : ', this.mprofiles[0]._id, this.mprofiles.length);
+                this.processPromotions();
+              },
+              errormessage => {
+                this.message = <any>errormessage;
+                this.messageClass = 'alert alert-danger';
+              });
+            } else if (user.role === 'merchant') {
+              console.log('merchant logic here');
+              this.profileService.getMProfileID(user._mid)
+              .subscribe(mprofile => {
+                this.mprofiles[0] = mprofile;
+                console.log('this.mprofiles : ', this.mprofiles[0]);
+                this.processPromotions();
+              },
+              errormessage => {
+                this.message = <any>errormessage;
+                this.messageClass = 'alert alert-danger';
+              });
+            } else if (user.role === 'ADMIN') {
+              this._mid = user._mid;
+              this.profileService.getMProfiles()
+              .subscribe(mprofiles => {
+                this.mprofiles = mprofiles;
+                this.merchants.push({
+                  '_id': this._mid,
+                  'name': 'System Administrator Promotions'
+                });
+                for (let i = 0; i < this.mprofiles.length; i++) {
+                  console.log('merchant i name ', i, this.mprofiles[i].name);
+                  this.merchants.push({
+                    '_id': this.mprofiles[i]._id,
+                    'name': this.mprofiles[i].name
+                  });
+                }
+                this.fmSelect.controls['merchant'].setValue(this.merchants[0].name);
+                    // Use merchant_id and fetch promotions note: these are set to fetch the system administrator promotions
+                this.promotionService.getPromotions(this._mid)
+                .subscribe(promotions => {
+                  this.promotions = promotions;
+                  console.log('promotions : ', this.promotions);
+                  for (let x = 0; x < this.promotions.length; x++) {
+                    this.komments.push(' ');
+                    console.log('building komments i = ', x);
+                  }
+                },
+                errormessage => {
+                    this.message = <any>errormessage;
+                    this.messageClass = 'alert alert-danger';
+                });
+              },
+              errormessage => {
+                this.message = <any>errormessage;
+                this.messageClass = 'alert alert-danger';
+              });
+            }
+          },
             errormessage => {
-              this.message = <any>errormessage;
-              this.messageClass = 'alert alert-danger';
-            });
-          } else if (user.role === 'merchant') {
-            console.log('merchant logic here');
-            this.profileService.getMProfileID(user._mid)
-            .subscribe(mprofile => {
-              this.mprofiles[0] = mprofile;
-              console.log('this.mprofiles : ', this.mprofiles[0]);
-              this.processPromotions();
-            },
-            errormessage => {
-              this.message = <any>errormessage;
-              this.messageClass = 'alert alert-danger';
-            });
-          }
-        },
-          errormessage => {
-              this.message = <any>errormessage;
-              this.messageClass = 'alert alert-danger';
-        });
-    });
+                this.message = <any>errormessage;
+                this.messageClass = 'alert alert-danger';
+          });
+      });
   }
 
   processPromotions() {
@@ -185,12 +225,6 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
         this.komments.push(' ');
         console.log('building komments i = ', x);
       }
-      if (this.promotions.length === 0) {
-        this.showPromotionEntry = true;
-        console.log('no promotions display data entry form : generated ===> ', this.generated);
-      } else {
-        console.log('Display promotions on page, allow an edit button, and comment entry by merchant');
-      }
     },
     errormessage => {
         this.message = <any>errormessage;
@@ -219,7 +253,7 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
     this.ADDFLAG = false;
   }
 
-  changeMerchant(mvalue) {
+  changeMerchant() {
     let ndx;
     for ( ndx = 0; ndx < this.merchants.length; ndx++) {
       if (this.merchants[ndx].name === this.fmSelect.controls['merchant'].value) {
@@ -227,18 +261,12 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
       }
     }
     this.fmSelect.controls['merchant'].setValue(this.merchants[ndx].name);
-    this._mid = this.mprofiles[ndx]._id;
-    // Use merchant_id and fetch promotions
+    this._mid = this.merchants[ndx]._id;
+    // Use merchant_id and fetch promotions or use settings _id for admin staff
     this.promotionService.getPromotions(this._mid)
     .subscribe(promotions => {
       this.promotions = promotions;
       console.log('promotions : ', this.promotions);
-      if (this.promotions.length === 0) {
-        this.showPromotionEntry = true;
-        console.log('no promotions display data entry form');
-      } else {
-        console.log('Display promotions on page, allow an edit button, and comment entry by merchant');
-      }
     },
       errormessage => {
         this.message = <any>errormessage;
@@ -478,13 +506,14 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
   }
 
   addUpdateComments(i) {
-    if (!this.UPDATINGCOMMENT_J) {
+    if (this.UPDATINGCOMMENT_J === null) {
       const remark = {
         username: this.username,
         name: this.realname,
         comment:  this.komments[i]
       };
       this.komments[i] = '';
+      this.commentNotUpdated = true;
       this.promotionService.addComment(this.promotions[i]._id, remark)
       .subscribe(promotion => {
         this.promotions[i] = promotion;
@@ -509,13 +538,13 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
           this.message = <any>errormessage;
           this.messageClass = 'alert alert-danger';
       });
-      if (this.UPDATINGCOMMENT_J) {this.cancelUpdateComments(i); }
+      this.cancelUpdateComments(i);
     }
   }
 
   deleteComments(i, j) {
     console.log('delete ixj:', i, j);
-    if (this.UPDATINGCOMMENT_J) {this.cancelUpdateComments(i); }
+    if (this.UPDATINGCOMMENT_J !== null) {this.cancelUpdateComments(i); }
     this.promotionService.deleteComment(this.promotions[i]._id, this.promotions[i].comments[j]._id)
     .subscribe(promotion => {
       this.promotions[i] = promotion;
@@ -537,7 +566,7 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
   cancelUpdateComments(i) {
     this.komments[i] = '';
     this.UPDATINGCOMMENT_J = null;
-    this.commentNotUpdated = false;
+    this.commentNotUpdated = true;
   }
 
 }

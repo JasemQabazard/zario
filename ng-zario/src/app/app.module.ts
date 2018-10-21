@@ -43,7 +43,6 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { UsersamendComponent } from './components/usersamend/usersamend.component';
 import { MAddCustomerComponent } from './components/maddcustomer/maddcustomer.component';
 import { CPromotionsComponent } from './components/cpromotions/cpromotions.component';
-import { APromotionsComponent } from './components/apromotions/apromotions.component';
 import { CDashboardComponent } from './components/cdashboard/cdashboard.component';
 import { MDashboardComponent } from './components/mdashboard/mdashboard.component';
 
@@ -71,7 +70,6 @@ import { MDashboardComponent } from './components/mdashboard/mdashboard.componen
     UsersamendComponent,
     MAddCustomerComponent,
     CPromotionsComponent,
-    APromotionsComponent,
     CDashboardComponent,
     MDashboardComponent
   ],

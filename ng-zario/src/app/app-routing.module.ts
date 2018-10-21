@@ -10,7 +10,6 @@ import { LoginComponent } from './components/login/login.component';
 import { MProfileComponent } from './components/mprofile/mprofile.component';
 import { CProfileComponent } from './components/cprofile/cprofile.component';
 import { MPromotionsComponent } from './components/mpromotions/mpromotions.component';
-import { APromotionsComponent } from './components/apromotions/apromotions.component';
 import { CPromotionsComponent } from './components/cpromotions/cpromotions.component';
 import { MAddCustomerComponent } from './components/maddcustomer/maddcustomer.component';
 import { UsersamendComponent } from './components/usersamend/usersamend.component';
@@ -34,7 +33,6 @@ const routes: Routes = [
   {path: 'cprofile', component: CProfileComponent},
   {path: 'useramend', component: UsersamendComponent},
   {path: 'mpromotions', component: MPromotionsComponent},
-  {path: 'apromotions', component: APromotionsComponent},
   {path: 'cpromotions', component: CPromotionsComponent},
   {path: 'maddcustomer', component: MAddCustomerComponent},
   {path: 'register', component: RegisterComponent},

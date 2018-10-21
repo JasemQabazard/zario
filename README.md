@@ -63,7 +63,7 @@ https://www.youtube.com/watch?v=2Dom1t1WVn0
 - blog
 
 =================================================================================
-===  branchName:Adminpro == start:17Oct2018== Completed: 99 June 2018 ====
+===  branchName:Adminpro == start:17Oct2018== Completed: 21Oct2018 ====
 ================================================================================= 
 Administration Promotions:
 first we start by updating/ amending merchant promotions which is done.
