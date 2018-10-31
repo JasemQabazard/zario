@@ -57,30 +57,6 @@ export const merchantpromotions: Array<Promotion> = [];
 merchantpromotions[0] = {
                   _mid: '',
                   avatar: '../../../assets/img/avatardefault.png',
-                  name: 'Generic Initial Follow',
-                  narrative: 'Generic initial follow promotion',
-                  generated: true,
-                  activity: true,
-                  hearts: 0,
-                  hearted: [],
-                  timing: 'initial',
-                  action: 'follow',
-                  level: 'Bronze',
-                  category: 'membership',
-                  daterange: [
-                        new Date('1954-09-09 13:22:22.000'),
-                        new Date('2104-09-09 00:00:00.000')
-                     ],
-                  discount: '',
-                  meritsonpurchase: false,
-                  merits: 10,
-                  zarios: 0,
-                  productservicecode: '',
-                  description: 'A general initial rewarding strategy for following us on zario & the Black Diamond loyalty ptogram. You will receive merit points added to your profile band at both merchant and application levels.'
-               };
-merchantpromotions[1] = {
-                  _mid: '',
-                  avatar: '../../../assets/img/avatardefault.png',
                   name: 'Generic initial Purchase',
                   narrative: 'Generic initial purchase promotion',
                   generated: true,
@@ -103,7 +79,7 @@ merchantpromotions[1] = {
                   description: 'A general rewarding strategy for making the first purchase from our shop. You will receive a substantial discount on your first purchase, plus the merit points indicated added to your profile band at both merchant and application levels. You will also recieve zario points from the application for your contribution.'
                };
 // this record is duplicated for each loyalty band from 2-7, with different percentages and mertis.
-merchantpromotions[2] = {
+merchantpromotions[1] = {
                   _mid: '',
                   avatar: '../../../assets/img/avatardefault.png',
                   name: 'Bronze Loyalty Band Purchase',
@@ -126,7 +102,7 @@ merchantpromotions[2] = {
                   productservicecode: '',
                   description: 'When you become a member customer and make general purchases from our shop you will receive the indicated discount, merits point, and zarios as a reward for the contribution. Merit Points will be added to your profile band at both merchant and application levels. As your bands with us as advance you will also gain more rewards and more discounts. You will also recieve zario points from the application for your contribution.'
                };
-merchantpromotions[3] = {
+merchantpromotions[2] = {
                 _mid: '',
                 avatar: '../../../assets/img/avatardefault.png',
                 name: 'Silver Loyalty Band Purchase',
@@ -149,7 +125,7 @@ merchantpromotions[3] = {
                 productservicecode: '',
                 description: 'When you become a member customer and make general purchases from our shop you will receive the indicated discount, merits point, and zarios as a reward for the contribution. Merit Points will be added to your profile band at both merchant and application levels. As your loyalty band with us advance you will also gain more rewards and more discounts. You will also recieve zario points from the application for your contribution.'
              };
-merchantpromotions[4] = {
+merchantpromotions[3] = {
               _mid: '',
               avatar: '../../../assets/img/avatardefault.png',
               name: 'Gold Loyalty Band Purchase',
@@ -172,7 +148,7 @@ merchantpromotions[4] = {
               productservicecode: '',
               description: 'When you become a member customer and make general purchases from our shop you will receive the indicated discount, merits point, and zarios as a reward for the contribution. Merit Points will be added to your profile band at both merchant and application levels. As your bands with us as advance you will also gain more rewards and more discounts. You will also recieve zario points from the application for your contribution.'
            };
-merchantpromotions[5] = {
+merchantpromotions[4] = {
             _mid: '',
             avatar: '../../../assets/img/avatardefault.png',
             name: 'Platinum Loyalty Band Purchase',
@@ -195,7 +171,7 @@ merchantpromotions[5] = {
             productservicecode: '',
             description: 'When you become a member customer and make general purchases from our shop you will receive the indicated discount, merits point, and zarios as a reward for the contribution. Merit Points will be added to your profile band at both merchant and application levels. As your bands with us as advance you will also gain more rewards and more discounts. You will also recieve zario points from the application for your contribution.'
          };
-merchantpromotions[6] = {
+merchantpromotions[5] = {
           _mid: '',
           avatar: '../../../assets/img/avatardefault.png',
           name: 'Pearl Loyalty Band Purchase',
@@ -218,7 +194,7 @@ merchantpromotions[6] = {
           productservicecode: '',
           description: 'When you become a member customer and make general purchases from our shop you will receive the indicated discount, merits point, and zarios as a reward for the contribution. Merit Points will be added to your profile band at both merchant and application levels. As your bands with us as advance you will also gain more rewards and more discounts. You will also recieve zario points from the application for your contribution.'
        };
-merchantpromotions[7] = {
+merchantpromotions[6] = {
         _mid: '',
         avatar: '../../../assets/img/avatardefault.png',
         name: 'Blackdiamond Loyalty Band Purchase',
@@ -242,7 +218,7 @@ merchantpromotions[7] = {
         description: 'When you become a member customer and make general purchases from our shop you will receive the indicated discount, merits point, and zarios as a reward for the contribution. Merit Points will be added to your profile band at both merchant and application levels. As your bands with us as advance you will also gain more rewards and more discounts. You will also recieve zario points from the application for your contribution.'
      };
 // =======> Transitioning to a new level. this record will be duplicated for each band other than Silver, it will be changed and posted to the promotions table for Gold, Platinum, Pearl, and Blackdiamond. The discount will be .06, .08, .1, and .15 respectively. The merits will be 24, 26, 28, 30. zarioos will be .15, .2, .25, .3
-merchantpromotions[8] = {
+merchantpromotions[7] = {
                   _mid: '',
                   avatar: '../../../assets/img/avatardefault.png',
                   name: 'Transitioning to Silver Loyalty Band',
@@ -265,7 +241,7 @@ merchantpromotions[8] = {
                   productservicecode: '',
                   description: 'When you become a member and transitions with us from Bronze to Silver loyalty band. You will receive the indicated discount, merits point, and zarios, or gifts as a reward for your contribution. As you keep adding value to the Zario & the Black Diamond Loyalty application and to our establishment you will be rewarded merit points from your  purchases and interactions to advance your loyalty levels with both the application and us. Merits will be added to your profile band at both merchant and application levels.'
                };
-merchantpromotions[9] = {
+merchantpromotions[8] = {
                 _mid: '',
                 avatar: '../../../assets/img/avatardefault.png',
                 name: 'Transitioning to Gold Loyalty Band',
@@ -288,7 +264,7 @@ merchantpromotions[9] = {
                 productservicecode: '',
                 description: 'When you become a member and transitions with us from Silver to Gold loyalty band. You will receive the indicated discount, merits point, and zarios, or gifts as a reward for your contribution. As you keep adding value to the Zario & the Black Diamond Loyalty application and to our establishment you will be rewarded merit points from your  purchases and interactions to advance your loyalty levels with both the application and us. Merits will be added to your profile band at both merchant and application levels.'
              };
-merchantpromotions[10] = {
+merchantpromotions[9] = {
               _mid: '',
               avatar: '../../../assets/img/avatardefault.png',
               name: 'Transitioning to Platinum Loyalty Band',
@@ -311,7 +287,7 @@ merchantpromotions[10] = {
               productservicecode: '',
               description: 'When you become a member and transitions with us from Gold to Platinum loyalty band. You will receive the indicated discount, merits point, and zarios, or gifts as a reward for your contribution. As you keep adding value to the Zario & the Black Diamond Loyalty application and to our establishment you will be rewarded merit points from your  purchases and interactions to advance your loyalty levels with both the application and us. Merits will be added to your profile band at both merchant and application levels.'
            };
-merchantpromotions[11] = {
+merchantpromotions[10] = {
             _mid: '',
             avatar: '../../../assets/img/avatardefault.png',
             name: 'Transitioning to Pearl Loyalty Band',
@@ -334,7 +310,7 @@ merchantpromotions[11] = {
             productservicecode: '',
             description: 'When you become a member and transitions with us from Platinum to Pearl loyalty band. You will receive the indicated discount, merits point, and zarios, or gifts as a reward for your contribution. As you keep adding value to the Zario & the Black Diamond Loyalty application and to our establishment you will be rewarded merit points from your  purchases and interactions to advance your loyalty levels with both the application and us. Merits will be added to your profile band at both merchant and application levels.'
          };
-merchantpromotions[12] = {
+merchantpromotions[11] = {
           _mid: '',
           avatar: '../../../assets/img/avatardefault.png',
           name: 'Transitioning to Blackdiamond Loyalty Band',
@@ -358,7 +334,7 @@ merchantpromotions[12] = {
           description: 'When you become a member and transitions with us from Pearl to Blackdiamond loyalty band. You will receive the indicated discount, merits point, and zarios, or gifts as a reward for your contribution. As you keep adding value to the Zario & the Black Diamond Loyalty application and to our establishment you will be rewarded merit points from your  purchases and interactions to advance your loyalty levels with both the application and us. Merits will be added to your profile band at both merchant and application levels.'
        };
 // ====> product discount
-merchantpromotions[13] = {
+merchantpromotions[12] = {
                   _mid: '',
                   avatar: '../../../assets/img/avatardefault.png',
                   name: 'Specific Special Product Promotion',
@@ -383,7 +359,7 @@ merchantpromotions[13] = {
                   description: 'When you become a member and follow us as a merchant you will be offered product purchases at a low discount such as this product mentioned in this promotion. You will also receive the indicated merits point, and zarios, or gifts as a reward for the contribution. Merits will be added to your profile band at both merchant and application levels. You will also recieve zario points from the application for your contribution.'
                };
 // ====> service discount
-merchantpromotions[14] = {
+merchantpromotions[13] = {
                   _mid: '',
                   avatar: '../../../assets/img/avatardefault.png',
                   name: 'Specific Special Service Promotion',
@@ -408,7 +384,7 @@ merchantpromotions[14] = {
                   description: 'When you become a member and follow us as a merchant you will be offered service purchases at a low discount such as this service mentioned in this promotion. You will also receive the indicated merits point, and zarios, or gifts as a reward for the contribution. Merits will be added to your profile band at both merchant and application levels. You will also recieve zario points from the application for your contribution.'
                };
 // =====> Treasure Hunt
-merchantpromotions[15] = {
+merchantpromotions[14] = {
                   _mid: '',
                   avatar: '../../../assets/img/avatardefault.png',
                   name: 'Treasure Hunt Game Promotion',
@@ -433,7 +409,7 @@ merchantpromotions[15] = {
                   description: 'Find product discounts, services, merit points, zarios, and gifts in our treasure hunt game in your promotions page on the map as you go through our merchant stores or when you go to prominent locations in your area. You may stumble upon these reward offers when you least expect. Visit our store if you wish to find this reward discount offered on the item product or service mentioned, or find the merit points or zarios associated with the reward. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
                };
 // ====> game promotion
-merchantpromotions[16] = {
+merchantpromotions[15] = {
                   _mid: '',
                   avatar: '../../../assets/img/avatardefault.png',
                   name: 'General Game Promotion',
@@ -457,7 +433,7 @@ merchantpromotions[16] = {
                   productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
                   description: 'Win this product discount, service, merit points, zarios, or gifts in one of our offered games. You may play these games as they are offered to you when you level up your band with the application and with our merchant store. Visit our store for more discounts and rewards. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
                };
-merchantpromotions[17] = {
+merchantpromotions[16] = {
                   _mid: '',
                   avatar: '../../../assets/img/avatardefault.png',
                   name: 'Visit our store location promotion',

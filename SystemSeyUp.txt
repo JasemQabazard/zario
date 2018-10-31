@@ -1,0 +1,18 @@
+set up the ADMIN: => Register User => Change role ==== 'ADMIN' in user table 
+Sign in as ADMIN and Set up System Parameters for the entire Application.
+Sign Off as ADMIN
+Set up a Merchant: => Register User (merchantONE) => Change role === 'MERCHANT' in user table 
+Sign in as MERCHANT (merchantONE)
+   => Create Group Record 
+   => Create Main Profile Record for yourself
+   => Fix the location of the Main Profile Record 
+   => Create another sub main profile record 
+   => create a user with small 'merchant' for the sub main profile record (merchantsmall)
+   => create a customer for your main profile (customerone)
+Sign off
+Fix sign on credentials for customerone
+===============
+Sign on as (merchantsmall):
+   => create a (customertwo) for your submain profile
+Sign off
+Register a new (customerthree)

@@ -14,6 +14,10 @@ const Merchants = new Schema({
             minlength: 1,
             index: true
       },
+      description: {
+            type: String,
+            default: ''
+      },
       _gid: {
          type: mongoose.Schema.Types.ObjectId,
          default: null
@@ -29,8 +33,8 @@ const Merchants = new Schema({
       },
       // business category ---> similar business category are excluded from referral program if 2 merchants have "CAFE" category then customers recruited by one of them will not be referred to the other one. EXCEPT: the customer can EXPLICITLY ask to join the other within the APP. 
       category: { 
-         type: String,
-         default: ''
+            type: String,
+            default: ''
       },
       email: { 
             type: String, 

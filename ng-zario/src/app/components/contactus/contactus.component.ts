@@ -31,7 +31,7 @@ export class ContactusComponent implements OnInit {
   }
 
   createForm() {
-    this.form= this.formBuilder.group({
+    this.form = this.formBuilder.group({
       name: ['', Validators.compose([
         Validators.required,
         Validators.minLength(5),
@@ -53,7 +53,7 @@ export class ContactusComponent implements OnInit {
         Validators.required,
         Validators.minLength(50)
       ])]
-    })
+    });
   }
 
     // Function to validate e-mail is proper format
@@ -64,7 +64,7 @@ export class ContactusComponent implements OnInit {
       if (regExp.test(controls.value)) {
         return null; // Return as valid email
       } else {
-        return { 'validateEmail': true } // Return as invalid email
+        return { 'validateEmail': true }; // Return as invalid email
       }
     }
 
@@ -76,24 +76,24 @@ export class ContactusComponent implements OnInit {
     if (regExp.test(controls.value)) {
       return null; // Return as valid name
     } else {
-      return { 'validateName': true } // Return as invalid name
+      return { 'validateName': true }; // Return as invalid name
     }
   }
   onContactSubmit() {
     this.contact = this.form.value;
     this.authService.contactSupport(this.contact).subscribe(
       data => {
-        console.log("data", data);
-        this.messageClass= "alert alert-success";
-        this.message="Your information has been received successfull";
+        console.log('data', data);
+        this.messageClass = 'alert alert-success';
+        this.message = 'Your information has been received successfull';
         this.form.reset();
         setTimeout(() => {
           this.router.navigate(['/home']); // Redirect to home page
         }, 2000);
-      }, 
+      },
       errormessage => {
         this.message = <any>errormessage;
-        this.messageClass= "alert alert-danger";
+        this.messageClass = 'alert alert-danger';
       }
     );
   }

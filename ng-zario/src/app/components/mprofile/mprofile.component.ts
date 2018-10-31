@@ -8,7 +8,7 @@ import { AuthService } from '../../services/auth.service';
 import { ProfileService } from '../../services/profile.service';
 import { PromotionService } from '../../services/promotion.service';
 import { MProfile, Codes, Categories, Merchant, Strategy, Position } from '../../shared/profile';
-import { merchantpromotions, apppromotions } from '../../shared/promotions';
+import { merchantpromotions } from '../../shared/promotions';
 
 import { Subscription } from 'rxjs/Subscription';
 
@@ -96,7 +96,6 @@ export class MProfileComponent implements OnInit, OnDestroy {
       {strategyName: 'number'},
       {strategyName: 'value'}
     ];
-    console.log('merchant promotions array length', merchantpromotions.length);
     this.getUserPosition();
     this.authService.loadUserCredentials();
     this.subscription = this.authService.getUsername()
@@ -151,6 +150,7 @@ export class MProfileComponent implements OnInit, OnDestroy {
               this.fp.setValue({
                 username: this.username,
                 name: this.mprofiles[0].name,
+                description: this.mprofiles[0].description,
                 category: this.mprofiles[0].category,
                 referral: this.mprofiles[0].referral,
                 email: this.mprofiles[0].email,
@@ -233,9 +233,13 @@ export class MProfileComponent implements OnInit, OnDestroy {
       username: this.username,
       name: ['', Validators.compose([
         Validators.required,
-        Validators.minLength(15),
+        Validators.minLength(12),
         Validators.maxLength(50),
         this.validateName
+      ])],
+      description: ['', Validators.compose([
+        Validators.required,
+        Validators.minLength(50)
       ])],
       category: '',
       referral: false,
@@ -400,6 +404,7 @@ export class MProfileComponent implements OnInit, OnDestroy {
     this.fp.setValue({
       username: this.username,
       name: this.mprofiles[ndx].name,
+      description: this.mprofiles[ndx].description,
       category: this.mprofiles[ndx].category,
       referral: this.mprofiles[ndx].referral,
       email: this.mprofiles[ndx].email,
@@ -428,6 +433,7 @@ export class MProfileComponent implements OnInit, OnDestroy {
     this.fp.setValue({
       username: this.username,
       name: '',
+      description: '',
       category: '',
       referral: false,
       email: '',
@@ -502,24 +508,15 @@ export class MProfileComponent implements OnInit, OnDestroy {
                   console.log('update USER data : ', data);
                   this.messageClass = 'alert alert-success';
                   this.message = 'User Data Update Successfull';
-                  for (let i = 0; i < merchantpromotions.length; i++) {
-                    merchantpromotions[i]._mid = this._mid;
-                    this.promotionService.addPromotion(merchantpromotions[i]).subscribe(
-                      data => {
-                        console.log('adding i = ', i);
-                      },
-                      errormessage => {
-                        this.message = <any>errormessage;
-                        this.messageClass = 'alert alert-danger';
-                      }
-                    );
-                  }
+                  this.addStandardPromotions();
                 },
                 errormessage => {
                   this.message = <any>errormessage;
                   this.messageClass = 'alert alert-danger';
                 }
               );
+            } else {
+              this.addStandardPromotions();
             }
           },
             errormessage => {
@@ -538,6 +535,21 @@ export class MProfileComponent implements OnInit, OnDestroy {
           console.log('data : ', data);
           this.messageClass = 'alert alert-success';
           this.message = 'Profile Update Successfull';
+        },
+        errormessage => {
+          this.message = <any>errormessage;
+          this.messageClass = 'alert alert-danger';
+        }
+      );
+    }
+  }
+
+  addStandardPromotions() {
+    for (let i = 0; i < merchantpromotions.length; i++) {
+      merchantpromotions[i]._mid = this._mid;
+      this.promotionService.addPromotion(merchantpromotions[i]).subscribe(
+        data => {
+          console.log('adding i = ', i);
         },
         errormessage => {
           this.message = <any>errormessage;

@@ -2,6 +2,7 @@ export class MProfile {
    _id: string;
    username: string;
    name: string;
+   description: string;
    _gid: string;
    referral: Boolean;
    avatar: string;

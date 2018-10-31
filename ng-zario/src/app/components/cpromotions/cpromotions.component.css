@@ -1,0 +1,9 @@
+agm-map {
+  height: 700px;
+  border: 1px solid #fff;
+}
+
+.picdiv {
+  max-width: 200px;
+  max-height: 200px;
+}

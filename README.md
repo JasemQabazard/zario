@@ -74,11 +74,13 @@ next we envisage that the app admin staff will need promotions data entry to
       - maintain treasure hunt promotions.
 2- maintain promotions on behalf of merchants.
 =================================================================================
-===  branchName:Customer-Promotions == start:01June2018== Completed: 99 June 2018 ====
+===  branchName:Customer-Promotions == start:22Oct2018== Completed: 99 June 2018 ====
 ================================================================================= 
-   - promotions will display map of all MERCHANTS + logo card for each MERCHANT. Promotions will also dsiplay dailies and weekly purchases that are special and daily achievements for each MERCHANT.
+   - promotions will display map of all MERCHANTS + logo card for each MERCHANT. 
+   Promotions will also dsiplay dailies and weekly purchases that are special and daily achievements for each MERCHANT.
    - Once CUSTOMER clicks on map location or MERCHANT Card will get a display for MERCHANT details of basic promotions
    - when CUSTOMER press the ===MyPromotions=== button he gets same views with only the promotions he is subscribed to. The "You May Like This" MERCHANTS and promotions will also be displayed to teh CUSTOMER as a form of suggestive purchases. This will be an entry to AI.
+
 =================================================================================
 ===  branchName:Cart == start:01June2018== Completed: 99 June 2018 ====
 ================================================================================= 

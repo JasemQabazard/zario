@@ -23,7 +23,7 @@
                                     </select>
                                     <h4 class="mt-3">OR</h4>
                                     <button class="btn btn-success btn-block" (click)="addMerchant()">Add A New Profile </button>
-                                </form> 
+                                </form>
                             </div>
                             <hr>
                             <h5>Avatar Section</h5>
@@ -54,13 +54,27 @@
                                                 Merchant Profile Name field is required
                                             </div>
                                             <div *ngIf="fp.controls.name.errors?.minlength || fp.controls.name.errors?.maxlength">
-                                                Merchant Profile Name minimum characters: 3, Maximum characters: 50
+                                                Merchant Profile Name minimum characters: 12, Maximum characters: 50
                                             </div>
                                             <div *ngIf="fp.controls.name.errors?.validateName">
                                                 Valid Merchant Profile Name must not have special characters
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="form-group">
+                                  <label for="description">Profile Description</label>
+                                  <div [ngClass]="{'has-error':(fp.controls.description.errors && fp.controls.description.dirty), 'has-success': !fp.controls.description.errors}">
+                                      <textarea name="description" class="form-control" rows="3" formControlName="description"></textarea>
+                                      <div class="help-block text-light small bg-danger pl-2" *ngIf="fp.controls.description.errors && fp.controls.description.dirty">
+                                          <div *ngIf="fp.controls.description.errors?.required">
+                                              Merchant Profile Description field is required
+                                          </div>
+                                          <div *ngIf="fp.controls.description.errors?.minlength">
+                                              Merchant Profile Description should be a minimum of 50  characters
+                                          </div>
+                                      </div>
+                                  </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="category">Business Category</label>
@@ -70,7 +84,7 @@
                                 </div>
                                 <div class="form-group checkbox">
                                     <h5>Referral: </h5>
-                                    <input class="my_checkbox align-middle" type="checkbox" formControlName="referral"> 
+                                    <input class="my_checkbox align-middle" type="checkbox" formControlName="referral">
                                     <label class="center-block text-light bg-danger">
                                         <strong>You CAN REFER MY CUSTOMERS TO SIMILAR BUSINESSES</strong>
                                     </label>
@@ -101,7 +115,7 @@
                                                 <select id="countrycode" class="form-control" formControlName="countrycode">
                                                 <option *ngFor="let code of codes" [value]="code.countryCode">{{code.countryCode}}</option>
                                                 </select>
-                                            </div>       
+                                            </div>
                                             <div class="col-sm-6">
                                                 <label for="city">City</label>
                                                 <div [ngClass]="{'has-error':(fp.controls.city.errors && fp.controls.city.dirty), 'has-success': !fp.controls.city.errors}">
@@ -140,7 +154,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>       
+                                            </div>
                                             <div class="col-sm-6">
                                                 <label for="phone">Phone Number</label>
                                                 <div [ngClass]="{'has-error':(fp.controls.phone.errors && fp.controls.phone.dirty), 'has-success': !fp.controls.phone.errors}">
@@ -187,7 +201,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>       
+                                        </div>
                                         <div class="col-sm-6">
                                             <label for="silver">Silver Band</label>
                                             <div [ngClass]="{'has-error':(fp.controls.silver.errors && fp.controls.silver.dirty), 'has-success': !fp.controls.silver.errors}">
@@ -198,7 +212,7 @@
                                                         Silver Band field is required
                                                     </div>
                                                     <div *ngIf="fp.controls.silver.errors?.validateValue">
-                                                        Silver Band must be Numeric 
+                                                        Silver Band must be Numeric
                                                     </div>
                                                 </div>
                                             </div>
@@ -221,7 +235,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>       
+                                        </div>
                                         <div class="col-sm-6">
                                             <label for="platinum">Platinum Band</label>
                                             <div [ngClass]="{'has-error':(fp.controls.platinum.errors && fp.controls.platinum.dirty), 'has-success': !fp.controls.platinum.errors}">
@@ -232,7 +246,7 @@
                                                             Platinum Band field is required
                                                     </div>
                                                     <div *ngIf="fp.controls.platinum.errors?.validateValue">
-                                                            platinum Band must be Numeric 
+                                                            platinum Band must be Numeric
                                                     </div>
                                                 </div>
                                             </div>
@@ -255,7 +269,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>       
+                                        </div>
                                         <div class="col-sm-6">
                                             <label for="blackdiamond">blackdiamond Band</label>
                                             <div [ngClass]="{'has-error':(fp.controls.blackdiamond.errors && fp.controls.blackdiamond.dirty) || (fp.errors?.bandSync && fp.controls.blackdiamond.dirty), 'has-success': !fp.controls.blackdiamond.errors || fp.errors?.bandSync}">
@@ -270,7 +284,7 @@
                                                     </div>
                                                     <div *ngIf="fp.errors?.bandSync">
                                                         Bands must progressively increase in value
-                                                    </div> 
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -280,8 +294,8 @@
                                 <h5>Location Section</h5>
                                 <hr>
                                 <div class="container agm">
-                                    <agm-map 
-                                            [latitude]="position.lat" 
+                                    <agm-map
+                                            [latitude]="position.lat"
                                             [longitude]="position.lng"
                                             [zoom]="15"
                                             (mapClick)="mapClicked($event)"
@@ -298,7 +312,7 @@
                                               <h3><strong>Your Selected location</strong></h3>
                                               <p>You want to be here!</p>
                                             </agm-info-window>
-                                          </agm-marker>                                        
+                                          </agm-marker>
                                       </agm-map>
                                 </div>
                                 <div class="form-group">
@@ -308,7 +322,7 @@
                                             <input type="longitude" name="longitude" class="form-control" readonly
                                                 formControlName="longitude">
                                             <button type="button" class=" mt-3" (click)="setLocation2Current()">Set to your current location</button>
-                                        </div>       
+                                        </div>
                                         <div class="col-sm-6">
                                             <label for="latitude">Mewrchant Location Latitude</label>
                                             <input type="latitude" name="latitude" class="form-control" readonly
