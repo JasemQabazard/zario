@@ -22,11 +22,11 @@ transRouter.route('/')
 })
 .post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Trans.create(req.body)
-   .then((tran) => {
-         console.log('Tran Created', tran);
+   .then((trans) => {
+         console.log('Trans Created', trans);
          res.statusCode = 200;
          res.setHeader('Content-Type', 'application/json');
-         res.json(tran);
+         res.json(trans);
    }, (err) => next(err))
    .catch((err) => next(err));
 })
@@ -48,10 +48,10 @@ transRouter.route('/:tranId')
 .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
 .get(cors.cors, (req,res,next) => {
    Trans.findById(req.params.tranId)
-    .then((tran) => {
+    .then((trans) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(tran);
+        res.json(trans);
     }, (err) => next(err))
     .catch((err) => next(err));
 })
@@ -63,10 +63,10 @@ transRouter.route('/:tranId')
    Trans.findByIdAndUpdate(req.params.tranId, {
         $set: req.body
     }, { new: true })
-    .then((tran) => {
+    .then((trans) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(tran);
+        res.json(trans);
     }, (err) => next(err))
     .catch((err) => next(err));
 })

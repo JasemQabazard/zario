@@ -11,7 +11,7 @@ settingsRouter.use(bodyParser.json());
 
 settingsRouter.route('/') 
 .options(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res) => { res.sendStatus(200); })
-.get(cors.cors, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.get(cors.cors, authenticate.verifyUser, (req, res, next) => {
    Settings.find({})
    .then((settings) => {
          res.statusCode = 200;

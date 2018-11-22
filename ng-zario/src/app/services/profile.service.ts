@@ -50,6 +50,12 @@ export class ProfileService {
                     .catch(error => this.processHttpmsgService.handleError(error));
   }
 
+  getCProfileID(cid: string): Observable<CProfile> {
+    console.log('profile service customer cid: ', cid);
+    return  this.http.get(baseURL + '/customers/' + cid)
+                    .catch(error => this.processHttpmsgService.handleError(error));
+  }
+
   getCProfile(username: string): Observable<CProfile> {
     console.log('profile service customer username: ', username);
     return  this.http.get(baseURL + '/customers/byuser/' + username)

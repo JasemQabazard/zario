@@ -83,7 +83,6 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
     this.actions = [
       {actionCode: 'treasurehunt'},
       {actionCode: 'purchase'},
-      {actionCode: 'follow'},
       {actionCode: 'transition'},
       {actionCode: 'game'},
       {actionCode: 'visit'}

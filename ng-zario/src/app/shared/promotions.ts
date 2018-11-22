@@ -13,7 +13,7 @@ export class Promotion {
    level: string;
    category: string;
    daterange: Array<Date>;
-   discount: string;
+   discount: number;
    meritsonpurchase: Boolean;
    merits: number;
    zarios: number;
@@ -71,7 +71,7 @@ merchantpromotions[0] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: '.2',
+                  discount: 0.2,
                   merits: 10,
                   meritsonpurchase: true,
                   zarios: 0,
@@ -95,7 +95,7 @@ merchantpromotions[1] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                   ],
-                  discount: '0.03',
+                  discount: 0.03,
                   meritsonpurchase: true,
                   merits: 10,
                   zarios: 0,
@@ -118,7 +118,7 @@ merchantpromotions[2] = {
                   new Date('1954-09-09 13:22:22.000'),
                   new Date('2104-09-09 00:00:00.000')
                 ],
-                discount: '0.04',
+                discount: 0.04,
                 meritsonpurchase: true,
                 merits: 12,
                 zarios: 0,
@@ -141,7 +141,7 @@ merchantpromotions[3] = {
                 new Date('1954-09-09 13:22:22.000'),
                 new Date('2104-09-09 00:00:00.000')
               ],
-              discount: '0.05',
+              discount: 0.05,
               meritsonpurchase: true,
               merits: 14,
               zarios: 0,
@@ -164,7 +164,7 @@ merchantpromotions[4] = {
               new Date('1954-09-09 13:22:22.000'),
               new Date('2104-09-09 00:00:00.000')
             ],
-            discount: '0.06',
+            discount: 0.06,
             meritsonpurchase: true,
             merits: 16,
             zarios: 0,
@@ -187,7 +187,7 @@ merchantpromotions[5] = {
             new Date('1954-09-09 13:22:22.000'),
             new Date('2104-09-09 00:00:00.000')
           ],
-          discount: '0.07',
+          discount: 0.07,
           meritsonpurchase: true,
           merits: 18,
           zarios: 0,
@@ -210,7 +210,7 @@ merchantpromotions[6] = {
           new Date('1954-09-09 13:22:22.000'),
           new Date('2104-09-09 00:00:00.000')
         ],
-        discount: '0.1',
+        discount: 0.1,
         meritsonpurchase: true,
         merits: 20,
         zarios: 0,
@@ -234,7 +234,7 @@ merchantpromotions[7] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: '.05',
+                  discount: 0.05,
                   meritsonpurchase: true,
                   merits: 20,
                   zarios: 0,
@@ -257,7 +257,7 @@ merchantpromotions[8] = {
                   new Date('1954-09-09 13:22:22.000'),
                   new Date('2104-09-09 00:00:00.000')
                   ],
-                discount: '.05',
+                discount: 0.05,
                 meritsonpurchase: true,
                 merits: 20,
                 zarios: 0,
@@ -280,7 +280,7 @@ merchantpromotions[9] = {
                 new Date('1954-09-09 13:22:22.000'),
                 new Date('2104-09-09 00:00:00.000')
                 ],
-              discount: '.05',
+              discount: 0.05,
               meritsonpurchase: true,
               merits: 20,
               zarios: 0,
@@ -303,7 +303,7 @@ merchantpromotions[10] = {
               new Date('1954-09-09 13:22:22.000'),
               new Date('2104-09-09 00:00:00.000')
               ],
-            discount: '.05',
+            discount: 0.05,
             meritsonpurchase: true,
             merits: 20,
             zarios: 0,
@@ -326,7 +326,7 @@ merchantpromotions[11] = {
             new Date('1954-09-09 13:22:22.000'),
             new Date('2104-09-09 00:00:00.000')
             ],
-          discount: '.05',
+          discount: 0.05,
           meritsonpurchase: true,
           merits: 20,
           zarios: 0,
@@ -351,7 +351,7 @@ merchantpromotions[12] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: '.15',
+                  discount: 0.15,
                   meritsonpurchase: true,
                   merits: 5,
                   zarios: 0,
@@ -376,7 +376,7 @@ merchantpromotions[13] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: '.15',
+                  discount: 0.15,
                   meritsonpurchase: true,
                   merits: 5,
                   zarios: 0,
@@ -401,7 +401,7 @@ merchantpromotions[14] = {
                         new Date('1954-09-09 13:22:22.000'),
                         new Date('2104-09-09 00:00:00.000')
                      ],
-                  discount: '.15',
+                  discount: 0.15,
                   meritsonpurchase: false,
                   merits: 5,
                   zarios: 0,
@@ -426,7 +426,7 @@ merchantpromotions[15] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: '.15',
+                  discount: 0.15,
                   meritsonpurchase: false,
                   merits: 5,
                   zarios: 0,
@@ -444,12 +444,12 @@ merchantpromotions[16] = {
                   timing: 'hourly',    // usually hourly or daily for a certain event promotion
                   action: 'visit',
                   level: 'All',
-                  category: 'all',
+                  category: 'membership',
                   daterange: [
                         new Date('1954-09-09 13:22:22.000'),
                         new Date('2104-09-09 00:00:00.000')
                      ],
-                  discount: '',
+                  discount: 0,
                   meritsonpurchase: false,
                   merits: 10,
                   zarios: 0,
@@ -474,7 +474,7 @@ apppromotions[0] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: '',
+                  discount: 0,
                   meritsonpurchase: true,
                   merits: 10,
                   zarios: 0.1,
@@ -498,7 +498,7 @@ apppromotions[1] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: '',
+                  discount: 0,
                   meritsonpurchase: true,
                   merits: 12,
                   zarios: 0.2,
@@ -522,7 +522,7 @@ apppromotions[2] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: '',
+                  discount: 0,
                   meritsonpurchase: true,
                   merits: 14,
                   zarios: 0.3,
@@ -546,7 +546,7 @@ apppromotions[3] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: '',
+                  discount: 0,
                   meritsonpurchase: true,
                   merits: 16,
                   zarios: 0.4,
@@ -570,7 +570,7 @@ apppromotions[4] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: '',
+                  discount: 0,
                   meritsonpurchase: true,
                   merits: 18,
                   zarios: 0.5,
@@ -594,7 +594,7 @@ apppromotions[5] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: '',
+                  discount: 0,
                   meritsonpurchase: true,
                   merits: 20,
                   zarios: 1,
@@ -618,7 +618,7 @@ apppromotions[6] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: '',
+                  discount: 0,
                   meritsonpurchase: false,
                   merits: 5,
                   zarios: 0.1,
@@ -642,7 +642,7 @@ apppromotions[7] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: '',
+                  discount: 0,
                   meritsonpurchase: false,
                   merits: 5,
                   zarios: 0.1,
@@ -660,12 +660,12 @@ apppromotions[8] = {
                   timing: 'hourly',    // usually hourly or daily for a certain event promotion
                   action: 'visit',
                   level: 'All',
-                  category: 'all',
+                  category: 'application',
                   daterange: [
                         new Date('1954-09-09 13:22:22.000'),
                         new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: '',
+                  discount: 0,
                   meritsonpurchase: false,
                   merits: 5,
                   zarios: 0.05,
@@ -689,7 +689,7 @@ apppromotions[9] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: '',
+                  discount: 0,
                   meritsonpurchase: true,
                   merits: 20,
                   zarios: 0.1,
@@ -712,7 +712,7 @@ apppromotions[10] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: '',
+                  discount: 0,
                   meritsonpurchase: true,
                   merits: 20,
                   zarios: 0.2,
@@ -735,7 +735,7 @@ apppromotions[11] = {
                   new Date('1954-09-09 13:22:22.000'),
                   new Date('2104-09-09 00:00:00.000')
                   ],
-                  discount: '',
+                  discount: 0,
                   meritsonpurchase: true,
                   merits: 20,
                   zarios: 0.3,
@@ -758,7 +758,7 @@ apppromotions[12] = {
                   new Date('1954-09-09 13:22:22.000'),
                   new Date('2104-09-09 00:00:00.000')
                   ],
-                  discount: '',
+                  discount: 0,
                   meritsonpurchase: true,
                   merits: 20,
                   zarios: 0.4,
@@ -781,7 +781,7 @@ apppromotions[13] = {
                   new Date('1954-09-09 13:22:22.000'),
                   new Date('2104-09-09 00:00:00.000')
                   ],
-                  discount: '',
+                  discount: 0,
                   meritsonpurchase: true,
                   merits: 20,
                   zarios: 0.5,

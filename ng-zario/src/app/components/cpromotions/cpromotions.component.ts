@@ -94,7 +94,7 @@ export class CPromotionsComponent implements OnInit {
           this.subscription.unsubscribe();
           this.profileService.getCProfile(this.username)
           .subscribe(cprofile => {
-            if ( cprofile === null){
+            if ( cprofile === null) {
               this.merchantsName = 'Please Build your Profile Record Before Proceeding';
               setTimeout(() => {
                 this.router.navigate(['/']);

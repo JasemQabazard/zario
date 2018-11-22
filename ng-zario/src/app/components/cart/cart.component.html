@@ -1,11 +1,160 @@
-<p>
-  - In the cart the merchant will be recording customer sales or purchases made at there shops.
-  - The cart is used for repeted customers OR customers with a valid account
-  - while for first time customers the merchant must add the customer to the MADD table along with the first time sales made
-  - The two programs will do the same when dealing with the purchase made by the customer except the MADD addition is for first time customers
-  - A service must be written to examine the variuous merchant and applicatrion promotions and check which ones apply to the purchase made 
-  - the service will then determine how much discount the custoemrs deserves and how many zarios he gains from the purchase 
-  - the promotions applied will be listed to the merchant for double checking as well as indicated to the customer in the recorded transaction as applied promotions 
-  - the cart must also be able to read the customer QR Code from his mobile by taking a picture and using the camera 
-  - 
-</p>
+<div class="row">
+  <div class="col-md-8 mx-auto mt-5">
+      <div class="text-center" *ngIf="!_cid">
+          <p><strong>Please scan Customer QR Code using the camera</strong></p>
+          <p><strong>Place the QR code from customer mobile infront of the terminal camera </strong></p>
+    </div>
+    <div *ngIf="_cid">
+      <div class="card card-form border-warning p-1 m-1 mx-auto">
+          <div class="card-header">
+              <h4 class="text-center">Cart Transaction Capture for Customer: {{customername}}</h4>
+              <form [formGroup]="fm" class="mt-3 p-1">
+                  <h5 class="d-sm-block d-none">Select an existing Merchant Profile</h5>
+                  <select id="merchant" class="form-control bg-primary text-white" formControlName="merchant" (change)="changeMerchant()">
+                      <option *ngFor="let merchant of merchants" [value]="merchant.name">{{merchant.name}}</option>
+                  </select>
+              </form>
+              <hr>
+          </div>
+          <div class="card-body">
+            <div class="row show-hide-message">
+                <div [ngClass]="messageClass" class="col-sm-9 border-warning h-50 mx-auto text-center">
+                    <strong>{{message}}</strong>
+                </div>
+            </div>
+            <div class="row mt-2 px-3">
+                <div class="imageContainer col-md-4">
+                    <img class="mb-3 border-warning img-fluid mx-auto imagePreview" [src]="avatarPath" alt="default Avatar">
+                </div>
+            </div>
+            <form [formGroup]="ft">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="amount">Transaction Amount</label>
+                        <div [ngClass]="{'has-error':(ft.controls.amount.errors && ft.controls.amount.dirty), 'has-success': !ft.controls.amount.errors}">
+                            <input type="text" name="amount" class="form-control"
+                            formControlName="amount">
+                            <div class="help-block text-light small bg-danger pl-2" *ngIf="ft.controls.amount.errors && ft.controls.amount.dirty">
+                              <div *ngIf="ft.controls.amount.errors?.required">
+                                  Amount field is required
+                              </div>
+                              <div *ngIf="ft.controls.amount.errors?.validateNumericFloat">
+                                  Transaction Amount must be a number
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3 border-warning">
+                  <h5>Applied Merchant Promotions</h5>
+                  <hr>
+                  <label class="col-sm-3"><strong>Promotion Name</strong></label>
+                  <label class="col-sm-1 ml-2"><strong>Discount</strong></label>
+                  <label class="col-sm-1 ml-2"><strong>Merits</strong></label>
+                  <label class="col-sm-1 ml-2"><strong>Zarios</strong></label>
+                  <label class="col-sm-2"><strong>Product Code</strong></label>
+                  <label><strong>Apply/Remove</strong></label>
+                  <div class="my-1" formArrayName="mp"
+                    *ngFor="let p of ft.get('mp').controls; let i = index;">
+                    <div [formGroupName]="i">
+                            <input class="col-sm-3" formControlName="name" type="text" name="name">
+                            <input class="col-sm-1 ml-2" formControlName="discount" type="text" name="discount">
+                            <input class="col-sm-1 ml-2" formControlName="merits" type="text" name="merits">
+                            <input class="col-sm-1 ml-2" formControlName="zarios" type="text" name="zarios">
+                            <input class="col-sm-2 ml-2" formControlName="productservicecode" type="text" name="productservicecode">
+                            <button *ngIf="!applybtns[i]" type="button" class="btn btn-sm btn-danger ml-2" (click)="toggleApplied(i)" >Apply</button>
+                            <button *ngIf="applybtns[i]" type="button" class="btn btn-sm btn-dark ml-2" (click)="toggleApplied(i)" >Remove</button>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                <div class="mt-3 border-warning">
+                  <h5>Applied Application Promotions</h5>
+                  <hr>
+                  <label class="col-sm-3"><strong>Promotion Name</strong></label>
+                  <label class="col-sm-1 ml-2"><strong>Merits</strong></label>
+                  <label class="col-sm-1 ml-2"><strong>Zarios</strong></label>
+                  <div class="my-1" formArrayName="ap"
+                    *ngFor="let p of ft.get('ap').controls; let i = index;">
+                    <div [formGroupName]="i">
+                            <input class="col-sm-3" formControlName="name" type="text" name="name">
+                            <input class="col-sm-1 ml-2" formControlName="merits" type="text" name="merits">
+                            <input class="col-sm-1 ml-2" formControlName="zarios" type="text" name="zarios">
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label for="discount">Transaction Total Discount</label>
+                        <input type="text" name="discount" class="form-control"
+                            formControlName="discount">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="meritsonpurchase">Total Merit Points on Purchase</label>
+                            <input type="text" name="meritsonpurchase" class="form-control"
+                            formControlName="meritsonpurchase">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="merits">Total Extra Merits</label>
+                        <input type="text" name="merits" class="form-control"
+                            formControlName="merits">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="zarios">Zarios Rewarded</label>
+                        <input type="text" name="zarios" class="form-control"
+                            formControlName="zarios">
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <label for="description">Transaction Description</label>
+                    <div [ngClass]="{'has-error':(ft.controls.description.errors && ft.controls.description.dirty), 'has-success': !ft.controls.description.errors}">
+                        <textarea name="description" class="form-control" rows="3" formControlName="description"></textarea>
+                        <div class="help-block text-light small bg-danger pl-2" *ngIf="ft.controls.description.errors && ft.controls.description.dirty">
+                          <div *ngIf="ft.controls.description.errors?.required">
+                              Description field is required
+                          </div>
+                          <div *ngIf="ft.controls.description.errors?.minlength ">
+                              Description minimum characters: 50
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="category">Transaction Category</label>
+                    <div [ngClass]="{'has-error':(ft.controls.category.errors && ft.controls.category.dirty), 'has-success': !ft.controls.category.errors}">
+                        <input type="text" name="category" class="form-control"
+                        formControlName="category">
+                        <div class="help-block text-light small bg-danger pl-2" *ngIf="ft.controls.category.errors && ft.controls.category.dirty">
+                          <div *ngIf="ft.controls.category.errors?.required">
+                              Category field is required
+                          </div>
+                          <div *ngIf="ft.controls.category.errors?.minlength ">
+                              Category minimum characters: 10
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <button [disabled]="!ft.valid" type="submit" class="btn btn-primary btn-block mt-5" (click)="onftSubmit()" >Submit  Transaction</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<qr-scanner
+  [debug]="false"
+  [canvasWidth]="1000"
+  [canvasHeight]="750"
+  [stopAfterScan]="true"
+  [updateTime]="500">
+</qr-scanner>
+<!-- canvas width                                 (default: 640) -->
+<!-- canvas height                                (default: 480) -->
+<!-- should the scanner stop after first success? (default: true) -->
+<!-- miliseconds between new capture              (default: 500) -->
+
+
+
+We are pleased to announce that we are now able to offer an exclusive International Package of 24 one-ounce bottles of our 100% Pure Gum Spirits of Turpentine for $59.99 plus shipping. If you would like a shipping quote, simply click the "Contact Us" button below and tell us your complete shipping address, phone number, and the number of International Packages in which you are interested. All duties, taxes, and fees are the responsibility of the recipient.

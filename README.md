@@ -74,22 +74,38 @@ next we envisage that the app admin staff will need promotions data entry to
       - maintain treasure hunt promotions.
 2- maintain promotions on behalf of merchants.
 =================================================================================
-===  branchName:Customer-Promotions == start:22Oct2018== Completed: 99 June 2018 ====
+===  branchName:Customer-Promotions == start:22Oct2018== Completed: 31Oct2018 ====
 ================================================================================= 
    - promotions will display map of all MERCHANTS + logo card for each MERCHANT. 
    Promotions will also dsiplay dailies and weekly purchases that are special and daily achievements for each MERCHANT.
    - Once CUSTOMER clicks on map location or MERCHANT Card will get a display for MERCHANT details of basic promotions
    - when CUSTOMER press the ===MyPromotions=== button he gets same views with only the promotions he is subscribed to. The "You May Like This" MERCHANTS and promotions will also be displayed to teh CUSTOMER as a form of suggestive purchases. This will be an entry to AI.
+=================================================================================
+===  branchName:Cart == start:01Nov2018== Completed: 99 Nov 2018 ====
+================================================================================= 
+- https://www.npmjs.com/package/qrcode is the npm module to use for qrcode generation 
+- cart must read QR CODE from Mobile or Paper or Card
+- Display customer information for the merchant
+- allow merchant to enter amount of purchase 
+- cart to display applicable promotions that can be either automatically assigned to purchase or merchant can force assign a promotion to purchase (service or product)
+- promotions can be both application or merchant promotions
+- discount will be applied to purchase and details of merits and zarios will be dispaled
+- emailed to customer 
+- storedd in data base as transaction table along with a reference to the applied promotions
+- as well as effect all the customer profile (appliocation score, zarios) and CRM data (merchant loyalty band).
+- merchant must be able to add first time customers to the madd table then proceede to cart for that customer
 
 =================================================================================
-===  branchName:Cart == start:01June2018== Completed: 99 June 2018 ====
+===  branchName:Wallet == start:01June2018== Completed: 99 June 2018 ====
 ================================================================================= 
-
    - Wallet design considerations and research. Wallet to allow purc hase of zario coins as well as show price of zario, ethereum, bitcoin on display
    - Wallet to show the amount of zarion and the transaction history for the CUSTOMER and MERCHANT that lead to this.
    - Wallet transafer to other Wallet addresses of zario coins can be entertained offline on the ethereum platform  if the CUSTOMER or MERCHANT makes that wish
    - MERCHANT purchases of zarios can be frozen by application and be used to promote treasure hunting for MERCHANT stores and locations or generally:"such as CUSTOMER finds zario coins that belong to MERCHANT, then he has to go to the store to be eliigable to collect".
    - use email double factor and OTP for contact us and sign on while extending sign on jwt to 3 months on mobile and one month on web
+   =================================================================================
+===  branchName:Dashboard == start:01June2018== Completed: 99 June 2018 ====
+================================================================================= 
    - Dashboard menu option will show CUSTOMERS and MERCHANTS statistics such as:
       + system reputation band
       + Each MERCHANT reputation band for CUSTOMERS
@@ -101,11 +117,6 @@ next we envisage that the app admin staff will need promotions data entry to
    - use email and phone for double factor authentication.
    - Trasure Hunting on mobile, wallet, dashboard only and gaming. Along with download of app and registration, sign on etc..... 
    - 
-
-
-==========add-db-Models=======git branch============
-   - add all db structures and models for your data
-==========add-design-home=======git branch============
 
 
 <!-- coloring console.log in chrome =============================================

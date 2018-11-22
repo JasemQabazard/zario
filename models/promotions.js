@@ -77,8 +77,8 @@ const Promotions = new Schema({
       // date range will hold start date and end date
       daterange: [Date],
       discount: {
-            type: String,
-            default: ""
+            type: Number,
+            default: 0
       },
       meritsonpurchase: {
             type: Boolean,

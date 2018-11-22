@@ -24,10 +24,10 @@ AND
 ====timing====    ====Action====    ==== Level====    ====category====
    initial           treasurehunt      Bronze            membership
    hourly            purchase          Silver            product
-   daily             follow            Gold              service
+   daily             visit             Gold              service
    weekly            transition        Platinum          application 
    monthly           game              Pearl             
-   day2day           visit             Blackdiamond
+   day2day                             Blackdiamond
 
 ALL FLAGS HAVE A NA SETTING FOR NOT APPLICABALE
 add merits to the promotion record                                              
