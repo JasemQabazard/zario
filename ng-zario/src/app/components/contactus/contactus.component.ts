@@ -89,7 +89,7 @@ export class ContactusComponent implements OnInit {
         this.form.reset();
         setTimeout(() => {
           this.router.navigate(['/home']); // Redirect to home page
-        }, 2000);
+        }, 1500);
       },
       errormessage => {
         this.message = <any>errormessage;

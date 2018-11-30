@@ -110,6 +110,10 @@ export class ProfileService {
     return  this.http.get(baseURL + '/crms/bycid/' + cid)
                     .catch(error => this.processHttpmsgService.handleError(error));
   }
+  updateCRM(crmid: string, crm: any) {
+    return this.http.put(baseURL + '/crms/' + crmid , crm)
+      .catch(error => this.processHttpmsgService.handleError(error));
+  }
 
   // adding new group tp database on the server
   imageUpload(form): Observable<any> {

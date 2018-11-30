@@ -12,6 +12,7 @@ import { PromotionScannerService } from '../../services/promotion-scanner.servic
 
 import { Promotion, merchantpromotions } from '../../shared/promotions';
 import { MProfile, CProfile, CRM, Merchant} from '../../shared/profile';
+import { Trans } from '../../shared/trans';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 import { Subscription } from 'rxjs/Subscription';
@@ -24,7 +25,6 @@ interface DisplayPromotion {
   productservicecode: string;
   applied: boolean;
 }
-
 
 @Component({
   selector: 'app-cart',
@@ -42,6 +42,7 @@ export class CartComponent implements OnInit {
   _cid = '';
   _mid = '';
   _gid = '';
+  CRMINDEX: number = null;
   cprofile: CProfile;
   mprofiles: Array<MProfile> = [];
   merchants: Array<Merchant> = [];
@@ -77,7 +78,7 @@ export class CartComponent implements OnInit {
     private authService: AuthService,
     private profileService: ProfileService,
     private promotionService: PromotionService,
-    private promotionScannerServioce: PromotionScannerService,
+    private promotionScannerService: PromotionScannerService,
     private transService: TransService,
     private router: Router
   ) {
@@ -117,7 +118,7 @@ export class CartComponent implements OnInit {
             this.cprofile = cprofile;
             console.log(cprofile);
             if (cprofile.avatar) {
-              this.avatarPath = cprofile.avatar;
+              this.avatarPath = `avatars/${cprofile.avatar}`;
             }
             this.authService.getUser(cprofile.username)
             .subscribe(user => {
@@ -232,8 +233,9 @@ export class CartComponent implements OnInit {
           this.originalpromotions.push(promotions[x]);
         }
       }
-      this.originalpromotions = this.promotionScannerServioce.cartCore(this.originalpromotions, this.mBand);
-      this.promotions = this.promotionScannerServioce.cartTrans(this.originalpromotions, '');
+      this.originalpromotions = this.promotionScannerService.cartCore(this.originalpromotions, this.mBand);
+      this.cartTimed();
+      this.promotions = this.promotionScannerService.cartTransitions(this.originalpromotions, '');
       console.log(this.originalpromotions, this.promotions);
       if (this.mBand === '') {
         this.mBand = 'Bronze';
@@ -358,6 +360,7 @@ export class CartComponent implements OnInit {
   LoadCRM() {
     this.crm = [];
     this.score = null;
+    this.CRMINDEX = null;
     this.profileService.getCRM(this.cprofile._id)
     .subscribe(crm => {
       for (let i = 0; i < this.mprofiles.length; i++) {
@@ -370,7 +373,19 @@ export class CartComponent implements OnInit {
       for (let j = 0; j < this.crm.length; j++) {
         if (this.crm[j]._mid === this._mid) {
           this.score = this.crm[j].score;
+          this.CRMINDEX = j;
         }
+      }
+      if (this.CRMINDEX === null) {
+        this.crm.push({
+          _id: '',
+          _cid: this._cid,
+          _mid: this._mid,
+          score: 0,
+          vists: 0,
+          timedpromotions: [{ _pid: ''}]
+        });
+        this.CRMINDEX = 0;
       }
       console.log('crm ', this.crm);
       this.mBand = this.checkmBand(this.score);
@@ -405,7 +420,7 @@ export class CartComponent implements OnInit {
         const newBand = this.checkmBand(this.score + merits);
         console.log('merits ', merits, newBand, this.mBand, this.promotions.length, this.originalpromotions.length);
         if (newBand !== this.mBand && this.promotions.length !== this.originalpromotions.length) {
-          this.promotions = this.promotionScannerServioce.cartTrans(this.originalpromotions, newBand);
+          this.promotions = this.promotionScannerService.cartTransitions(this.originalpromotions, newBand);
           this.preparemp();
           this.changeDiscountZariosMerits();
         }
@@ -428,7 +443,7 @@ export class CartComponent implements OnInit {
       }
     }
     console.log(discount, zarios, merits, meritsonpurchase);
-    discount = discount * Number(this.ft.controls['amount'].value);
+    discount = discount * Number(this.ft.controls['amount'].value) / 100;
     this.ft.patchValue({
           'discount': discount,
           'zarios': zarios,
@@ -442,10 +457,125 @@ export class CartComponent implements OnInit {
     console.log('toggle Applied');
     this.applybtns[i] = !this.applybtns[i];
     this.dp[i].applied = this.applybtns[i];
-    this.changeDiscountZariosMerits();
+    if (this.ft.controls['amount'].value !== 0) {
+      this.changeDiscountZariosMerits();
+    }
   }
   onftSubmit() {
     console.log(this.ft.value);
+    const transaction = {
+      _cid: this._cid,
+      _mid: this._mid,
+      appliedpromotions: [],
+      amount: this.ft.controls['amount'].value,
+      discount: this.ft.controls['discount'].value,
+      meritsonpurchase: this.ft.controls['meritsonpurchase'].value,
+      merits: this.ft.controls['merits'].value,
+      zarios: this.ft.controls['zarios'].value,
+      description: this.ft.controls['description'].value,
+      category: this.ft.controls['category'].value
+    };
+    const crm: CRM = {
+      _cid: this._cid,
+      _mid: this._mid,
+      score: this.crm[this.CRMINDEX].score + transaction.merits + transaction.meritsonpurchase,
+      vists: this.crm[this.CRMINDEX].vists + 1,
+      timedpromotions: this.crm[this.CRMINDEX].timedpromotions
+    };
+    for (let x = 0; x < this.dp.length; x++) {
+      if (this.dp[x].applied) {
+          if (this.promotions[x].timing === 'hourly' ||
+              this.promotions[x].timing === 'daily' ||
+              this.promotions[x].timing === 'weekly' ||
+              this.promotions[x].timing === 'weekly' ) {
+                    if (this.crm[this.CRMINDEX]._id === '' &&
+                    crm.timedpromotions.length === 1) {
+                      crm.timedpromotions[0]._pid = this.promotions[x]._id;
+                    } else {
+                      crm.timedpromotions.push({
+                        _pid: this.promotions[x]._id
+                      });
+                    }
+          }
+          transaction.appliedpromotions.push (
+            {
+              _pid: this.promotions[x]._id,
+              discount: this.promotions[x].discount,
+              meritsonpurchase: this.promotions[x].meritsonpurchase,
+              merits: this.promotions[x].merits,
+              zarios: this.promotions[x].zarios,
+              productservicecode: this.promotions[x].productservicecode
+            }
+          );
+      }
+    }
+    if (crm.timedpromotions.length === 1) {
+      if (crm.timedpromotions[0]._pid === '') {
+        crm.timedpromotions.splice(0, 1);
+        console.log('spliced');
+      }
+    }
+    console.log('transaction : ', transaction, crm);
+    this.transService.addTrans(<Trans>transaction)
+    .subscribe(trans => {
+      console.log('transaction sent to data base');
+      if (this.crm[this.CRMINDEX]._id === '') {
+        this.profileService.addCRM(crm)
+        .subscribe(dbcrm => {
+          console.log('added to db ', dbcrm);
+        },
+        errormessage => {
+          console.log('errormessage crm add service ', errormessage);
+        });
+      } else {
+        this.profileService.updateCRM(this.crm[this.CRMINDEX]._id, crm)
+        .subscribe(dbcrm => {
+          console.log('updated in db ', dbcrm);
+        },
+        errormessage => {
+          console.log('errormessage crm update service ', errormessage);
+        });
+      }
+      setTimeout(() => {
+        this.router.navigate(['/home']); // Redirect to home page
+      }, 1500);
+    },
+    errormessage => {
+      console.log('errormessage transaction add service ', errormessage);
+    });
+  }
+
+  cartTimed () {
+    let days2pass = 0;
+    const now = new Date();
+    let promotionCreateAtDate = new Date();
+    for (let x = 0; x < this.crm[this.CRMINDEX].timedpromotions.length; x++) {
+      for (let y = 0; y < this.originalpromotions.length; y++) {
+        if (this.crm[this.CRMINDEX].timedpromotions[x]._pid === this.originalpromotions[y]._id) {
+          if (this.originalpromotions[y].timing = 'hourly') {
+            days2pass = 1;
+          } else if (this.originalpromotions[y].timing = 'daily') {
+            days2pass = 1;
+          } else if (this.originalpromotions[y].timing = 'weekly') {
+            days2pass = 7;
+          } else if (this.originalpromotions[y].timing = 'monthly') {
+            days2pass = 31;
+          }
+          promotionCreateAtDate = new Date(this.crm[this.CRMINDEX].timedpromotions[x].createdAt);
+          console.log('now promotionCreatedAtDate days2pass', now, promotionCreateAtDate, days2pass);
+          promotionCreateAtDate.setDate(promotionCreateAtDate.getDate() + days2pass);
+          console.log('promotionCreatedAtDate', promotionCreateAtDate);
+          if (now > promotionCreateAtDate) {
+            // expired remove from crm
+            this.crm[this.CRMINDEX].timedpromotions.splice(x, 1);
+          } else {
+            // still active remove from original promotions
+            this.originalpromotions.splice(y, 1);
+          }
+          break;
+        }
+      }
+    }
   }
 
 }

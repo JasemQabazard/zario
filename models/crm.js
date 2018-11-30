@@ -1,6 +1,15 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// comments schema
+const promotionsSchema = new Schema({
+      _pid: { 
+            type: mongoose.Schema.Types.ObjectId, 
+            required: true 
+      }
+  }, {timestamps: true});
+//
+
 
 // customer merchants relationship management schema
 const CRM = new Schema({
@@ -20,7 +29,8 @@ const CRM = new Schema({
    vists:  {
          type: Number,
          default: 0
-   }
+   },
+   timedpromotions: [promotionsSchema]
 }, {timestamps: true});
 //
 

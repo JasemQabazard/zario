@@ -90,11 +90,16 @@ export class Group {
 }
 
 export class CRM {
-   _id: string;
+   _id?: string;
    _cid: string;
    _mid: string;
    score: number;
    vists: number;
+   timedpromotions?: [{
+     _id?: string,
+     _pid?: string,
+     createdAt?: string
+   }];
 }
 
 export class Codes {

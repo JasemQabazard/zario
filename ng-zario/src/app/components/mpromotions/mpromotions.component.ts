@@ -305,6 +305,10 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
         Validators.required,
         this.validateNumericFloat
       ])],
+      zarios: [0, Validators.compose([
+        Validators.required,
+        this.validateNumericFloat
+      ])],
       description: ['', Validators.compose([
         Validators.required,
         Validators.minLength(50)
@@ -441,6 +445,7 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
       discount: 0,
       meritsonpurchase: true,
       merits: 0,
+      zarios: 0,
       description: ''
     });
     this.AddNewPromotion();
@@ -487,6 +492,7 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
       discount: this.promotions[i].discount,
       meritsonpurchase: this.promotions[i].meritsonpurchase,
       merits: this.promotions[i].merits,
+      zarios: this.promotions[i].zarios,
       description: this.promotions[i].description
     });
     if (this.generated) {

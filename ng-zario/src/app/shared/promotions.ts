@@ -14,7 +14,7 @@ export class Promotion {
    category: string;
    daterange: Array<Date>;
    discount: number;
-   meritsonpurchase: Boolean;
+   meritsonpurchase: boolean;
    merits: number;
    zarios: number;
    productservicecode: string;
@@ -71,7 +71,7 @@ merchantpromotions[0] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: 0.2,
+                  discount: 20,
                   merits: 10,
                   meritsonpurchase: true,
                   zarios: 0,
@@ -85,6 +85,7 @@ merchantpromotions[1] = {
                   name: 'Bronze Loyalty Band Purchase',
                   narrative: 'Bronze Loyalty Band day2day purchase promotion',
                   generated: true,
+                  activity: true,
                   hearts: 0,
                   hearted: [],
                   timing: 'day2day',
@@ -95,7 +96,7 @@ merchantpromotions[1] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                   ],
-                  discount: 0.03,
+                  discount: 3,
                   meritsonpurchase: true,
                   merits: 10,
                   zarios: 0,
@@ -108,6 +109,7 @@ merchantpromotions[2] = {
                 name: 'Silver Loyalty Band Purchase',
                 narrative: 'Silver Loyalty Band day2day purchase promotion',
                 generated: true,
+                activity: true,
                 hearts: 0,
                 hearted: [],
                 timing: 'day2day',
@@ -118,7 +120,7 @@ merchantpromotions[2] = {
                   new Date('1954-09-09 13:22:22.000'),
                   new Date('2104-09-09 00:00:00.000')
                 ],
-                discount: 0.04,
+                discount: 4,
                 meritsonpurchase: true,
                 merits: 12,
                 zarios: 0,
@@ -131,6 +133,7 @@ merchantpromotions[3] = {
               name: 'Gold Loyalty Band Purchase',
               narrative: 'Gold Loyalty Band day2day purchase promotion',
               generated: true,
+              activity: true,
               hearts: 0,
               hearted: [],
               timing: 'day2day',
@@ -141,7 +144,7 @@ merchantpromotions[3] = {
                 new Date('1954-09-09 13:22:22.000'),
                 new Date('2104-09-09 00:00:00.000')
               ],
-              discount: 0.05,
+              discount: 5,
               meritsonpurchase: true,
               merits: 14,
               zarios: 0,
@@ -154,6 +157,7 @@ merchantpromotions[4] = {
             name: 'Platinum Loyalty Band Purchase',
             narrative: 'Platinum Loyalty Band day2day purchase promotion',
             generated: true,
+            activity: true,
             hearts: 0,
             hearted: [],
             timing: 'day2day',
@@ -164,7 +168,7 @@ merchantpromotions[4] = {
               new Date('1954-09-09 13:22:22.000'),
               new Date('2104-09-09 00:00:00.000')
             ],
-            discount: 0.06,
+            discount: 6,
             meritsonpurchase: true,
             merits: 16,
             zarios: 0,
@@ -177,6 +181,7 @@ merchantpromotions[5] = {
           name: 'Pearl Loyalty Band Purchase',
           narrative: 'PearlLoyalty Band day2day purchase promotion',
           generated: true,
+          activity: true,
           hearts: 0,
           hearted: [],
           timing: 'day2day',
@@ -187,7 +192,7 @@ merchantpromotions[5] = {
             new Date('1954-09-09 13:22:22.000'),
             new Date('2104-09-09 00:00:00.000')
           ],
-          discount: 0.07,
+          discount: 7,
           meritsonpurchase: true,
           merits: 18,
           zarios: 0,
@@ -200,6 +205,7 @@ merchantpromotions[6] = {
         name: 'Blackdiamond Loyalty Band Purchase',
         narrative: 'Blackdiamond Loyalty Band day2day purchase promotion',
         generated: true,
+        activity: true,
         hearts: 0,
         hearted: [],
         timing: 'day2day',
@@ -210,7 +216,7 @@ merchantpromotions[6] = {
           new Date('1954-09-09 13:22:22.000'),
           new Date('2104-09-09 00:00:00.000')
         ],
-        discount: 0.1,
+        discount: 10,
         meritsonpurchase: true,
         merits: 20,
         zarios: 0,
@@ -224,6 +230,7 @@ merchantpromotions[7] = {
                   name: 'Transitioning to Silver Loyalty Band',
                   narrative: 'Level Transitions Silver Loyalty Band',
                   generated: true,
+                  activity: true,
                   hearts: 0,
                   hearted: [],
                   timing: 'day2day',
@@ -234,7 +241,7 @@ merchantpromotions[7] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: 0.05,
+                  discount: 5,
                   meritsonpurchase: true,
                   merits: 20,
                   zarios: 0,
@@ -247,6 +254,7 @@ merchantpromotions[8] = {
                 name: 'Transitioning to Gold Loyalty Band',
                 narrative: 'Level Transitions to Gold Loyalty Band',
                 generated: true,
+                activity: true,
                 hearts: 0,
                 hearted: [],
                 timing: 'day2day',
@@ -257,7 +265,7 @@ merchantpromotions[8] = {
                   new Date('1954-09-09 13:22:22.000'),
                   new Date('2104-09-09 00:00:00.000')
                   ],
-                discount: 0.05,
+                discount: 5,
                 meritsonpurchase: true,
                 merits: 20,
                 zarios: 0,
@@ -270,6 +278,7 @@ merchantpromotions[9] = {
               name: 'Transitioning to Platinum Loyalty Band',
               narrative: 'Level Transitions to Platinum Loyalty Band',
               generated: true,
+              activity: true,
               hearts: 0,
               hearted: [],
               timing: 'day2day',
@@ -280,7 +289,7 @@ merchantpromotions[9] = {
                 new Date('1954-09-09 13:22:22.000'),
                 new Date('2104-09-09 00:00:00.000')
                 ],
-              discount: 0.05,
+              discount: 5,
               meritsonpurchase: true,
               merits: 20,
               zarios: 0,
@@ -293,6 +302,7 @@ merchantpromotions[10] = {
             name: 'Transitioning to Pearl Loyalty Band',
             narrative: 'Level Transitions to Pearl Loyalty Band',
             generated: true,
+            activity: true,
             hearts: 0,
             hearted: [],
             timing: 'day2day',
@@ -303,7 +313,7 @@ merchantpromotions[10] = {
               new Date('1954-09-09 13:22:22.000'),
               new Date('2104-09-09 00:00:00.000')
               ],
-            discount: 0.05,
+            discount: 5,
             meritsonpurchase: true,
             merits: 20,
             zarios: 0,
@@ -316,6 +326,7 @@ merchantpromotions[11] = {
           name: 'Transitioning to Blackdiamond Loyalty Band',
           narrative: 'Level Transitions to Blackdiamond Loyalty Band',
           generated: true,
+          activity: true,
           hearts: 0,
           hearted: [],
           timing: 'day2day',
@@ -326,7 +337,7 @@ merchantpromotions[11] = {
             new Date('1954-09-09 13:22:22.000'),
             new Date('2104-09-09 00:00:00.000')
             ],
-          discount: 0.05,
+          discount: 5,
           meritsonpurchase: true,
           merits: 20,
           zarios: 0,
@@ -340,6 +351,7 @@ merchantpromotions[12] = {
                   name: 'Specific Special Product Promotion',
                   narrative: 'Product Promotion',
                   generated: true,
+                  activity: true,
                   hearts: 0,
                   hearted: [],
                   // timing: could be any of the setting- when set to=day2day: means the discount on the product or service is available all the time when the promotion is active. =hourly or any timimg indicator mean the product or service is available for one hour/ one day/ one week/ one month during that day to each signed in customer to the promotions.
@@ -351,7 +363,7 @@ merchantpromotions[12] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: 0.15,
+                  discount: 15,
                   meritsonpurchase: true,
                   merits: 5,
                   zarios: 0,
@@ -365,6 +377,7 @@ merchantpromotions[13] = {
                   name: 'Specific Special Service Promotion',
                   narrative: 'Service Promotion',
                   generated: true,
+                  activity: true,
                   hearts: 0,
                   hearted: [],
                   // timing: could be any of the setting- when set to=day2day: means the discount on the service is available all the time when the promotion is active. =hourly or any timimg indicator mean the service is available for one hour/ one day/ one week/ one month during that day to each signed in customer to the promotions.
@@ -376,7 +389,7 @@ merchantpromotions[13] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: 0.15,
+                  discount: 15,
                   meritsonpurchase: true,
                   merits: 5,
                   zarios: 0,
@@ -390,6 +403,7 @@ merchantpromotions[14] = {
                   name: 'Treasure Hunt Game Promotion',
                   narrative: 'Treasure Hunt',
                   generated: true,
+                  activity: true,
                   hearts: 0,
                   hearted: [],
                   // timing: could be any of the setting- when set to =day2day: means the treasure hunt reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
@@ -401,10 +415,10 @@ merchantpromotions[14] = {
                         new Date('1954-09-09 13:22:22.000'),
                         new Date('2104-09-09 00:00:00.000')
                      ],
-                  discount: 0.15,
+                  discount: 15,
                   meritsonpurchase: false,
                   merits: 5,
-                  zarios: 0,
+                  zarios: 1.75,
                   productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
                   description: 'Find product discounts, services, merit points, zarios, and gifts in our treasure hunt game in your promotions page on the map as you go through our merchant stores or when you go to prominent locations in your area. You may stumble upon these reward offers when you least expect. Visit our store if you wish to find this reward discount offered on the item product or service mentioned, or find the merit points or zarios associated with the reward. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
                };
@@ -415,6 +429,7 @@ merchantpromotions[15] = {
                   name: 'General Game Promotion',
                   narrative: 'General Game',
                   generated: true,
+                  activity: true,
                   hearts: 0,
                   hearted: [],
                   // timing: could be any of the setting- when set to =day2day: means anyt generic game reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
@@ -426,7 +441,7 @@ merchantpromotions[15] = {
                     new Date('1954-09-09 13:22:22.000'),
                     new Date('2104-09-09 00:00:00.000')
                     ],
-                  discount: 0.15,
+                  discount: 15,
                   meritsonpurchase: false,
                   merits: 5,
                   zarios: 0,
@@ -439,6 +454,7 @@ merchantpromotions[16] = {
                   name: 'Visit our store location promotion',
                   narrative: 'Visit our store',
                   generated: true,
+                  activity: true,
                   hearts: 0,
                   hearted: [],
                   timing: 'hourly',    // usually hourly or daily for a certain event promotion
@@ -456,7 +472,7 @@ merchantpromotions[16] = {
                   productservicecode: '',
                   description: 'A general rewarding strategy for visiting our shop. You will receive a free gift, snaks, and drinks, plus extra merit points if you purchase from us during this promotion. Merits will be added to your profile band at both merchant and application levels.'
                };
-export const apppromotions = [];
+export const apppromotions: Array<Promotion> = [];
 apppromotions[0] = {
                   _mid: '',
                   avatar: '../../../assets/img/avatardefault.png',
@@ -477,7 +493,7 @@ apppromotions[0] = {
                   discount: 0,
                   meritsonpurchase: true,
                   merits: 10,
-                  zarios: 0.1,
+                  zarios: 0.125,
                   productservicecode: '',
                   description: 'A general global rewarding of zario points and application based merits to the customer for any purchase made from our member merchants in the Zario & the Black Diamond Loyalty Application. Merit points and zarios are rewarded towards customer application bands in his profile. Same bonus points are also rewarded to MERCHANT profile as well. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
                };
@@ -501,7 +517,7 @@ apppromotions[1] = {
                   discount: 0,
                   meritsonpurchase: true,
                   merits: 12,
-                  zarios: 0.2,
+                  zarios: 0.25,
                   productservicecode: '',
                   description: 'A general global rewarding of zario points and application based merits to the customer for any purchase made from our member merchants in the Zario & the Black Diamond Loyalty Application. Merit points and zarios are rewarded towards customer application bands in his profile. Same bonus points are also rewarded to MERCHANT profile as well. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
               };
@@ -525,7 +541,7 @@ apppromotions[2] = {
                   discount: 0,
                   meritsonpurchase: true,
                   merits: 14,
-                  zarios: 0.3,
+                  zarios: 0.375,
                   productservicecode: '',
                   description: 'A general global rewarding of zario points and application based merits to the customer for any purchase made from our member merchants in the Zario & the Black Diamond Loyalty Application. Merit points and zarios are rewarded towards customer application bands in his profile. Same bonus points are also rewarded to MERCHANT profile as well. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
               };
@@ -549,7 +565,7 @@ apppromotions[3] = {
                   discount: 0,
                   meritsonpurchase: true,
                   merits: 16,
-                  zarios: 0.4,
+                  zarios: 0.5,
                   productservicecode: '',
                   description: 'A general global rewarding of zario points and application based merits to the customer for any purchase made from our member merchants in the Zario & the Black Diamond Loyalty Application. Merit points and zarios are rewarded towards customer application bands in his profile. Same bonus points are also rewarded to MERCHANT profile as well. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
                 };
@@ -573,7 +589,7 @@ apppromotions[4] = {
                   discount: 0,
                   meritsonpurchase: true,
                   merits: 18,
-                  zarios: 0.5,
+                  zarios: 0.625,
                   productservicecode: '',
                   description: 'A general global rewarding of zario points and application based merits to the customer for any purchase made from our member merchants in the Zario & the Black Diamond Loyalty Application. Merit points and zarios are rewarded towards customer application bands in his profile. Same bonus points are also rewarded to MERCHANT profile as well. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
               };
@@ -597,7 +613,7 @@ apppromotions[5] = {
                   discount: 0,
                   meritsonpurchase: true,
                   merits: 20,
-                  zarios: 1,
+                  zarios: 1.125,
                   productservicecode: '',
                   description: 'A general global rewarding of zario points and application based merits to the customer for any purchase made from our member merchants in the Zario & the Black Diamond Loyalty Application. Merit points and zarios are rewarded towards customer application bands in his profile. Same bonus points are also rewarded to MERCHANT profile as well. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
               };
@@ -607,6 +623,7 @@ apppromotions[6] = {
                   name: 'Treasure Hunt Discount',
                   narrative: 'Treasure Hunt',
                   generated: true,
+                  activity: true,
                   hearts: 0,
                   hearted: [],
                   // timing: could be any of the setting- when set to =day2day: means the treasure hunt reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
@@ -621,7 +638,7 @@ apppromotions[6] = {
                   discount: 0,
                   meritsonpurchase: false,
                   merits: 5,
-                  zarios: 0.1,
+                  zarios: 0.125,
                   productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
                   description: 'Find product discounts, services, merit points, zarios, and gifts item in our treasure hunt game in your promotions page  on the map as you go through our merchant stores or when you go to prominent locations in your area. You may stumble upon this reward offer when you least expect. Visit our stores if you wish to find this reward discount offered, or find the merit points and zarios associated with the reward. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
                };
@@ -631,6 +648,7 @@ apppromotions[7] = {
                   name: 'General Game Promotion',
                   narrative: 'General Game',
                   generated: true,
+                  activity: true,
                   hearts: 0,
                   hearted: [],
                   // timing: could be any of the setting- when set to =day2day: means anyt generic game reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
@@ -645,7 +663,7 @@ apppromotions[7] = {
                   discount: 0,
                   meritsonpurchase: false,
                   merits: 5,
-                  zarios: 0.1,
+                  zarios: 0.125,
                   productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
                   description: 'Win this reward in one of our offered games. You may play these games as they are offered to you when you level up your band with the application and with our merchant stores. Visit our stores for more discounts and rewards. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
                };
@@ -655,6 +673,7 @@ apppromotions[8] = {
                   name: 'Visit our store location promotion',
                   narrative: 'Visit our store',
                   generated: true,
+                  activity: true,
                   hearts: 0,
                   hearted: [],
                   timing: 'hourly',    // usually hourly or daily for a certain event promotion
@@ -679,6 +698,7 @@ apppromotions[9] = {
                   name: 'Transitioning to Silver Application Loyalty Band',
                   narrative: 'Level Transitions Silver Application Loyalty Band',
                   generated: true,
+                  activity: true,
                   hearts: 0,
                   hearted: [],
                   timing: 'day2day',
@@ -702,6 +722,7 @@ apppromotions[10] = {
                   name: 'Transitioning to Gold Application Loyalty Band',
                   narrative: 'Level Transitions to Application Gold Loyalty Band',
                   generated: true,
+                  activity: true,
                   hearts: 0,
                   hearted: [],
                   timing: 'day2day',
@@ -725,6 +746,7 @@ apppromotions[11] = {
                   name: 'Transitioning to Platinum application Loyalty Band',
                   narrative: 'Level Transitions to Platinum application Loyalty Band',
                   generated: true,
+                  activity: true,
                   hearts: 0,
                   hearted: [],
                   timing: 'day2day',
@@ -748,6 +770,7 @@ apppromotions[12] = {
                   name: 'Transitioning to Pearl application Loyalty Band',
                   narrative: 'Level Transitions to Pearl application Loyalty Band',
                   generated: true,
+                  activity: true,
                   hearts: 0,
                   hearted: [],
                   timing: 'day2day',
@@ -771,6 +794,7 @@ apppromotions[13] = {
                   name: 'Transitioning to Blackdiamond application Loyalty Band',
                   narrative: 'Level Transitions to Blackdiamond application Loyalty Band',
                   generated: true,
+                  activity: true,
                   hearts: 0,
                   hearted: [],
                   timing: 'day2day',

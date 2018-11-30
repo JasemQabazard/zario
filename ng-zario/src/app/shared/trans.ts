@@ -2,15 +2,14 @@ export class Trans {
   _id?: string;
   _cid: string;
   _mid: string;
-  timingcode: string;
-  appliedpromotions: [
+  appliedpromotions?: [
     {
-      _pid: string,
-      discount: number,
-      meritsonpurchase: boolean,
-      merits: number,
-      zarios: number,
-      productservicecode: string
+      _pid?: string,
+      discount?: number,
+      meritsonpurchase?: boolean,
+      merits?: number,
+      zarios?: number,
+      productservicecode?: string
     }
   ];
   amount: number;

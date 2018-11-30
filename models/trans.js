@@ -12,10 +12,6 @@ const Trans = new Schema({
          type: mongoose.Schema.Types.ObjectId,
          required: true
       },
-      timingcode: {
-            type: String,
-            default: ''       // if hourly, daily, weekly, monthly then it should be applioed once only during the period under consideration
-      },
       appliedpromotions: [
             { 
             _pid: { 

@@ -81,7 +81,7 @@ next we envisage that the app admin staff will need promotions data entry to
    - Once CUSTOMER clicks on map location or MERCHANT Card will get a display for MERCHANT details of basic promotions
    - when CUSTOMER press the ===MyPromotions=== button he gets same views with only the promotions he is subscribed to. The "You May Like This" MERCHANTS and promotions will also be displayed to teh CUSTOMER as a form of suggestive purchases. This will be an entry to AI.
 =================================================================================
-===  branchName:Cart == start:01Nov2018== Completed: 99 Nov 2018 ====
+===  branchName:cart == start:01Nov2018== Completed: 99 Nov 2018 ====
 ================================================================================= 
 - https://www.npmjs.com/package/qrcode is the npm module to use for qrcode generation 
 - cart must read QR CODE from Mobile or Paper or Card
