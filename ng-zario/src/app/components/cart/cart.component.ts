@@ -11,7 +11,7 @@ import { TransService } from '../../services/trans.service';
 import { PromotionScannerService } from '../../services/promotion-scanner.service';
 
 import { Promotion, merchantpromotions } from '../../shared/promotions';
-import { MProfile, CProfile, CRM, Merchant} from '../../shared/profile';
+import { MProfile, CProfile, CRM, Merchant, Settings} from '../../shared/profile';
 import { Trans } from '../../shared/trans';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
@@ -44,6 +44,7 @@ export class CartComponent implements OnInit {
   _gid = '';
   CRMINDEX: number = null;
   cprofile: CProfile;
+  settings: Settings;
   mprofiles: Array<MProfile> = [];
   merchants: Array<Merchant> = [];
   crm: Array<CRM> = [];
@@ -53,7 +54,8 @@ export class CartComponent implements OnInit {
   userrole: string = undefined;
   promotions: Array<Promotion> = [];
   originalpromotions: Array<Promotion> = [];
-  applicationpromotions: Array<Promotion> = [];
+  Apromotions: Array<Promotion> = []; // application promotions
+  originalApromotions: Array<Promotion> = []; // application original promotions
   message: string;
   messageClass: string;
   avatarPath = '../../../assets/img/avatardefault.png';
@@ -72,6 +74,7 @@ export class CartComponent implements OnInit {
   score: number = null;
   mBand = '';
   aBand = '';
+  BAND: string[] = ['NONE', 'Bronze', 'Silver', 'Gold', 'Platinum', 'Pearl', 'Blackdiamond'];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -187,38 +190,24 @@ export class CartComponent implements OnInit {
     const now = new Date();
     this.profileService.getSettings()
     .subscribe(settings => {
+      this.settings = settings[0];
+      this.aBand = this.checkaBand(this.cprofile.score);
       this.promotionService.getPromotions(settings[0]._id)
       .subscribe(promotions => {
+        console.log('app promotions', promotions);
         for (let x = 0; x < promotions.length; x++) {
           if (promotions[x].activity && now < new Date(promotions[x].daterange[1]) && now > new Date(promotions[x].daterange[0])) {
-            this.applicationpromotions.push(promotions[x]);
+            this.originalApromotions.push(promotions[x]);
           }
         }
-        console.log('ap promnos ', promotions, this.applicationpromotions);
-        // this.applicationpromotions = this.promotionScannerServioce.cartCore(this.applicationpromotions);
-          for (let x = 0; x < this.applicationpromotions.length; x++) {
-            this.displayPromotion = ({
-              name: '',
-              discount: 0,
-              merits: 0,
-              zarios: 0,
-              productservicecode: '',
-              applied: true
-            });
-            this.displayPromotion.name = this.applicationpromotions[x].name;
-            this.displayPromotion.merits = this.applicationpromotions[x].merits;
-            this.displayPromotion.zarios = this.applicationpromotions[x].zarios;
-            this.adp.push(this.displayPromotion);
-            if (x === 0) {
-                  this.ft.patchValue({
-                        'ap': this.adp
-                  });
-                  this.ap = this.ft.get('ap') as FormArray;
-            } else {
-                  this.ap.push(this.createItem());
-            }
-          }
-          console.log('adp ', this.adp);
+        console.log('ap promos ', promotions, this.originalApromotions);
+        this.originalApromotions = this.promotionScannerService.cartCore(this.originalApromotions, this.aBand);
+        this.Apromotions = this.promotionScannerService.cartTransitions(this.originalApromotions, 'NONE', 0);
+        this.prepareap();
+        console.log('adp ', this.adp);
+      },
+      errormessage => {
+        console.log('errormessage promotion access', errormessage);
       });
     });
   }
@@ -226,6 +215,7 @@ export class CartComponent implements OnInit {
   getMerchantPromotions() {
     const now = new Date();
     this.promotions = [];
+    this.originalpromotions = [];
     this.promotionService.getPromotions(this._mid)
     .subscribe(promotions => {
       for (let x = 0; x < promotions.length; x++) {
@@ -235,29 +225,50 @@ export class CartComponent implements OnInit {
       }
       this.originalpromotions = this.promotionScannerService.cartCore(this.originalpromotions, this.mBand);
       this.cartTimed();
-      this.promotions = this.promotionScannerService.cartTransitions(this.originalpromotions, '');
-      console.log(this.originalpromotions, this.promotions);
+      this.promotions = this.promotionScannerService.cartTransitions(this.originalpromotions, 'NONE', 0);
       if (this.mBand === '') {
         this.mBand = 'Bronze';
       }
       this.preparemp();
-      console.log('promotions : ', this.promotions, this.dp);
     },
     errormessage => {
       console.log('errormessage promotion access', errormessage);
     });
   }
 
+  prepareap() {
+    this.ap = this.ft.get('ap') as FormArray;
+    for (let j = (this.ap.length - 1); j > 0; j--) {
+      this.ap.removeAt(j);
+    }
+    this.adp = [];
+    for (let x = 0; x < this.Apromotions.length; x++) {
+      this.displayPromotion = ({
+        name: '',
+        discount: 0,
+        merits: 0,
+        zarios: 0,
+        productservicecode: '',
+        applied: true
+      });
+      this.displayPromotion.name = this.Apromotions[x].name;
+      this.displayPromotion.merits = this.Apromotions[x].merits;
+      this.displayPromotion.zarios = this.Apromotions[x].zarios;
+      this.adp.push(this.displayPromotion);
+      if (x === 0) {
+            this.ap.setValue(this.adp);
+      } else {
+            this.ap.push(this.createItem());
+      }
+    }
+  }
+
   preparemp() {
     this.applybtns = [];
     this.mp = this.ft.get('mp') as FormArray;
-    console.log('1 mp resets', this.mp.length, this.mp);
     for (let j = (this.mp.length - 1); j > 0; j--) {
-      console.log('@j = ', j);
       this.mp.removeAt(j);
-      console.log('mp.length = ', this.mp.length);
     }
-    console.log('2 mp resets', this.mp.length, this.mp);
     this.dp = [];
     for (let x = 0; x < this.promotions.length; x++) {
       this.displayPromotion = ({
@@ -283,7 +294,6 @@ export class CartComponent implements OnInit {
       console.log(this.displayPromotion);
       this.dp.push(this.displayPromotion);
       if (x === 0) {
-            // this.mp = this.ft.get('mp') as FormArray;
             this.mp.setValue(this.dp);
       } else {
             this.mp.push(this.createItem());
@@ -354,7 +364,7 @@ export class CartComponent implements OnInit {
     this.fm.controls['merchant'].setValue(this.merchants[ndx].name);
     this._mid = this.merchants[ndx]._id;
     this.CMI = ndx;
-    this.getMerchantPromotions();
+    this.LoadCRM();
   }
 
   LoadCRM() {
@@ -409,38 +419,78 @@ export class CartComponent implements OnInit {
         band = 'Silver';
       }
     }
-    console.log('band & score', band, score);
+    console.log('mband & score', band, score);
+    return band;
+  }
+
+  checkaBand(score: number): string {
+    let band = '';
+    if (score) {             // this will only be true if score !== zero and !== null
+      band = 'Bronze';
+      if (score > this.settings.cpearl) {
+        band = 'Blackdiamond';
+      } else if (score > this.settings.cplatinum) {
+        band = 'Pearl';
+      } else if (score > this.settings.cgold) {
+        band = 'Platinum';
+      } else if (score > this.settings.csilver) {
+        band = 'Gold';
+      } else if (score > this.settings.cbronze) {
+        band = 'Silver';
+      }
+    }
+    console.log('aband & score', band, score);
     return band;
   }
 
   amountChange() {
     this.ft.get('amount').valueChanges.subscribe(
       amount => {
-        const merits = this.changeDiscountZariosMerits();
-        const newBand = this.checkmBand(this.score + merits);
-        console.log('merits ', merits, newBand, this.mBand, this.promotions.length, this.originalpromotions.length);
-        if (newBand !== this.mBand && this.promotions.length !== this.originalpromotions.length) {
-          this.promotions = this.promotionScannerService.cartTransitions(this.originalpromotions, newBand);
+        let merits = {
+          mMerits: 0,
+          aMerits: 0
+        };
+        merits = this.changeDiscountZariosMerits();
+        const newmBand = this.checkmBand(this.score + merits.mMerits);
+        let reCalcFlag = false;
+        if (newmBand !== this.mBand && this.promotions.length !== this.originalpromotions.length) {
+          this.promotions = this.promotionScannerService.cartTransitions(this.originalpromotions, newmBand, this.BAND.indexOf(newmBand) - this.BAND.indexOf(this.mBand));
           this.preparemp();
+          reCalcFlag = true;
+        }
+        const newaBand = this.checkaBand(this.cprofile.score + merits.aMerits + merits.mMerits);
+        if (newaBand !== this.aBand && this.Apromotions.length !== this.originalApromotions.length) {
+          this.Apromotions = this.promotionScannerService.cartTransitions(this.originalApromotions, newaBand, this.BAND.indexOf(newaBand) - this.BAND.indexOf(this.aBand));
+          this.prepareap();
+          reCalcFlag = true;
+        }
+        if (reCalcFlag) {
           this.changeDiscountZariosMerits();
         }
     });
   }
 
-  changeDiscountZariosMerits(): number {
+  changeDiscountZariosMerits() {
     let discount = 0;
     let zarios = 0;
-    let merits = 0;
+    const merits = {
+      mMerits: 0,
+      aMerits: 0
+    };
     let meritsonpurchase = 0;
     for (let x = 0; x < this.dp.length; x++) {
       if (this.dp[x].applied) {
         discount += this.dp[x].discount;
         zarios += this.dp[x].zarios;
-        merits += this.dp[x].merits;
+        merits.mMerits += this.dp[x].merits;
         if (this.promotions[x].meritsonpurchase) {
           meritsonpurchase = Number(this.ft.controls['amount'].value);
         }
       }
+    }
+    for (let y = 0; y < this.adp.length; y++) {
+        zarios += this.adp[y].zarios;
+        merits.aMerits += this.adp[y].merits;
     }
     console.log(discount, zarios, merits, meritsonpurchase);
     discount = discount * Number(this.ft.controls['amount'].value) / 100;
@@ -448,9 +498,10 @@ export class CartComponent implements OnInit {
           'discount': discount,
           'zarios': zarios,
           'meritsonpurchase': meritsonpurchase,
-          'merits': merits
+          'merits': merits.mMerits + merits.aMerits
       });
-    return (merits + meritsonpurchase);
+      merits.mMerits += meritsonpurchase;
+    return (merits);
   }
 
   toggleApplied(i) {
@@ -509,6 +560,18 @@ export class CartComponent implements OnInit {
           );
       }
     }
+    for (let x = 0; x < this.adp.length; x++) {
+      transaction.appliedpromotions.push (
+        {
+          _pid: this.Apromotions[x]._id,
+          discount: this.Apromotions[x].discount,
+          meritsonpurchase: this.Apromotions[x].meritsonpurchase,
+          merits: this.Apromotions[x].merits,
+          zarios: this.Apromotions[x].zarios,
+          productservicecode: this.Apromotions[x].productservicecode
+        }
+      );
+    }
     if (crm.timedpromotions.length === 1) {
       if (crm.timedpromotions[0]._pid === '') {
         crm.timedpromotions.splice(0, 1);
@@ -523,6 +586,7 @@ export class CartComponent implements OnInit {
         this.profileService.addCRM(crm)
         .subscribe(dbcrm => {
           console.log('added to db ', dbcrm);
+          this.updateStates();
         },
         errormessage => {
           console.log('errormessage crm add service ', errormessage);
@@ -531,6 +595,7 @@ export class CartComponent implements OnInit {
         this.profileService.updateCRM(this.crm[this.CRMINDEX]._id, crm)
         .subscribe(dbcrm => {
           console.log('updated in db ', dbcrm);
+          this.updateStates();
         },
         errormessage => {
           console.log('errormessage crm update service ', errormessage);
@@ -543,6 +608,14 @@ export class CartComponent implements OnInit {
     errormessage => {
       console.log('errormessage transaction add service ', errormessage);
     });
+  }
+
+  updateStates() {
+    console.log('update cprofile mprofile group settings data tables');
+    // setting needs zarios awarded to both customer and merchant from the application
+    // cprofile updated with score + merits and zarios (some of these zariuos may come from merchant and some may come from application)
+    // mprofile updated with score + merits and zarios awarded to merchant if any
+    // update group record with score + merits given to merchant
   }
 
   cartTimed () {

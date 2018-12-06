@@ -103,11 +103,19 @@ const Settings = new Schema({
             type: Number,
             default: 0
       },
-      distributedzarios: {
+      zariosmultiplier: {                // multiplier x amount of purchase for awarding application 
+            type: Number,                // zarios to customer and merchant according to the investment 
+            default: 0                   // spread sheet
+      },
+      mdistributedzarios: {                // distributed to merchants 
+            type: Number,
+            default: null
+      },
+      cdistributedzarios: {                // distributed to customers 
          type: Number,
          default: null
       },
-      zarios:  {
+      zarios:  {                          // owned by the application
             type: Number,
             default: null
       },

@@ -46,7 +46,7 @@ export class CProfile {
 }
 
 export class Settings {
-      _id: string;
+      _id?: string;
       username: string;
       name: string;
       avatar: string;
@@ -67,6 +67,9 @@ export class Settings {
       cplatinum: number;
       cpearl: number;
       cblackdiamond: number;
+      zariosmultiplier?: number;
+      mdistributedzarios?: number;
+      cdistributedzarios?: number;
 }
 
 export class Group {

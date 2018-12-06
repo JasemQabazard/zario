@@ -18,7 +18,6 @@ export class PromotionService {
   ) { }
 
   getPromotions(mid: string): Observable<Promotion[]> {
-    console.log('merchant _mid: ', mid);
     return  this.http.get(baseURL + '/promotions/bymid/' + mid)
                     .catch(error => this.processHttpmsgService.handleError(error));
   }

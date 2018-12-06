@@ -65,7 +65,7 @@ merchantpromotions[0] = {
                   hearted: [],
                   timing: 'initial',
                   action: 'purchase',
-                  level: 'Bronze',
+                  level: 'initiation',
                   category: 'membership',
                   daterange: [
                     new Date('1954-09-09 13:22:22.000'),
@@ -457,7 +457,7 @@ merchantpromotions[16] = {
                   activity: true,
                   hearts: 0,
                   hearted: [],
-                  timing: 'hourly',    // usually hourly or daily for a certain event promotion
+                  timing: 'daily',    // usually hourly or daily for a certain event promotion
                   action: 'visit',
                   level: 'All',
                   category: 'membership',
@@ -676,7 +676,7 @@ apppromotions[8] = {
                   activity: true,
                   hearts: 0,
                   hearted: [],
-                  timing: 'hourly',    // usually hourly or daily for a certain event promotion
+                  timing: 'daily',    // usually hourly or daily for a certain event promotion
                   action: 'visit',
                   level: 'All',
                   category: 'application',
