@@ -103,21 +103,37 @@ const Settings = new Schema({
             type: Number,
             default: 0
       },
-      zariosmultiplier: {                // multiplier x amount of purchase for awarding application 
-            type: Number,                // zarios to customer and merchant according to the investment 
-            default: 0                   // spread sheet
+      zariosprice: {                      // price of a zario is usd
+            type: Number,
+            default: 0.75
+      },
+      zariosdistributionratio: {         // distribution ratio of zarios to merchants/ customers/ & APP
+            type: Number,                // the lesser of (.15 x commision or .15 / zarioprice) 
+            default: 0.15                 // as a part of the 1$ commision or .035% of purchase 
+      },
+      commission: {
+            type: Number,                //  the 1$ commision or .035% of purchase which ever is less
+            default: 0.035      
       },
       mdistributedzarios: {                // distributed to merchants 
             type: Number,
-            default: null
+            default: 0
       },
       cdistributedzarios: {                // distributed to customers 
          type: Number,
-         default: null
+         default: 0
       },
-      zarios:  {                          // owned by the application
+      zarios:  {                          // My Ownership of zario coins
+            type: Number,                 // starts at a Million.
+            default: 1000000
+      },
+      notrans: {                          // number of total transactions by app
             type: Number,
-            default: null
+            default: 0
+      },
+      totcommissions: {                          // total commission by application
+            type: Number,
+            default: 0
       },
       ukey:  {
             type: String,

@@ -319,40 +319,89 @@
                     </div>
                     </div>
                     <div class="form-group">
+                      <div class="row">
+                          <div class="col-sm-6">
+                              <label for="cpearl">Pearl Band</label>
+                              <div [ngClass]="{'has-error':(fs.controls.cpearl.errors && fs.controls.cpearl.dirty), 'has-success': !fs.controls.cpearl.errors}">
+                                  <input type="text" name="cpearl" class="form-control"
+                                  formControlName="cpearl" placeholder="9999">
+                                  <div class="help-block text-light small bg-danger pl-2" *ngIf="fs.controls.cpearl.errors && fs.controls.cpearl.dirty">
+                                      <div *ngIf="fs.controls.cpearl.errors?.required">
+                                          Pearl Band field is required
+                                      </div>
+                                      <div *ngIf="fs.controls.cpearl.errors?.validateValue">
+                                          pearl Band must be Numeric
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-sm-6">
+                              <label for="cblackdiamond">blackdiamond Band</label>
+                              <div [ngClass]="{'has-error':(fs.controls.cblackdiamond.errors && fs.controls.cblackdiamond.dirty) || (fs.errors?.bandcSync && fs.controls.cblackdiamond.dirty), 'has-success': !fs.controls.cblackdiamond.errors || fs.errors?.bandcSync}">
+                                  <input type="text" name="cblackdiamond" class="form-control"
+                                  formControlName="cblackdiamond" placeholder="9999">
+                                  <div class="help-block text-light small bg-danger pl-2" *ngIf="(fs.controls.cblackdiamond.errors && fs.controls.cblackdiamond.dirty) || (fs.errors?.bandcSync && fs.controls.cblackdiamond.dirty)">
+                                      <div *ngIf="fs.controls.cblackdiamond.errors?.required">
+                                          Blackdiamond Band field is required
+                                      </div>
+                                      <div *ngIf="fs.controls.cblackdiamond.errors?.validateValue">
+                                          Blackdiamond Band must be Numeric
+                                      </div>
+                                      <div *ngIf="fs.errors?.bandcSync">
+                                          Bands must progressively increase in value
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      </div>
+                    <div class="form-group">
                     <div class="row">
-                        <div class="col-sm-6">
-                            <label for="cpearl">Pearl Band</label>
-                            <div [ngClass]="{'has-error':(fs.controls.cpearl.errors && fs.controls.cpearl.dirty), 'has-success': !fs.controls.cpearl.errors}">
-                                <input type="text" name="cpearl" class="form-control"
-                                formControlName="cpearl" placeholder="9999">
-                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fs.controls.cpearl.errors && fs.controls.cpearl.dirty">
-                                    <div *ngIf="fs.controls.cpearl.errors?.required">
-                                        Pearl Band field is required
+                        <div class="col-sm-4">
+                            <label for="zariosprice">Zario Price</label>
+                            <div [ngClass]="{'has-error':(fs.controls.zariosprice.errors && fs.controls.zariosprice.dirty), 'has-success': !fs.controls.zariosprice.errors}">
+                                <input type="text" name="zariosprice" class="form-control"
+                                formControlName="zariosprice" placeholder="99.99">
+                                <div class="help-block text-light small bg-danger pl-2" *ngIf="fs.controls.zariosprice.errors && fs.controls.zariosprice.dirty">
+                                    <div *ngIf="fs.controls.zariosprice.errors?.required">
+                                      Zario Price field is required
                                     </div>
-                                    <div *ngIf="fs.controls.cpearl.errors?.validateValue">
-                                        pearl Band must be Numeric
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <label for="cblackdiamond">blackdiamond Band</label>
-                            <div [ngClass]="{'has-error':(fs.controls.cblackdiamond.errors && fs.controls.cblackdiamond.dirty) || (fs.errors?.bandcSync && fs.controls.cblackdiamond.dirty), 'has-success': !fs.controls.cblackdiamond.errors || fs.errors?.bandcSync}">
-                                <input type="text" name="cblackdiamond" class="form-control"
-                                formControlName="cblackdiamond" placeholder="9999">
-                                <div class="help-block text-light small bg-danger pl-2" *ngIf="(fs.controls.cblackdiamond.errors && fs.controls.cblackdiamond.dirty) || (fs.errors?.bandcSync && fs.controls.cblackdiamond.dirty)">
-                                    <div *ngIf="fs.controls.cblackdiamond.errors?.required">
-                                        Blackdiamond Band field is required
-                                    </div>
-                                    <div *ngIf="fs.controls.cblackdiamond.errors?.validateValue">
-                                        Blackdiamond Band must be Numeric
-                                    </div>
-                                    <div *ngIf="fs.errors?.bandcSync">
-                                        Bands must progressively increase in value
+                                    <div *ngIf="fs.controls.zariosprice.errors?.validateNumericFloat">
+                                      Zario Price must be Numeric
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-sm-4">
+                          <label for="zariosdistributionratio">Zario Distribution Ratio</label>
+                          <div [ngClass]="{'has-error':(fs.controls.zariosdistributionratio.errors && fs.controls.zariosdistributionratio.dirty), 'has-success': !fs.controls.zariosdistributionratio.errors}">
+                              <input type="text" name="zariosdistributionratio" class="form-control"
+                              formControlName="zariosdistributionratio" placeholder="99.99">
+                              <div class="help-block text-light small bg-danger pl-2" *ngIf="fs.controls.zariosdistributionratio.errors && fs.controls.zariosdistributionratio.dirty">
+                                  <div *ngIf="fs.controls.zariosdistributionratio.errors?.required">
+                                    Zario Distribution Ratio field is required
+                                  </div>
+                                  <div *ngIf="fs.controls.zariosdistributionratio.errors?.validateNumericFloat">
+                                    Zario Distribution Ratio must be Numeric
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <label for="commission">Commission</label>
+                        <div [ngClass]="{'has-error':(fs.controls.commission.errors && fs.controls.commission.dirty), 'has-success': !fs.controls.commission.errors}">
+                            <input type="text" name="commission" class="form-control"
+                            formControlName="commission" placeholder="99.99">
+                            <div class="help-block text-light small bg-danger pl-2" *ngIf="fs.controls.commission.errors && fs.controls.commission.dirty">
+                                <div *ngIf="fs.controls.commission.errors?.required">
+                                  Commission field is required
+                                </div>
+                                <div *ngIf="fs.controls.commission.errors?.validateNumericFloat">
+                                  Commission must be Numeric
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     </div>
                     </div>
                     <button [disabled]="!fs.valid || notUpdated" type="submit" class="btn btn-primary btn-block mt-5">Submit System Settings Data</button>

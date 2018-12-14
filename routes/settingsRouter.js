@@ -66,7 +66,7 @@ settingsRouter.route('/:settingId')
     res.statusCode = 403;
     res.end('POST operation not supported on /setting/'+ req.params.settingId);
 })
-.put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.put(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
    Settings.findByIdAndUpdate(req.params.settingId, {
         $set: req.body
     }, { new: true })

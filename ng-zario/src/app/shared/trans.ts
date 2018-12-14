@@ -19,5 +19,5 @@ export class Trans {
   zarios: number;
   description?: string;
   category?: string;
-  transactiondate?: Date;
+  createdAt?: Date;
 }

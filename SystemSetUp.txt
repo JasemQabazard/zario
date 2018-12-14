@@ -10,9 +10,9 @@ Sign in as MERCHANT (merchantONE)
    => create a user with small 'merchant' for the sub main profile record (merchantsmall)
    => create a customer for your main profile (customerone)
 Sign off
-Fix sign on credentials for customerone
+Fix sign on credentials for customerone and merchantsmall
 ===============
 Sign on as (merchantsmall):
-   => create a (customertwo) for your submain profile
+   => create a (customersmall) for your submain profile
 Sign off
-Register a new (customerthree)
+Register a new (customertwo)

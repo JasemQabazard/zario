@@ -39,6 +39,18 @@ const Customers = new Schema({
       },
       score: {
             type: Number,
+            default: 100
+      },
+      notrans: {
+            type: Number,
+            default: 0
+      },
+      totpurchase: {
+            type: Number,
+            default: 0
+      },
+      totcommissions: {
+            type: Number,
             default: 0
       },
       // set === true if created by merchant - once customer and system amends to falkse and changes the customer role ===> CUSTOMER and asks to verify user email as well 

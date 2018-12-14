@@ -25,6 +25,10 @@ export class MProfile {
    zarios: number;
    ukey: string;
    rkey: string;
+   cdistributedzarios?: number;
+   notrans?: number;
+   totalcommision?: number;
+   totsales?: number;
    createdAt?: Date;
 }
 
@@ -39,6 +43,9 @@ export class CProfile {
    work: string;
    avatar: string;
    score: number;
+   notrans?: number;
+   totpurchase?: number;
+   totcommissions?: number;
    initialflag: boolean;
    zarios: number;
    ukey: string;
@@ -67,9 +74,14 @@ export class Settings {
       cplatinum: number;
       cpearl: number;
       cblackdiamond: number;
-      zariosmultiplier?: number;
+      zariosprice?: number;
+      zariosdistributionratio?: number;
+      commission?: number;
       mdistributedzarios?: number;
       cdistributedzarios?: number;
+      notrans?: number;
+      totcommissions?: number;
+      zarios?: number;
 }
 
 export class Group {
@@ -90,6 +102,10 @@ export class Group {
    platinum: number;
    pearl: number;
    blackdiamond: number;
+   cdistributedzarios?: number;
+   notrans?: number;
+   totalcommision?: number;
+   totsales?: number;
 }
 
 export class CRM {
@@ -98,6 +114,9 @@ export class CRM {
    _mid: string;
    score: number;
    vists: number;
+   distributedzarios?: number;
+   totalcommision?: number;
+   totsales?: number;
    timedpromotions?: [{
      _id?: string,
      _pid?: string,

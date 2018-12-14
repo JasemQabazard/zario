@@ -114,6 +114,22 @@ const Merchants = new Schema({
       rkey:  {
             type: String,
             default: ''
+      },
+      cdistributedzarios: {                // distributed to customers 
+            type: Number,
+            default: 0
+      },
+      notrans: {
+            type: Number,
+            default: 0
+      },
+      totalcommision: {                // total commision the application earned from this merchant
+            type: Number,
+            default: 0
+      },
+      totsales: {                // total sales the application made by this merchant
+            type: Number,
+            default: 0
       }
 },{
    timestamps: true

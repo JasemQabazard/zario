@@ -13,6 +13,7 @@ import { PromotionScannerService } from '../../services/promotion-scanner.servic
 import { Promotion, merchantpromotions } from '../../shared/promotions';
 import { MProfile, CProfile, CRM, Merchant, Settings} from '../../shared/profile';
 import { Trans } from '../../shared/trans';
+import { Zario } from '../../shared/zario';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 import { Subscription } from 'rxjs/Subscription';
@@ -42,6 +43,7 @@ export class CartComponent implements OnInit {
   _cid = '';
   _mid = '';
   _gid = '';
+  _tid = '';      // cart transaction _id after it is added to data base table
   CRMINDEX: number = null;
   cprofile: CProfile;
   settings: Settings;
@@ -52,6 +54,7 @@ export class CartComponent implements OnInit {
   subscription: Subscription;
   username: string = undefined;
   userrole: string = undefined;
+  useremail = '';
   promotions: Array<Promotion> = [];
   originalpromotions: Array<Promotion> = [];
   Apromotions: Array<Promotion> = []; // application promotions
@@ -75,6 +78,12 @@ export class CartComponent implements OnInit {
   mBand = '';
   aBand = '';
   BAND: string[] = ['NONE', 'Bronze', 'Silver', 'Gold', 'Platinum', 'Pearl', 'Blackdiamond'];
+  zariosdistribution = {             // to customer & merchant
+    app: 0,                        // from app promotions to customer
+    merchant: 0,                   // from merchant promotions to customer
+    purchase: 0                    // based on purchase as part of commision going to customer-->
+  };                                  // -->/merchant/ & app (me).
+  totalcommission: number;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -126,6 +135,7 @@ export class CartComponent implements OnInit {
             this.authService.getUser(cprofile.username)
             .subscribe(user => {
               this.customername = user.firstname + ' ' + user.lastname;
+              this.useremail = user.email;
               this.authService.loadUserCredentials();
               this.subscription = this.authService.getUsername()
               .subscribe(
@@ -194,13 +204,12 @@ export class CartComponent implements OnInit {
       this.aBand = this.checkaBand(this.cprofile.score);
       this.promotionService.getPromotions(settings[0]._id)
       .subscribe(promotions => {
-        console.log('app promotions', promotions);
         for (let x = 0; x < promotions.length; x++) {
           if (promotions[x].activity && now < new Date(promotions[x].daterange[1]) && now > new Date(promotions[x].daterange[0])) {
             this.originalApromotions.push(promotions[x]);
           }
         }
-        console.log('ap promos ', promotions, this.originalApromotions);
+        console.log('app promotions ', promotions, this.originalApromotions);
         this.originalApromotions = this.promotionScannerService.cartCore(this.originalApromotions, this.aBand);
         this.Apromotions = this.promotionScannerService.cartTransitions(this.originalApromotions, 'NONE', 0);
         this.prepareap();
@@ -228,6 +237,17 @@ export class CartComponent implements OnInit {
       this.promotions = this.promotionScannerService.cartTransitions(this.originalpromotions, 'NONE', 0);
       if (this.mBand === '') {
         this.mBand = 'Bronze';
+      }
+      let zarios = 0;
+      for (let x = 0; x < this.promotions.length; x++) {
+        zarios += this.promotions[x].zarios;
+      }
+      if (zarios > this.mprofiles[this.CMI].zarios) {
+        this.message = 'Merchant profile does not have enough zarios coins to distribute to Customer. Transaction will carry on with distribution.';
+        this.messageClass = 'alert alert-danger';
+        for (let x = 0; x < this.promotions.length; x++) {
+          this.promotions[x].zarios = 0;
+        }
       }
       this.preparemp();
     },
@@ -472,31 +492,42 @@ export class CartComponent implements OnInit {
 
   changeDiscountZariosMerits() {
     let discount = 0;
-    let zarios = 0;
+    this.zariosdistribution.app = 0;
+    this.zariosdistribution.merchant = 0;
+    this.zariosdistribution.purchase = 0;
     const merits = {
       mMerits: 0,
       aMerits: 0
     };
     let meritsonpurchase = 0;
+    const amount = Number(this.ft.controls['amount'].value);
     for (let x = 0; x < this.dp.length; x++) {
       if (this.dp[x].applied) {
         discount += this.dp[x].discount;
-        zarios += this.dp[x].zarios;
+        this.zariosdistribution.merchant += this.dp[x].zarios;
         merits.mMerits += this.dp[x].merits;
         if (this.promotions[x].meritsonpurchase) {
-          meritsonpurchase = Number(this.ft.controls['amount'].value);
+          meritsonpurchase = amount;
         }
       }
     }
     for (let y = 0; y < this.adp.length; y++) {
-        zarios += this.adp[y].zarios;
+      this.zariosdistribution.app += this.adp[y].zarios;
         merits.aMerits += this.adp[y].merits;
     }
-    console.log(discount, zarios, merits, meritsonpurchase);
-    discount = discount * Number(this.ft.controls['amount'].value) / 100;
+    console.log(discount, this.zariosdistribution, merits, meritsonpurchase);
+    discount = discount * amount / 100;
+    this.totalcommission = 0;
+    if (amount * this.settings.zariosdistributionratio < 1) {
+      this.totalcommission = amount * this.settings.zariosdistributionratio;
+      this.zariosdistribution.purchase = this.totalcommission / this.settings.zariosprice;
+    } else {
+      this.totalcommission = 1;
+      this.zariosdistribution.purchase = 1.0 / this.settings.zariosprice;
+    }
     this.ft.patchValue({
           'discount': discount,
-          'zarios': zarios,
+          'zarios': this.zariosdistribution.purchase + this.zariosdistribution.app + this.zariosdistribution.merchant,
           'meritsonpurchase': meritsonpurchase,
           'merits': merits.mMerits + merits.aMerits
       });
@@ -531,6 +562,9 @@ export class CartComponent implements OnInit {
       _mid: this._mid,
       score: this.crm[this.CRMINDEX].score + transaction.merits + transaction.meritsonpurchase,
       vists: this.crm[this.CRMINDEX].vists + 1,
+      distributedzarios: this.crm[this.CRMINDEX].distributedzarios + this.zariosdistribution.merchant,
+      totalcommision: this.crm[this.CRMINDEX].totalcommision + this.totalcommission,
+      totsales: this.crm[this.CRMINDEX].totsales + this.ft.controls['amount'].value,
       timedpromotions: this.crm[this.CRMINDEX].timedpromotions
     };
     for (let x = 0; x < this.dp.length; x++) {
@@ -582,6 +616,7 @@ export class CartComponent implements OnInit {
     this.transService.addTrans(<Trans>transaction)
     .subscribe(trans => {
       console.log('transaction sent to data base');
+      this._tid = trans._id;
       if (this.crm[this.CRMINDEX]._id === '') {
         this.profileService.addCRM(crm)
         .subscribe(dbcrm => {
@@ -612,10 +647,171 @@ export class CartComponent implements OnInit {
 
   updateStates() {
     console.log('update cprofile mprofile group settings data tables');
-    // setting needs zarios awarded to both customer and merchant from the application
-    // cprofile updated with score + merits and zarios (some of these zariuos may come from merchant and some may come from application)
-    // mprofile updated with score + merits and zarios awarded to merchant if any
-    // update group record with score + merits given to merchant
+    this.settings.mdistributedzarios += this.zariosdistribution.purchase;
+    this.settings.cdistributedzarios += this.zariosdistribution.purchase + this.zariosdistribution.app;
+    this.settings.zarios += this.zariosdistribution.purchase;   // my zario coins
+    this.settings.notrans += 1;
+    this.settings.totcommissions += this.totalcommission;
+    this.profileService.updateSettings(this.settings._id, this.settings).subscribe(
+      data => {
+        console.log('updated settings data : ', data);
+        this.messageClass = 'alert alert-success';
+        this.message = 'Settings Update Successfull';
+      },
+      errormessage => {
+        console.log('errormessage transaction add service ', errormessage);
+      }
+    );
+    this.cprofile.score += Number(this.ft.controls['merits'].value);
+    this.cprofile.zarios += this.zariosdistribution.purchase + this.zariosdistribution.merchant + this.zariosdistribution.app;
+    this.cprofile.notrans++;
+    this.cprofile.totpurchase += Number(this.ft.controls['amount'].value);
+    this.cprofile.totcommissions += this.totalcommission;
+    this.profileService.updateCProfile(this._cid, this.cprofile).subscribe(
+      data => {
+        console.log('update data : ', data);
+        this.messageClass = 'alert alert-success';
+        this.message = 'Profile Update Successfull';
+      },
+      errormessage => {
+        console.log('errormessage transaction add service ', errormessage);
+      }
+    );
+    this.mprofiles[this.CMI].score += Number(this.ft.controls['merits'].value);
+    this.mprofiles[this.CMI].zarios += this.zariosdistribution.purchase;
+    this.mprofiles[this.CMI].zarios -= this.zariosdistribution.merchant;
+    this.mprofiles[this.CMI].cdistributedzarios += this.zariosdistribution.merchant;
+    this.mprofiles[this.CMI].notrans++;
+    this.mprofiles[this.CMI].totalcommision += this.totalcommission;
+    this.mprofiles[this.CMI].totsales += Number(this.ft.controls['amount'].value);
+    this.profileService.updateMProfile(this._mid, this.mprofiles[this.CMI]).subscribe(
+      data => {
+        console.log('data : ', data);
+        this.messageClass = 'alert alert-success';
+        this.message = 'Profile Update Successfull';
+      },
+      errormessage => {
+        console.log('errormessage transaction add service ', errormessage);
+      }
+    );
+    this.profileService.getGroup(this.username)
+    .subscribe(gp => {
+      console.log('group in profile component ', gp);
+      gp.notrans++;
+      gp.score += Number(this.ft.controls['merits'].value);
+      gp.cdistributedzarios += this.zariosdistribution.merchant;
+      gp.totalcommision += this.totalcommission;
+      gp.totsales += Number(this.ft.controls['amount'].value);
+      this.profileService.updateGroup(this._gid, gp).subscribe(
+        data => {
+          this.messageClass = 'alert alert-success';
+          this.message = 'Group Update Successfull';
+        },
+        errormessage => {
+          console.log('errormessage group update service ', errormessage);
+        }
+      );
+    },
+      errormessage => {
+        console.log('errormessage group read service ', errormessage);
+    });
+    const zario: Zario = {
+      _fid: '',
+      _toid: '',
+      participants: '',   // a2m a2c m2c m2m c2m c2c
+      description: `ref to cart trans_id ${this._tid} `,
+      quantity: 0,
+      price: this.settings.zariosprice
+    };
+    if (this.zariosdistribution.app) {
+      // 1- from app to customer for app promotions a2c
+      zario.participants = 'a2c';
+      zario.description += 'from APP to customer as APP promotions.';
+      zario.quantity = this.zariosdistribution.app;
+      zario._fid = this.settings._id;
+      zario._toid = this._cid;
+      this.transService.addZarios(zario)
+      .subscribe(zee => {
+        console.log('transaction 1 added : ', zee);
+      },
+      errormessage => {
+        console.log('errormessage transaction 1 add zario service ', errormessage);
+      });
+    }
+    if (this.zariosdistribution.merchant) {
+      // 2- from merchant to customer for merchant promotions
+      zario.participants = 'm2c';
+      zario.description += 'from merchant to customer as merchant promotions.';
+      zario.quantity = this.zariosdistribution.merchant;
+      zario._fid = this._mid;
+      zario._toid = this._cid;
+      this.transService.addZarios(zario)
+      .subscribe(zee => {
+        console.log('transaction 2 added : ', zee);
+      },
+      errormessage => {
+        console.log('errormessage transaction 2 add zario service ', errormessage);
+      });
+    }
+    if (this.zariosdistribution.purchase) {
+      // 3- from app to merchant for purchase
+      zario.participants = 'a2m';
+      zario.description += 'from APP to merchant as purchase commission zarios.';
+      zario.quantity = this.zariosdistribution.purchase;
+      zario._fid = this.settings._id;
+      zario._toid = this._mid;
+      this.transService.addZarios(zario)
+      .subscribe(zee => {
+        console.log('transaction 3 added : ', zee);
+      },
+      errormessage => {
+        console.log('errormessage transaction 3 add zario service ', errormessage);
+      });
+      // 4- from app to customer for purchase
+      zario.participants = 'a2c';
+      zario.description += 'from APP to customer as purchase commission zarios.';
+      zario._toid = this._cid;
+      this.transService.addZarios(zario)
+      .subscribe(zee => {
+        console.log('transaction 4 added : ', zee);
+      },
+      errormessage => {
+        console.log('errormessage transaction 4 add zario service ', errormessage);
+      });
+      // 5- from app to app for purchase
+      zario.participants = 'a2a';
+      zario.description += 'from APP to jasem Qabazard as purchase commission zarios.';
+      zario._toid = this.settings._id;
+      this.transService.addZarios(zario)
+      .subscribe(zee => {
+        console.log('transaction 5 added : ', zee);
+      },
+      errormessage => {
+        console.log('errormessage transaction 5 add zario service ', errormessage);
+      });
+    }
+    this.sendTransEmail();
+  }
+
+  sendTransEmail() {
+    const transData = {
+      email: this.useremail,
+      merchant: this.mprofiles[this.CMI].name,
+      amount: this.ft.controls['amount'].value,
+      description: this.ft.controls['description'].value,
+      merits: this.ft.controls['merits'].value,
+      zarios: this.ft.controls['zarios'].value,
+      discount: this.ft.controls['discount'].value
+    };
+    this.transService.notifyTrans(transData).subscribe(
+      data => {
+        console.log('trans notification email sent with following transdata ', transData);
+      },
+      errormessage => {
+        this.message = 'OPPS! error please try later! Thank You';
+        this.messageClass = 'alert alert-danger';
+      }
+    );
   }
 
   cartTimed () {

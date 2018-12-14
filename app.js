@@ -21,6 +21,7 @@ const socialsRouter = require('./routes/socialsRouter');
 const transRouter = require('./routes/transRouter');
 const uploadRouter = require('./routes/uploadRouter');
 const crmRouter = require('./routes/crmRouter');
+const zarioRouter = require('./routes/zarioRouter');
 
 const mongoose = require('mongoose');
 // mongoose.Promise = require('bluebird');
@@ -73,6 +74,7 @@ app.use('/socials', socialsRouter);
 app.use('/trans', transRouter);
 app.use('/upload',uploadRouter);
 app.use('/crms', crmRouter);
+app.use('/zarios', zarioRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -92,7 +92,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
                 cgold: this.settings.cgold,
                 cplatinum: this.settings.cplatinum,
                 cpearl: this.settings.cpearl,
-                cblackdiamond: this.settings.cblackdiamond
+                cblackdiamond: this.settings.cblackdiamond,
+                zariosprice: this.settings.zariosprice,
+                zariosdistributionratio: this.settings.zariosdistributionratio,
+                commision: this.settings.commission
               });
               this.SETTINGS = true;
               this.notUpdated = true;
@@ -190,6 +193,18 @@ export class SettingsComponent implements OnInit, OnDestroy {
         cblackdiamond: [0, Validators.compose([
           Validators.required,
           this.validateValue
+        ])],
+        zariosprice: [0, Validators.compose([
+          Validators.required,
+          this.validateNumericFloat
+        ])],
+        zariosdistributionratio: [0, Validators.compose([
+          Validators.required,
+          this.validateNumericFloat
+        ])],
+        commission: [0, Validators.compose([
+          Validators.required,
+          this.validateNumericFloat
         ])]
     }, {
       validator:
@@ -219,6 +234,17 @@ export class SettingsComponent implements OnInit, OnDestroy {
         this.avatarPath = event.target.result;
       };
       reader.readAsDataURL(event.target.files[0]);
+    }
+  }
+
+  validateNumericFloat(controls) {
+    // Create a regular expression
+    const regExp = new RegExp(/^[+-]?\d+(\.\d+)?$/);
+    // Test Value for numeric against regular expression
+    if (regExp.test(controls.value)) {
+      return null; // Return as valid number
+    } else {
+      return { 'validateNumericFloat': true }; // Return as invalid number
     }
   }
 

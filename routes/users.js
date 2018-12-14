@@ -4,9 +4,9 @@ const User = require('../models/user');
 const passport = require('passport');
 const authenticate = require('../authenticate');
 const cors = require('./cors');
-var nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');
 
-var router = express.Router();
+const router = express.Router();
 router.use(bodyParser.json());
 
 router.options('*', cors.corsWithOptions, (req, res) => { res.sendStatus(200); } )
