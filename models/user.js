@@ -25,7 +25,7 @@ const User = new Schema({
     },
     mobile:{
         type: String, 
-        default: ''
+        unique: true
     },
     // set if there is a recruiting merchant for the user
     twofactorauth: {

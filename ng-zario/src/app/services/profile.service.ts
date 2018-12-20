@@ -23,7 +23,6 @@ export class ProfileService {
   }
 
   getGroup(username: string): Observable<Group> {
-    console.log('group service username: ', username);
     return  this.http.get(baseURL + '/groups/byuser/' + username)
                     .catch(error => this.processHttpmsgService.handleError(error));
   }
@@ -34,30 +33,26 @@ export class ProfileService {
   }
 
   getMProfile(username: string): Observable<MProfile[]> {
-    console.log('profile service merchant username: ', username);
     return  this.http.get(baseURL + '/merchants/byuser/' + username)
                     .catch(error => this.processHttpmsgService.handleError(error));
   }
   getGroupMerchants(gid: string): Observable<MProfile[]> {
-    console.log('profile service username: ', gid);
     return  this.http.get(baseURL + '/merchants/bygroup/' + gid)
                     .catch(error => this.processHttpmsgService.handleError(error));
   }
 
   getMProfileID(mid: string): Observable<MProfile> {
-    console.log('profile service mid: ', mid);
     return  this.http.get(baseURL + '/merchants/' + mid)
                     .catch(error => this.processHttpmsgService.handleError(error));
   }
 
   getCProfileID(cid: string): Observable<CProfile> {
-    console.log('profile service customer cid: ', cid);
     return  this.http.get(baseURL + '/customers/' + cid)
                     .catch(error => this.processHttpmsgService.handleError(error));
   }
 
+  // get cprofile by username
   getCProfile(username: string): Observable<CProfile> {
-    console.log('profile service customer username: ', username);
     return  this.http.get(baseURL + '/customers/byuser/' + username)
                     .catch(error => this.processHttpmsgService.handleError(error));
   }

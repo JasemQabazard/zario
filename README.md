@@ -96,11 +96,12 @@ next we envisage that the app admin staff will need promotions data entry to
 - make sure merchant has zarios on his record to be able to distribute them to customer as for his promotions. if he does not then we must change and not show the amount of zario in the propmotion when it exists.  =========>DONE
 - there is also a matter of the calculation to award zarios according to the value added to the application for both customer and merchant. =========>DONE
 - also make sure that the zarios distributed from the merchant to the customer are reduced from the merchant zario balance. =========>DONE
-- update system par merchant profile and group records - as well as effect all the customer profile (application score, zarios) (merchant loyalty band).  zario transactions  =========>DONE
-- emailed to customer
-- 
-- merchant can enter customer name and proceed with a cart transaction without customer being there to cater for some cases.
+- update system par merchant profile and group records - as well as effect all the customer profile (application score, zarios) (merchant loyalty band).  zario transactions =========>DONE
+- emailed to customer =========>DONE
+- merchant can enter customer name and proceed with a cart transaction without customer being there to cater for some cases. =========>DONE
+
 - visit promotions again to finalize the generated promotions and rethink how much freedom to give to merchants when creating promotions.
+- on set up of user dont accept mobiles that are already in system. treatr mobile like email and user name.
 =================================================================================
 ===  branchName:+++++++ == start:01June2018== Completed: 99 June 2018 ====
 ================================================================================= 

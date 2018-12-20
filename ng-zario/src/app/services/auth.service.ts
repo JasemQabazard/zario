@@ -92,6 +92,18 @@ export class AuthService {
     .catch(error => this.processHttpmsgService.handleError(error));
   }
 
+  // Function to getUser by e-mail address used in cart transaction processing
+  getUserbyemail(email): Observable<any> {
+    return this.http.get(baseURL + '/users/getUserbyemail/' + email)
+    .catch(error => this.processHttpmsgService.handleError(error));
+  }
+
+  // Function to getUser by e-mail address used in cart transaction processing
+  getUserbymobile(mobile): Observable<any> {
+    return this.http.get(baseURL + '/users/getUserbymobile/' + mobile)
+    .catch(error => this.processHttpmsgService.handleError(error));
+  }
+
   // emails verification code to user email used in forget/lost password recovery
   forgetPasswordVerification(codeData) {
     return this.http.post(baseURL + '/users/passwordcodemailer', codeData)

@@ -1,8 +1,26 @@
 <div class="row">
   <div class="col-md-8 mx-auto mt-5">
-      <div class="text-center" *ngIf="!_cid">
+      <div class="text-center" *ngIf="!_cid && menuoption === '0'">
           <p><strong>Please scan Customer QR Code using the camera</strong></p>
           <p><strong>Place the QR code from customer mobile infront of the terminal camera </strong></p>
+    </div>
+    <div class="card card-form border-warning p-1 m-1 mx-auto" *ngIf="!_cid && menuoption === '1'">
+      <div class="card-header">
+        <h4>Please Enter Customer: </h4>
+        <h3>Email OR Mobile</h3>
+        <div class="row show-hide-message">
+          <div [ngClass]="messageClass" class="col-sm-9 border-warning h-50 mx-auto text-center">
+              <strong>{{message}}</strong>
+          </div>
+        </div>
+        <form class="mt-3 p-1">
+            <input class="col-sm-5" type="text" [(ngModel)]="useremail" name="email">
+            <button type="button" class="btn btn-primary col-sm-2 my-2 ml-2" (click)="emailentry()" > Email</button>
+            <input class="col-sm-5" type="text" [(ngModel)]="usermobile" name="mobile">
+            <button type="button" class="btn btn-warning col-sm-2 my-2 ml-2" (click)="mobileentry()" > Mobile</button>
+        </form>
+        <hr>
+    </div>
     </div>
     <div *ngIf="_cid">
       <div class="card card-form border-warning p-1 m-1 mx-auto">

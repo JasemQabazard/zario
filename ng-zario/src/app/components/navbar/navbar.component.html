@@ -56,10 +56,19 @@
           <a routerLink="/wallet" class="nav-link">
             <i class="fas fa-globe"></i> Wallet</a>
         </li>
-        <li class="nav-item px-0" [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{exact: true}" *ngIf="!USER">
-          <a routerLink="/cart" class="nav-link">
-            <i class="fas fa-cart-plus"></i> Cart</a>
+        <li class="nav-item dropdown px-0" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}" *ngIf="MERCHANT || merchant">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                    <i class="fas fa-cart-plus"></i> Cart
+            </a>
+            <div class="dropdown-menu">
+              <a routerLink="/cart/0" class="dropdown-item">
+                <i class="fa fa-qrcode"></i> Read QR Code
+              </a>
+              <a routerLink="/cart/1" class="dropdown-item">
+                <i class="fa fa-mobile"></i> By Customer Name/Mobile
+              </a>
+            </div>
         </li>
       </ul>
       <ul class="navbar-nav ml-auto">

@@ -298,6 +298,54 @@ router.post('/passwordcodemailer', function (req, res, next) {
     }
   });
 
+    /* ============================================================
+     Route to get user record by email for cart transaction processing
+  ============================================================ */
+  router.get('/getUserbyemail/:email', (req, res) => {
+    // Check if email was provided in paramaters
+    if (!req.params.email) {
+      res.json({ success: false, message: 'Mobile was not provided' }); // Return error
+    } else {
+      // Search for user's by email in database;
+      User.findOne({ email: req.params.email }, (err, user) => {
+        if (err) {
+          res.statusCode  = 500;
+          res.setHeader('Content-Type', 'application/json');
+          res.json({err: err}); 
+          // Return connection error
+        } else {
+          res.statusCode  = 200;
+          res.setHeader('Content-Type', 'application/json');
+          res.json(user); // Return user 
+        }
+      });
+    }
+  });
+
+    /* ============================================================
+     Route to get user record by mobile number for cart transaction processing
+  ============================================================ */
+  router.get('/getUserbymobile/:mobile', (req, res) => {
+    // Check if mobile was provided in paramaters
+    if (!req.params.mobile) {
+      res.json({ success: false, message: 'Mobile was not provided' }); // Return error
+    } else {
+      // Search for user's by mobile in database;
+      User.findOne({ mobile: req.params.mobile }, (err, user) => {
+        if (err) {
+          res.statusCode  = 500;
+          res.setHeader('Content-Type', 'application/json');
+          res.json({err: err}); 
+          // Return connection error
+        } else {
+          res.statusCode  = 200;
+          res.setHeader('Content-Type', 'application/json');
+          res.json(user); // Return user 
+        }
+      });
+    }
+  });
+
   /* ===============================================================
      Route to check if user's username is available for registration
   =============================================================== */

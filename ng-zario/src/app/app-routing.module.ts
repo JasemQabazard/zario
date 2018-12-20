@@ -40,7 +40,7 @@ const routes: Routes = [
   {path: 'passwordforget', component: PasswordforgetComponent},
   {path: 'contactus', component: ContactusComponent},
   {path: 'wallet', component: WalletComponent},
-  {path: 'cart', component: CartComponent},
+  {path: 'cart/:menuoption', component: CartComponent},
   {path: 'group', component: GroupComponent},
   {path: 'settings', component: SettingsComponent},
   {path: '**', component: HomeComponent}

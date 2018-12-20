@@ -2,7 +2,7 @@ import { Component, ViewChild, ViewEncapsulation, OnInit } from '@angular/core';
 import { QrScannerComponent } from 'angular2-qrscanner';
 
 import { FormBuilder, FormGroup, FormArray , FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { AuthService } from '../../services/auth.service';
 import { PromotionService } from '../../services/promotion.service';
@@ -55,6 +55,7 @@ export class CartComponent implements OnInit {
   username: string = undefined;
   userrole: string = undefined;
   useremail = '';
+  usermobile = '';
   promotions: Array<Promotion> = [];
   originalpromotions: Array<Promotion> = [];
   Apromotions: Array<Promotion> = []; // application promotions
@@ -84,6 +85,7 @@ export class CartComponent implements OnInit {
     purchase: 0                    // based on purchase as part of commision going to customer-->
   };                                  // -->/merchant/ & app (me).
   totalcommission: number;
+  menuoption = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -92,14 +94,20 @@ export class CartComponent implements OnInit {
     private promotionService: PromotionService,
     private promotionScannerService: PromotionScannerService,
     private transService: TransService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
+    this.menuoption = activatedRoute.snapshot.params['menuoption'];
+    console.log('activated router parameter value: ', this.menuoption);
     this.createft();
     this.createfm();
  }
 
   ngOnInit() {
-      this.qrScannerComponent.getMediaDevices().then(devices => {
+      if (this.menuoption === '1') {
+        console.log('using customer mobile or name for cart trans processing');
+      } else if (this.menuoption === '0') {
+        this.qrScannerComponent.getMediaDevices().then(devices => {
           console.log(devices);
           const videoDevices: MediaDeviceInfo[] = [];
           for (const device of devices) {
@@ -121,79 +129,150 @@ export class CartComponent implements OnInit {
                   this.qrScannerComponent.chooseCamera.next(videoDevices[0]);
               }
           }
-      });
-      this.qrScannerComponent.capturedQr.subscribe(result => {
-        console.log(result);
-          this._cid = result;
-          this.profileService.getCProfileID(this._cid)
-          .subscribe(cprofile => {
-            this.cprofile = cprofile;
-            console.log(cprofile);
-            if (cprofile.avatar) {
-              this.avatarPath = `avatars/${cprofile.avatar}`;
-            }
-            this.authService.getUser(cprofile.username)
-            .subscribe(user => {
-              this.customername = user.firstname + ' ' + user.lastname;
-              this.useremail = user.email;
-              this.authService.loadUserCredentials();
-              this.subscription = this.authService.getUsername()
-              .subscribe(
-                name => {
-                  this.username = name;
-                  // this.subscription.unsubscribe();
-                  this.authService.getUser(this.username)
-                  .subscribe(user => {
-                    console.log('user : ', user);
-                    this.userrole = user.role;
-                    this._mid = user._mid;
-                    this._gid = user._gid;
-                    if (this.userrole === 'merchant') {
-                      console.log('only one mprofile exists for merchant');
-                      this.profileService.getMProfileID(user._mid)
-                      .subscribe(mprofile => {
-                        this.mprofiles[0] = mprofile;
-                        console.log('this.mprofiles : ', this.mprofiles[0]);
-                        this.merchants.push({
-                          '_id': mprofile._id,
-                          'name': mprofile.name
-                        });
-                        this.fm.controls['merchant'].setValue(this.merchants[0].name);
-                        this.CMI = 0;
-                        this.LoadCRM();
-                        this.getApplicationPromotions();
-                      },
-                      errormessage => {
-                        console.log('merchant: error while access mprofile table', errormessage);
-                      });
-                    } else if (this.userrole === 'MERCHANT') {
-                      console.log('multiple profiles exist for MERCHANT');
-                      this.profileService.getMProfile(this.username)
-                      .subscribe(mprofiles => {
-                        this.mprofiles = mprofiles;
-                        console.log('this.mprofiles : ', this.mprofiles[0]._id, this.mprofiles.length);
-                        for (let i = 0; i < this.mprofiles.length; i++) {
-                          console.log('merchant i name ', i, this.mprofiles[i].name);
-                          this.merchants.push({
-                            '_id': this.mprofiles[i]._id,
-                            'name': this.mprofiles[i].name
-                          });
-                        }
-                        this.fm.controls['merchant'].setValue(this.merchants[0].name);
-                        this._mid = this.merchants[0]._id;
-                        this.CMI = 0;
-                        this.LoadCRM();
-                        this.getApplicationPromotions();
-                      },
-                      errormessage => {
-                        console.log('MERCHANT: error wile access mprofile ntable', errormessage);
-                      });
-                    }
-                  });
+        });
+        this.qrScannerComponent.capturedQr.subscribe(result => {
+          console.log(result);
+            this._cid = result;
+            this.profileService.getCProfileID(this._cid)
+            .subscribe(cprofile => {
+              this.cprofile = cprofile;
+              console.log(cprofile);
+              if (cprofile.avatar) {
+                this.avatarPath = `avatars/${cprofile.avatar}`;
+              }
+              this.authService.getUser(cprofile.username)
+              .subscribe(user => {
+                this.customername = user.firstname + ' ' + user.lastname;
+                this.useremail = user.email;
+                this.processmerchant();
               });
             });
-          });
-      });
+        });
+      }
+  }
+
+  emailentry() {
+    this.authService.getUserbyemail(this.useremail)
+    .subscribe(user => {
+      if (user) {
+        this.customername = user.firstname + ' ' + user.lastname;
+        this.useremail = user.email;
+        this.username = user.username;
+        this.profileService.getCProfile(this.username)
+            .subscribe(cprofile => {
+              this.cprofile = cprofile;
+              this._cid = cprofile._id;
+              if (cprofile.avatar) {
+                this.avatarPath = `avatars/${cprofile.avatar}`;
+              }
+              this.processmerchant();
+            },
+            errormessage => {
+              console.log('user access error by email : ', errormessage);
+            });
+      } else {
+        this.message = 'email not correct or not in system!';
+        this.messageClass = 'alert alert-danger';
+      }
+     },
+     errormessage => {
+       console.log('user access error by email : ', errormessage);
+     });
+  }
+
+  mobileentry() {
+    console.log('mobile: ', this.usermobile);
+    this.authService.getUserbymobile(this.usermobile)
+    .subscribe(user => {
+      if (user) {
+        this.customername = user.firstname + ' ' + user.lastname;
+        this.useremail = user.email;
+        this.username = user.username;
+        this.profileService.getCProfile(this.username)
+            .subscribe(cprofile => {
+              if (cprofile) {
+                this.cprofile = cprofile;
+                this._cid = cprofile._id;
+                if (cprofile.avatar) {
+                  this.avatarPath = `avatars/${cprofile.avatar}`;
+                }
+                this.processmerchant();
+                } else {
+                  this.message = 'mobile does not belong to customer!';
+                  this.messageClass = 'alert alert-danger';
+                }
+              },
+              errormessage => {
+                console.log('user access error by mobile : ', errormessage);
+              });
+      } else {
+        this.message = 'mobile not correct or not in system!';
+        this.messageClass = 'alert alert-danger';
+      }
+     },
+     errormessage => {
+       console.log('user access error by mobile : ', errormessage);
+     });
+  }
+
+  processmerchant() {
+    this.message = '';
+    this.messageClass = '';
+    this.authService.loadUserCredentials();
+    this.subscription = this.authService.getUsername()
+    .subscribe(
+      name => {
+        this.username = name;
+        // this.subscription.unsubscribe();
+        this.authService.getUser(this.username)
+        .subscribe(user => {
+          console.log('user : ', user);
+          this.userrole = user.role;
+          this._mid = user._mid;
+          this._gid = user._gid;
+          if (this.userrole === 'merchant') {
+            console.log('only one mprofile exists for merchant');
+            this.profileService.getMProfileID(user._mid)
+            .subscribe(mprofile => {
+              this.mprofiles[0] = mprofile;
+              console.log('this.mprofiles : ', this.mprofiles[0]);
+              this.merchants.push({
+                '_id': mprofile._id,
+                'name': mprofile.name
+              });
+              this.fm.controls['merchant'].setValue(this.merchants[0].name);
+              this.CMI = 0;
+              this.LoadCRM();
+              this.getApplicationPromotions();
+            },
+            errormessage => {
+              console.log('merchant: error while access mprofile table', errormessage);
+            });
+          } else if (this.userrole === 'MERCHANT') {
+            console.log('multiple profiles exist for MERCHANT');
+            this.profileService.getMProfile(this.username)
+            .subscribe(mprofiles => {
+              this.mprofiles = mprofiles;
+              console.log('this.mprofiles : ', this.mprofiles[0]._id, this.mprofiles.length);
+              for (let i = 0; i < this.mprofiles.length; i++) {
+                console.log('merchant i name ', i, this.mprofiles[i].name);
+                this.merchants.push({
+                  '_id': this.mprofiles[i]._id,
+                  'name': this.mprofiles[i].name
+                });
+              }
+              this.fm.controls['merchant'].setValue(this.merchants[0].name);
+              this._mid = this.merchants[0]._id;
+              this.CMI = 0;
+              this.LoadCRM();
+              this.getApplicationPromotions();
+            },
+            errormessage => {
+              console.log('MERCHANT: error wile access mprofile ntable', errormessage);
+            });
+          }
+        });
+    });
   }
 
   getApplicationPromotions() {
