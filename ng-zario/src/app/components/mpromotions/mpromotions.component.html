@@ -8,16 +8,17 @@
           <div class="card card-form border-warning p-1 m-1 mx-auto">
             <div class="card-header">
                 <h4 class="text-center">Add or Maintain Promotion Data</h4>
-                <form [formGroup]="fmSelect" class="m-1 p-1" *ngIf="showMerchantsBox">
+                <form [formGroup]="fmSelect" class="m-1 p-1">
                     <h5 class="d-sm-block d-none">Select an existing Merchant Profile</h5>
                     <select id="merchant" class="form-control bg-primary text-white" formControlName="merchant" (change)="changeMerchant()">
                         <option *ngFor="let merchant of merchants" [value]="merchant.name">{{merchant.name}}</option>
                     </select>
                 </form>
                 <div class="row m-1 p-1">
-                    <button class="btn btn-danger mt-2 ml-2 col-md-3" (click)="togglePromotionEntry()">Show/Hide Promotion Form</button>
+                    <button *ngIf="showPromotionEntry" class="btn btn-danger mt-2 ml-2 col-md-3" (click)="togglePromotionEntry()">Show/Hide Promotion Form</button>
                     <button class="btn btn-outline-success mt-2 ml-2 col-md-5" (click)="AddNewPromotion()" [disabled]="!ADDFLAG"
-                        *ngIf="showPromotionEntry">Copy, Change Promotion Being Updated then Add as New</button>
+                        *ngIf="showPromotionEntry && duplicatable">Duplicate</button>
+                    <!--Copy, Change Promotion Being Updated then Add as New-->
                 </div>
                 <hr>
             </div>
@@ -213,6 +214,8 @@
                                 <strong>Narrative: </strong>{{p.narrative}}
                                 <br/>
                                 <strong>Generated: </strong>{{p.generated ? "Yes" : "No"}}
+                                <br/>
+                                <strong>Can be Duplicated: </strong>{{p.duplicatable ? "Yes" : "No"}}
                                 <br/>
                                 <strong>Currently Active: </strong>{{p.activity ? "Yes" : "No"}}
                                 <br/>

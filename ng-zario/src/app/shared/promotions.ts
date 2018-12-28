@@ -5,6 +5,7 @@ export class Promotion {
    name: string;
    narrative: string;
    generated?: boolean;
+   duplicatable: boolean;
    activity?: boolean;
    hearts: number;
    hearted: Array<string>;
@@ -54,12 +55,13 @@ export class Comment {
 }
 
 export const merchantpromotions: Array<Promotion> = [];
-merchantpromotions[0] = {
+merchantpromotions[0] = {                 // one and only
                   _mid: '',
                   avatar: '../../../assets/img/avatardefault.png',
                   name: 'Generic initial Purchase',
                   narrative: 'Generic initial purchase promotion',
                   generated: true,
+                  duplicatable: false,
                   activity: true,
                   hearts: 0,
                   hearted: [],
@@ -85,6 +87,7 @@ merchantpromotions[1] = {
                   name: 'Bronze Loyalty Band Purchase',
                   narrative: 'Bronze Loyalty Band day2day purchase promotion',
                   generated: true,
+                  duplicatable: false,                     // one and only
                   activity: true,
                   hearts: 0,
                   hearted: [],
@@ -109,6 +112,7 @@ merchantpromotions[2] = {
                 name: 'Silver Loyalty Band Purchase',
                 narrative: 'Silver Loyalty Band day2day purchase promotion',
                 generated: true,
+                duplicatable: false,                     // one and only
                 activity: true,
                 hearts: 0,
                 hearted: [],
@@ -133,6 +137,7 @@ merchantpromotions[3] = {
               name: 'Gold Loyalty Band Purchase',
               narrative: 'Gold Loyalty Band day2day purchase promotion',
               generated: true,
+              duplicatable: false,                     // one and only
               activity: true,
               hearts: 0,
               hearted: [],
@@ -157,6 +162,7 @@ merchantpromotions[4] = {
             name: 'Platinum Loyalty Band Purchase',
             narrative: 'Platinum Loyalty Band day2day purchase promotion',
             generated: true,
+            duplicatable: false,                     // one and only
             activity: true,
             hearts: 0,
             hearted: [],
@@ -181,6 +187,7 @@ merchantpromotions[5] = {
           name: 'Pearl Loyalty Band Purchase',
           narrative: 'PearlLoyalty Band day2day purchase promotion',
           generated: true,
+          duplicatable: false,                     // one and only
           activity: true,
           hearts: 0,
           hearted: [],
@@ -205,6 +212,7 @@ merchantpromotions[6] = {
         name: 'Blackdiamond Loyalty Band Purchase',
         narrative: 'Blackdiamond Loyalty Band day2day purchase promotion',
         generated: true,
+        duplicatable: false,                     // one and only
         activity: true,
         hearts: 0,
         hearted: [],
@@ -230,6 +238,7 @@ merchantpromotions[7] = {
                   name: 'Transitioning to Silver Loyalty Band',
                   narrative: 'Level Transitions Silver Loyalty Band',
                   generated: true,
+                  duplicatable: false,                     // one and only
                   activity: true,
                   hearts: 0,
                   hearted: [],
@@ -254,6 +263,7 @@ merchantpromotions[8] = {
                 name: 'Transitioning to Gold Loyalty Band',
                 narrative: 'Level Transitions to Gold Loyalty Band',
                 generated: true,
+                duplicatable: false,                     // one and only
                 activity: true,
                 hearts: 0,
                 hearted: [],
@@ -278,6 +288,7 @@ merchantpromotions[9] = {
               name: 'Transitioning to Platinum Loyalty Band',
               narrative: 'Level Transitions to Platinum Loyalty Band',
               generated: true,
+              duplicatable: false,                     // one and only
               activity: true,
               hearts: 0,
               hearted: [],
@@ -302,6 +313,7 @@ merchantpromotions[10] = {
             name: 'Transitioning to Pearl Loyalty Band',
             narrative: 'Level Transitions to Pearl Loyalty Band',
             generated: true,
+            duplicatable: false,                     // one and only
             activity: true,
             hearts: 0,
             hearted: [],
@@ -326,6 +338,7 @@ merchantpromotions[11] = {
           name: 'Transitioning to Blackdiamond Loyalty Band',
           narrative: 'Level Transitions to Blackdiamond Loyalty Band',
           generated: true,
+          duplicatable: false,                     // one and only
           activity: true,
           hearts: 0,
           hearted: [],
@@ -351,10 +364,11 @@ merchantpromotions[12] = {
                   name: 'Specific Special Product Promotion',
                   narrative: 'Product Promotion',
                   generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when dupolicated customer can change all existing timing and/ or levels. when duplicated customer not allowed to change category.
                   activity: true,
                   hearts: 0,
                   hearted: [],
-                  // timing: could be any of the setting- when set to=day2day: means the discount on the product or service is available all the time when the promotion is active. =hourly or any timimg indicator mean the product or service is available for one hour/ one day/ one week/ one month during that day to each signed in customer to the promotions.
+                  // timing: could be any of the setting- when set to=day2day: means the discount on the product or service is available all the time when the promotion is active. =daily or any timimg indicator mean the product or service is available for once a day/ once a week/ once a month during that period to each signed in customer to the promotions. if customer purchases during the said period then it will not be available again till the period finishes.
                   timing: 'day2day',
                   action: 'purchase',
                   level: 'All',        // for all levels
@@ -377,6 +391,7 @@ merchantpromotions[13] = {
                   name: 'Specific Special Service Promotion',
                   narrative: 'Service Promotion',
                   generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing and/ or levels. when duplicated customer not allowed to change category.
                   activity: true,
                   hearts: 0,
                   hearted: [],
@@ -403,13 +418,14 @@ merchantpromotions[14] = {
                   name: 'Treasure Hunt Game Promotion',
                   narrative: 'Treasure Hunt',
                   generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing (except remove day2day) and/ or levels. when duplicated customer not allowed to change category.
                   activity: true,
                   hearts: 0,
                   hearted: [],
                   // timing: could be any of the setting- when set to =day2day: means the treasure hunt reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
-                  timing: 'day2day',
+                  timing: 'daily',
                   action: 'treasurehunt',
-                  level: 'Silver',        // All for all levels or specific level only gets this reward as a by product of playing treasure hunt game.
+                  level: 'All',        // All for all levels or specific level only gets this reward as a by product of playing treasure hunt game.
                   category: 'membership', // when set to membership then members receive an added or special discount indicated in the disocunt field, or can receive merit points as an immediet bonus when they find the item, or receive zarios immedietly as they find them in the treasure hunt game. when set to 'product' or 'service' then a particular product or service is the subject matter of the discount. It should be described and product or service number entered.
                   daterange: [
                         new Date('1954-09-09 13:22:22.000'),
@@ -422,20 +438,229 @@ merchantpromotions[14] = {
                   productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
                   description: 'Find product discounts, services, merit points, zarios, and gifts in our treasure hunt game in your promotions page on the map as you go through our merchant stores or when you go to prominent locations in your area. You may stumble upon these reward offers when you least expect. Visit our store if you wish to find this reward discount offered on the item product or service mentioned, or find the merit points or zarios associated with the reward. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
                };
-// ====> game promotion
 merchantpromotions[15] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'Treasure Hunt Game Promotion',
+                  narrative: 'Treasure Hunt',
+                  generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing (except remove day2day) and/ or levels. when duplicated customer not allowed to change category.
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  // timing: could be any of the setting- when set to =day2day: means the treasure hunt reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
+                  timing: 'weekly',
+                  action: 'treasurehunt',
+                  level: 'All',        // All for all levels or specific level only gets this reward as a by product of playing treasure hunt game.
+                  category: 'membership', // when set to membership then members receive an added or special discount indicated in the disocunt field, or can receive merit points as an immediet bonus when they find the item, or receive zarios immedietly as they find them in the treasure hunt game. when set to 'product' or 'service' then a particular product or service is the subject matter of the discount. It should be described and product or service number entered.
+                  daterange: [
+                        new Date('1954-09-09 13:22:22.000'),
+                        new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: 15,
+                  meritsonpurchase: false,
+                  merits: 5,
+                  zarios: 1.75,
+                  productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
+                  description: 'Find product discounts, services, merit points, zarios, and gifts in our treasure hunt game in your promotions page on the map as you go through our merchant stores or when you go to prominent locations in your area. You may stumble upon these reward offers when you least expect. Visit our store if you wish to find this reward discount offered on the item product or service mentioned, or find the merit points or zarios associated with the reward. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
+             };
+merchantpromotions[16] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'Treasure Hunt Game Promotion',
+                  narrative: 'Treasure Hunt',
+                  generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing (except remove day2day) and/ or levels. when duplicated customer not allowed to change category.
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  // timing: could be any of the setting- when set to =day2day: means the treasure hunt reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
+                  timing: 'monthly',
+                  action: 'treasurehunt',
+                  level: 'All',        // All for all levels or specific level only gets this reward as a by product of playing treasure hunt game.
+                  category: 'membership', // when set to membership then members receive an added or special discount indicated in the disocunt field, or can receive merit points as an immediet bonus when they find the item, or receive zarios immedietly as they find them in the treasure hunt game. when set to 'product' or 'service' then a particular product or service is the subject matter of the discount. It should be described and product or service number entered.
+                  daterange: [
+                        new Date('1954-09-09 13:22:22.000'),
+                        new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: 15,
+                  meritsonpurchase: false,
+                  merits: 5,
+                  zarios: 1.75,
+                  productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
+                  description: 'Find product discounts, services, merit points, zarios, and gifts in our treasure hunt game in your promotions page on the map as you go through our merchant stores or when you go to prominent locations in your area. You may stumble upon these reward offers when you least expect. Visit our store if you wish to find this reward discount offered on the item product or service mentioned, or find the merit points or zarios associated with the reward. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
+           };
+merchantpromotions[17] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'Treasure Hunt Game Promotion',
+                  narrative: 'Treasure Hunt',
+                  generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing (except remove day2day) and/ or levels. when duplicated customer not allowed to change category.
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  // timing: could be any of the setting- when set to =day2day: means the treasure hunt reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
+                  timing: 'daily',
+                  action: 'treasurehunt',
+                  level: 'All',        // All for all levels or specific level only gets this reward as a by product of playing treasure hunt game.
+                  category: 'product', // when set to membership then members receive an added or special discount indicated in the disocunt field, or can receive merit points as an immediet bonus when they find the item, or receive zarios immedietly as they find them in the treasure hunt game. when set to 'product' or 'service' then a particular product or service is the subject matter of the discount. It should be described and product or service number entered.
+                  daterange: [
+                        new Date('1954-09-09 13:22:22.000'),
+                        new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: 15,
+                  meritsonpurchase: false,
+                  merits: 5,
+                  zarios: 1.75,
+                  productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
+                  description: 'Find product discounts, services, merit points, zarios, and gifts in our treasure hunt game in your promotions page on the map as you go through our merchant stores or when you go to prominent locations in your area. You may stumble upon these reward offers when you least expect. Visit our store if you wish to find this reward discount offered on the item product or service mentioned, or find the merit points or zarios associated with the reward. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
+             };
+merchantpromotions[18] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'Treasure Hunt Game Promotion',
+                  narrative: 'Treasure Hunt',
+                  generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing (except remove day2day) and/ or levels. when duplicated customer not allowed to change category.
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  // timing: could be any of the setting- when set to =day2day: means the treasure hunt reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
+                  timing: 'weekly',
+                  action: 'treasurehunt',
+                  level: 'All',        // All for all levels or specific level only gets this reward as a by product of playing treasure hunt game.
+                  category: 'product', // when set to membership then members receive an added or special discount indicated in the disocunt field, or can receive merit points as an immediet bonus when they find the item, or receive zarios immedietly as they find them in the treasure hunt game. when set to 'product' or 'service' then a particular product or service is the subject matter of the discount. It should be described and product or service number entered.
+                  daterange: [
+                        new Date('1954-09-09 13:22:22.000'),
+                        new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: 15,
+                  meritsonpurchase: false,
+                  merits: 5,
+                  zarios: 1.75,
+                  productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
+                  description: 'Find product discounts, services, merit points, zarios, and gifts in our treasure hunt game in your promotions page on the map as you go through our merchant stores or when you go to prominent locations in your area. You may stumble upon these reward offers when you least expect. Visit our store if you wish to find this reward discount offered on the item product or service mentioned, or find the merit points or zarios associated with the reward. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
+              };
+ merchantpromotions[19] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'Treasure Hunt Game Promotion',
+                  narrative: 'Treasure Hunt',
+                  generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing (except remove day2day) and/ or levels. when duplicated customer not allowed to change category.
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  // timing: could be any of the setting- when set to =day2day: means the treasure hunt reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
+                  timing: 'monthly',
+                  action: 'treasurehunt',
+                  level: 'All',        // All for all levels or specific level only gets this reward as a by product of playing treasure hunt game.
+                  category: 'product', // when set to membership then members receive an added or special discount indicated in the disocunt field, or can receive merit points as an immediet bonus when they find the item, or receive zarios immedietly as they find them in the treasure hunt game. when set to 'product' or 'service' then a particular product or service is the subject matter of the discount. It should be described and product or service number entered.
+                  daterange: [
+                        new Date('1954-09-09 13:22:22.000'),
+                        new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: 15,
+                  meritsonpurchase: false,
+                  merits: 5,
+                  zarios: 1.75,
+                  productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
+                  description: 'Find product discounts, services, merit points, zarios, and gifts in our treasure hunt game in your promotions page on the map as you go through our merchant stores or when you go to prominent locations in your area. You may stumble upon these reward offers when you least expect. Visit our store if you wish to find this reward discount offered on the item product or service mentioned, or find the merit points or zarios associated with the reward. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
+              };
+merchantpromotions[20] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'Treasure Hunt Game Promotion',
+                  narrative: 'Treasure Hunt',
+                  generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing (except remove day2day) and/ or levels. when duplicated customer not allowed to change category.
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  // timing: could be any of the setting- when set to =day2day: means the treasure hunt reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
+                  timing: 'daily',
+                  action: 'treasurehunt',
+                  level: 'All',        // All for all levels or specific level only gets this reward as a by product of playing treasure hunt game.
+                  category: 'service', // when set to membership then members receive an added or special discount indicated in the disocunt field, or can receive merit points as an immediet bonus when they find the item, or receive zarios immedietly as they find them in the treasure hunt game. when set to 'product' or 'service' then a particular product or service is the subject matter of the discount. It should be described and product or service number entered.
+                  daterange: [
+                        new Date('1954-09-09 13:22:22.000'),
+                        new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: 15,
+                  meritsonpurchase: false,
+                  merits: 5,
+                  zarios: 1.75,
+                  productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
+                  description: 'Find product discounts, services, merit points, zarios, and gifts in our treasure hunt game in your promotions page on the map as you go through our merchant stores or when you go to prominent locations in your area. You may stumble upon these reward offers when you least expect. Visit our store if you wish to find this reward discount offered on the item product or service mentioned, or find the merit points or zarios associated with the reward. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
+              };
+merchantpromotions[21] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'Treasure Hunt Game Promotion',
+                  narrative: 'Treasure Hunt',
+                  generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing (except remove day2day) and/ or levels. when duplicated customer not allowed to change category.
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  // timing: could be any of the setting- when set to =day2day: means the treasure hunt reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
+                  timing: 'weekly',
+                  action: 'treasurehunt',
+                  level: 'All',        // All for all levels or specific level only gets this reward as a by product of playing treasure hunt game.
+                  category: 'service', // when set to membership then members receive an added or special discount indicated in the disocunt field, or can receive merit points as an immediet bonus when they find the item, or receive zarios immedietly as they find them in the treasure hunt game. when set to 'product' or 'service' then a particular product or service is the subject matter of the discount. It should be described and product or service number entered.
+                  daterange: [
+                        new Date('1954-09-09 13:22:22.000'),
+                        new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: 15,
+                  meritsonpurchase: false,
+                  merits: 5,
+                  zarios: 1.75,
+                  productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
+                  description: 'Find product discounts, services, merit points, zarios, and gifts in our treasure hunt game in your promotions page on the map as you go through our merchant stores or when you go to prominent locations in your area. You may stumble upon these reward offers when you least expect. Visit our store if you wish to find this reward discount offered on the item product or service mentioned, or find the merit points or zarios associated with the reward. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
+              };
+merchantpromotions[22] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'Treasure Hunt Game Promotion',
+                  narrative: 'Treasure Hunt',
+                  generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing (except remove day2day) and/ or levels. when duplicated customer not allowed to change category.
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  // timing: could be any of the setting- when set to =day2day: means the treasure hunt reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
+                  timing: 'monthly',
+                  action: 'treasurehunt',
+                  level: 'All',        // All for all levels or specific level only gets this reward as a by product of playing treasure hunt game.
+                  category: 'service', // when set to membership then members receive an added or special discount indicated in the disocunt field, or can receive merit points as an immediet bonus when they find the item, or receive zarios immedietly as they find them in the treasure hunt game. when set to 'product' or 'service' then a particular product or service is the subject matter of the discount. It should be described and product or service number entered.
+                  daterange: [
+                        new Date('1954-09-09 13:22:22.000'),
+                        new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: 15,
+                  meritsonpurchase: false,
+                  merits: 5,
+                  zarios: 1.75,
+                  productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
+                  description: 'Find product discounts, services, merit points, zarios, and gifts in our treasure hunt game in your promotions page on the map as you go through our merchant stores or when you go to prominent locations in your area. You may stumble upon these reward offers when you least expect. Visit our store if you wish to find this reward discount offered on the item product or service mentioned, or find the merit points or zarios associated with the reward. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
+              };
+// ====> game promotion
+merchantpromotions[23] = {
                   _mid: '',
                   avatar: '../../../assets/img/avatardefault.png',
                   name: 'General Game Promotion',
                   narrative: 'General Game',
                   generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing (except remove day2day) and/ or levels. when duplicated customer not allowed to change category.
                   activity: true,
                   hearts: 0,
                   hearted: [],
                   // timing: could be any of the setting- when set to =day2day: means anyt generic game reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
-                  timing: 'day2day',
+                  timing: 'daily',
                   action: 'game',
-                  level: 'Silver',        // All for all levels or specific level only gets this reward as a by product of playing any of our games.
+                  level: 'All',        // All for all levels or specific level only gets this reward as a by product of playing any of our games.
                   category: 'membership', // when set to membership then members receive an added or special discount indicated in the discount field, or can receive merit points as an immediet bonus when they play and win the game, or receive zarios immedietly as they win. when set to product or service then a particular product or service is the subject matter of the discount. It should be described and product or service number entered.
                   daterange: [
                     new Date('1954-09-09 13:22:22.000'),
@@ -448,16 +673,225 @@ merchantpromotions[15] = {
                   productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
                   description: 'Win this product discount, service, merit points, zarios, or gifts in one of our offered games. You may play these games as they are offered to you when you level up your band with the application and with our merchant store. Visit our store for more discounts and rewards. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
                };
-merchantpromotions[16] = {
+merchantpromotions[24] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'General Game Promotion',
+                  narrative: 'General Game',
+                  generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing (except remove day2day) and/ or levels. when duplicated customer not allowed to change category.
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  // timing: could be any of the setting- when set to =day2day: means anyt generic game reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
+                  timing: 'weekly',
+                  action: 'game',
+                  level: 'All',        // All for all levels or specific level only gets this reward as a by product of playing any of our games.
+                  category: 'membership', // when set to membership then members receive an added or special discount indicated in the discount field, or can receive merit points as an immediet bonus when they play and win the game, or receive zarios immedietly as they win. when set to product or service then a particular product or service is the subject matter of the discount. It should be described and product or service number entered.
+                  daterange: [
+                    new Date('1954-09-09 13:22:22.000'),
+                    new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: 15,
+                  meritsonpurchase: false,
+                  merits: 5,
+                  zarios: 0,
+                  productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
+                  description: 'Win this product discount, service, merit points, zarios, or gifts in one of our offered games. You may play these games as they are offered to you when you level up your band with the application and with our merchant store. Visit our store for more discounts and rewards. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
+              };
+merchantpromotions[25] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'General Game Promotion',
+                  narrative: 'General Game',
+                  generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing (except remove day2day) and/ or levels. when duplicated customer not allowed to change category.
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  // timing: could be any of the setting- when set to =day2day: means anyt generic game reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
+                  timing: 'monthly',
+                  action: 'game',
+                  level: 'All',        // All for all levels or specific level only gets this reward as a by product of playing any of our games.
+                  category: 'membership', // when set to membership then members receive an added or special discount indicated in the discount field, or can receive merit points as an immediet bonus when they play and win the game, or receive zarios immedietly as they win. when set to product or service then a particular product or service is the subject matter of the discount. It should be described and product or service number entered.
+                  daterange: [
+                    new Date('1954-09-09 13:22:22.000'),
+                    new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: 15,
+                  meritsonpurchase: false,
+                  merits: 5,
+                  zarios: 0,
+                  productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
+                  description: 'Win this product discount, service, merit points, zarios, or gifts in one of our offered games. You may play these games as they are offered to you when you level up your band with the application and with our merchant store. Visit our store for more discounts and rewards. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
+              };
+merchantpromotions[26] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'General Game Promotion',
+                  narrative: 'General Game',
+                  generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing (except remove day2day) and/ or levels. when duplicated customer not allowed to change category.
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  // timing: could be any of the setting- when set to =day2day: means anyt generic game reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
+                  timing: 'daily',
+                  action: 'game',
+                  level: 'All',        // All for all levels or specific level only gets this reward as a by product of playing any of our games.
+                  category: 'product', // when set to membership then members receive an added or special discount indicated in the discount field, or can receive merit points as an immediet bonus when they play and win the game, or receive zarios immedietly as they win. when set to product or service then a particular product or service is the subject matter of the discount. It should be described and product or service number entered.
+                  daterange: [
+                    new Date('1954-09-09 13:22:22.000'),
+                    new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: 15,
+                  meritsonpurchase: false,
+                  merits: 5,
+                  zarios: 0,
+                  productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
+                  description: 'Win this product discount, service, merit points, zarios, or gifts in one of our offered games. You may play these games as they are offered to you when you level up your band with the application and with our merchant store. Visit our store for more discounts and rewards. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
+             };
+merchantpromotions[27] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'General Game Promotion',
+                  narrative: 'General Game',
+                  generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing (except remove day2day) and/ or levels. when duplicated customer not allowed to change category.
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  // timing: could be any of the setting- when set to =day2day: means anyt generic game reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
+                  timing: 'weekly',
+                  action: 'game',
+                  level: 'All',        // All for all levels or specific level only gets this reward as a by product of playing any of our games.
+                  category: 'product', // when set to membership then members receive an added or special discount indicated in the discount field, or can receive merit points as an immediet bonus when they play and win the game, or receive zarios immedietly as they win. when set to product or service then a particular product or service is the subject matter of the discount. It should be described and product or service number entered.
+                  daterange: [
+                    new Date('1954-09-09 13:22:22.000'),
+                    new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: 15,
+                  meritsonpurchase: false,
+                  merits: 5,
+                  zarios: 0,
+                  productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
+                  description: 'Win this product discount, service, merit points, zarios, or gifts in one of our offered games. You may play these games as they are offered to you when you level up your band with the application and with our merchant store. Visit our store for more discounts and rewards. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
+              };
+merchantpromotions[28] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'General Game Promotion',
+                  narrative: 'General Game',
+                  generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing (except remove day2day) and/ or levels. when duplicated customer not allowed to change category.
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  // timing: could be any of the setting- when set to =day2day: means anyt generic game reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
+                  timing: 'monthly',
+                  action: 'game',
+                  level: 'All',        // All for all levels or specific level only gets this reward as a by product of playing any of our games.
+                  category: 'product', // when set to membership then members receive an added or special discount indicated in the discount field, or can receive merit points as an immediet bonus when they play and win the game, or receive zarios immedietly as they win. when set to product or service then a particular product or service is the subject matter of the discount. It should be described and product or service number entered.
+                  daterange: [
+                    new Date('1954-09-09 13:22:22.000'),
+                    new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: 15,
+                  meritsonpurchase: false,
+                  merits: 5,
+                  zarios: 0,
+                  productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
+                  description: 'Win this product discount, service, merit points, zarios, or gifts in one of our offered games. You may play these games as they are offered to you when you level up your band with the application and with our merchant store. Visit our store for more discounts and rewards. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
+              };
+merchantpromotions[29] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'General Game Promotion',
+                  narrative: 'General Game',
+                  generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing (except remove day2day) and/ or levels. when duplicated customer not allowed to change category.
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  // timing: could be any of the setting- when set to =day2day: means anyt generic game reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
+                  timing: 'daily',
+                  action: 'game',
+                  level: 'All',        // All for all levels or specific level only gets this reward as a by product of playing any of our games.
+                  category: 'service', // when set to membership then members receive an added or special discount indicated in the discount field, or can receive merit points as an immediet bonus when they play and win the game, or receive zarios immedietly as they win. when set to product or service then a particular product or service is the subject matter of the discount. It should be described and product or service number entered.
+                  daterange: [
+                    new Date('1954-09-09 13:22:22.000'),
+                    new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: 15,
+                  meritsonpurchase: false,
+                  merits: 5,
+                  zarios: 0,
+                  productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
+                  description: 'Win this product discount, service, merit points, zarios, or gifts in one of our offered games. You may play these games as they are offered to you when you level up your band with the application and with our merchant store. Visit our store for more discounts and rewards. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
+              };
+merchantpromotions[30] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'General Game Promotion',
+                  narrative: 'General Game',
+                  generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing (except remove day2day) and/ or levels. when duplicated customer not allowed to change category.
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  // timing: could be any of the setting- when set to =day2day: means anyt generic game reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
+                  timing: 'weekly',
+                  action: 'game',
+                  level: 'All',        // All for all levels or specific level only gets this reward as a by product of playing any of our games.
+                  category: 'service', // when set to membership then members receive an added or special discount indicated in the discount field, or can receive merit points as an immediet bonus when they play and win the game, or receive zarios immedietly as they win. when set to product or service then a particular product or service is the subject matter of the discount. It should be described and product or service number entered.
+                  daterange: [
+                    new Date('1954-09-09 13:22:22.000'),
+                    new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: 15,
+                  meritsonpurchase: false,
+                  merits: 5,
+                  zarios: 0,
+                  productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
+                  description: 'Win this product discount, service, merit points, zarios, or gifts in one of our offered games. You may play these games as they are offered to you when you level up your band with the application and with our merchant store. Visit our store for more discounts and rewards. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
+              };
+merchantpromotions[31] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'General Game Promotion',
+                  narrative: 'General Game',
+                  generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing (except remove day2day) and/ or levels. when duplicated customer not allowed to change category.
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  // timing: could be any of the setting- when set to =day2day: means anyt generic game reward is available all the time when the promotion is active. =hourly or any timimg indicator means the reward will be available for one hour/ one day/ one week/ one month for each signed in customer/ member to the promotions.
+                  timing: 'monthly',
+                  action: 'game',
+                  level: 'All',        // All for all levels or specific level only gets this reward as a by product of playing any of our games.
+                  category: 'service', // when set to membership then members receive an added or special discount indicated in the discount field, or can receive merit points as an immediet bonus when they play and win the game, or receive zarios immedietly as they win. when set to product or service then a particular product or service is the subject matter of the discount. It should be described and product or service number entered.
+                  daterange: [
+                    new Date('1954-09-09 13:22:22.000'),
+                    new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: 15,
+                  meritsonpurchase: false,
+                  merits: 5,
+                  zarios: 0,
+                  productservicecode: '', // user must amend and enter service number, service avatar, and fix the description.
+                  description: 'Win this product discount, service, merit points, zarios, or gifts in one of our offered games. You may play these games as they are offered to you when you level up your band with the application and with our merchant store. Visit our store for more discounts and rewards. This is our way to thank you for your contribution in enriching our community of shops, members, and application.'
+              };
+merchantpromotions[32] = {
                   _mid: '',
                   avatar: '../../../assets/img/avatardefault.png',
                   name: 'Visit our store location promotion',
                   narrative: 'Visit our store',
                   generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing (except remove day2day) and/ or levels. when duplicated customer not allowed to change category.
                   activity: true,
                   hearts: 0,
                   hearted: [],
-                  timing: 'daily',    // usually hourly or daily for a certain event promotion
+                  timing: 'daily',    // usually daily/ weekly/ or monthly for a certain promotion like an event. Close timing to merchant completely.
                   action: 'visit',
                   level: 'All',
                   category: 'membership',
@@ -472,6 +906,56 @@ merchantpromotions[16] = {
                   productservicecode: '',
                   description: 'A general rewarding strategy for visiting our shop. You will receive a free gift, snaks, and drinks, plus extra merit points if you purchase from us during this promotion. Merits will be added to your profile band at both merchant and application levels.'
                };
+merchantpromotions[33] = {
+                  _mid: '',
+                  avatar: '../../../assets/img/avatardefault.png',
+                  name: 'Visit our store location promotion',
+                  narrative: 'Visit our store',
+                  generated: true,
+                  duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing (except remove day2day) and/ or levels. when duplicated customer not allowed to change category.
+                  activity: true,
+                  hearts: 0,
+                  hearted: [],
+                  timing: 'weekly',
+                  action: 'visit',
+                  level: 'All',
+                  category: 'membership',
+                  daterange: [
+                        new Date('1954-09-09 13:22:22.000'),
+                        new Date('2104-09-09 00:00:00.000')
+                    ],
+                  discount: 0,
+                  meritsonpurchase: false,
+                  merits: 10,
+                  zarios: 0,
+                  productservicecode: '',
+                  description: 'A general rewarding strategy for visiting our shop. You will receive a free gift, snaks, and drinks, plus extra merit points if you purchase from us during this promotion. Merits will be added to your profile band at both merchant and application levels.'
+             };
+merchantpromotions[34] = {
+                _mid: '',
+                avatar: '../../../assets/img/avatardefault.png',
+                name: 'Visit our store location promotion',
+                narrative: 'Visit our store',
+                generated: true,
+                duplicatable: true,                     // can be duplicated and then edited to create a new promotion. when duplicated customer can change all existing timing (except remove day2day) and/ or levels. when duplicated customer not allowed to change category.
+                activity: true,
+                hearts: 0,
+                hearted: [],
+                timing: 'monthly',
+                action: 'visit',
+                level: 'All',
+                category: 'membership',
+                daterange: [
+                      new Date('1954-09-09 13:22:22.000'),
+                      new Date('2104-09-09 00:00:00.000')
+                  ],
+                discount: 0,
+                meritsonpurchase: false,
+                merits: 10,
+                zarios: 0,
+                productservicecode: '',
+                description: 'A general rewarding strategy for visiting our shop. You will receive a free gift, snaks, and drinks, plus extra merit points if you purchase from us during this promotion. Merits will be added to your profile band at both merchant and application levels.'
+           };
 export const apppromotions: Array<Promotion> = [];
 apppromotions[0] = {
                   _mid: '',
@@ -479,6 +963,7 @@ apppromotions[0] = {
                   name: 'global Bronze purchase',
                   narrative: 'application Purchase promotion for Bronze Loyalty Band',
                   generated: true,
+                  duplicatable: true,
                   activity: true,
                   hearts: 0,
                   hearted: [],
@@ -503,6 +988,7 @@ apppromotions[1] = {
                   name: 'global Silver purchase',
                   narrative: 'application Purchase promotion for Silver Loyalty Band',
                   generated: true,
+                  duplicatable: true,
                   activity: true,
                   hearts: 0,
                   hearted: [],
@@ -527,6 +1013,7 @@ apppromotions[2] = {
                   name: 'global Gold purchase',
                   narrative: 'application purchase promotion for Gold Loyalty Band',
                   generated: true,
+                  duplicatable: true,
                   activity: true,
                   hearts: 0,
                   hearted: [],
@@ -551,6 +1038,7 @@ apppromotions[3] = {
                   name: 'global Platinum purchase',
                   narrative: 'application purchase promotion for Platinum Loyalty Band',
                   generated: true,
+                  duplicatable: true,
                   activity: true,
                   hearts: 0,
                   hearted: [],
@@ -575,6 +1063,7 @@ apppromotions[4] = {
                   name: 'global Pearl purchase',
                   narrative: 'application purchase promotion for Pearl Loyalty Band',
                   generated: true,
+                  duplicatable: true,
                   activity: true,
                   hearts: 0,
                   hearted: [],
@@ -599,6 +1088,7 @@ apppromotions[5] = {
                   name: 'global Blackdiamond purchase',
                   narrative: 'application purchase promotion for blackdiamond Loyalty Band',
                   generated: true,
+                  duplicatable: true,
                   activity: true,
                   hearts: 0,
                   hearted: [],
@@ -620,9 +1110,10 @@ apppromotions[5] = {
 apppromotions[6] = {
                   _mid: '',
                   avatar: '../../../assets/img/avatardefault.png',
-                  name: 'Treasure Hunt Discount',
+                  name: 'Treasure Hunt',
                   narrative: 'Treasure Hunt',
                   generated: true,
+                  duplicatable: true,
                   activity: true,
                   hearts: 0,
                   hearted: [],
@@ -648,6 +1139,7 @@ apppromotions[7] = {
                   name: 'General Game Promotion',
                   narrative: 'General Game',
                   generated: true,
+                  duplicatable: true,
                   activity: true,
                   hearts: 0,
                   hearted: [],
@@ -673,6 +1165,7 @@ apppromotions[8] = {
                   name: 'Visit our store location promotion',
                   narrative: 'Visit our store',
                   generated: true,
+                  duplicatable: true,
                   activity: true,
                   hearts: 0,
                   hearted: [],
@@ -698,6 +1191,7 @@ apppromotions[9] = {
                   name: 'Transitioning to Silver Application Loyalty Band',
                   narrative: 'Level Transitions Silver Application Loyalty Band',
                   generated: true,
+                  duplicatable: true,
                   activity: true,
                   hearts: 0,
                   hearted: [],
@@ -722,6 +1216,7 @@ apppromotions[10] = {
                   name: 'Transitioning to Gold Application Loyalty Band',
                   narrative: 'Level Transitions to Application Gold Loyalty Band',
                   generated: true,
+                  duplicatable: true,
                   activity: true,
                   hearts: 0,
                   hearted: [],
@@ -746,6 +1241,7 @@ apppromotions[11] = {
                   name: 'Transitioning to Platinum application Loyalty Band',
                   narrative: 'Level Transitions to Platinum application Loyalty Band',
                   generated: true,
+                  duplicatable: true,
                   activity: true,
                   hearts: 0,
                   hearted: [],
@@ -770,6 +1266,7 @@ apppromotions[12] = {
                   name: 'Transitioning to Pearl application Loyalty Band',
                   narrative: 'Level Transitions to Pearl application Loyalty Band',
                   generated: true,
+                  duplicatable: true,
                   activity: true,
                   hearts: 0,
                   hearted: [],
@@ -794,6 +1291,7 @@ apppromotions[13] = {
                   name: 'Transitioning to Blackdiamond application Loyalty Band',
                   narrative: 'Level Transitions to Blackdiamond application Loyalty Band',
                   generated: true,
+                  duplicatable: true,
                   activity: true,
                   hearts: 0,
                   hearted: [],

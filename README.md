@@ -99,16 +99,27 @@ next we envisage that the app admin staff will need promotions data entry to
 - update system par merchant profile and group records - as well as effect all the customer profile (application score, zarios) (merchant loyalty band).  zario transactions =========>DONE
 - emailed to customer =========>DONE
 - merchant can enter customer name and proceed with a cart transaction without customer being there to cater for some cases. =========>DONE
-
-- visit promotions again to finalize the generated promotions and rethink how much freedom to give to merchants when creating promotions.
-- on set up of user dont accept mobiles that are already in system. treatr mobile like email and user name.
+-----------------------------------------------------------------------------visit promotions again to finalize the generated promotions and rethink how much freedom to give to merchants when creating promotions:
+- a new btn for duplicating existing promotions after they are called up for editing ===>DONE
+- remove hourly timing===> check other programs like cart to see the effect on removing the hourly timing ===>DONE
+- only one initial promotion record & remove initiat in timing ===>DONE
+- only one transition record per level above bronze ===>DONE
+- only one purchase record per level. ===>DONE
+- only one visit/ game/ treasurehunt record per daily/ weekly/ monthly. close timing for merchnat but keep level open.
+- a new flag for duplicatable  ===>DONE
+- no access to timing, actions or category tab for merchant ===>DONE
+- no access to add new promotion to merchant ===>DONE
 =================================================================================
-===  branchName:+++++++ == start:01June2018== Completed: 99 June 2018 ====
+===  branchName:users == start:01June2018== Completed: 99 June 2018 ====
 ================================================================================= 
+- user role creation granularity select user role = {customer or merchant}
+- for customer sending his id to put on file is optional put gives zarios
+- for merchants sending his registration and papers is a must before approval.
 - customer portfolio must be created when the user is created and for every customer. 
 - allow merchant creation right at the start and allow for credentials and paper trail upload for proof of being a merchant.
-- images and avatars must be totally changed to use aws strorage 
+- on set up of user dont accept mobiles that are already in system. treatr mobiles like email and user name.
 - on customer and merchant creation update the number of merchants and number of customers in the settings record
+- images and avatars must be totally changed to use aws strorage everywhere!
 =================================================================================
 ===  branchName:Design == start:01June2018== Completed: 99 June 2018 ====
 ================================================================================= 

@@ -152,67 +152,101 @@ export class CartComponent implements OnInit {
   }
 
   emailentry() {
-    this.authService.getUserbyemail(this.useremail)
-    .subscribe(user => {
-      if (user) {
-        this.customername = user.firstname + ' ' + user.lastname;
-        this.useremail = user.email;
-        this.username = user.username;
-        this.profileService.getCProfile(this.username)
-            .subscribe(cprofile => {
-              this.cprofile = cprofile;
-              this._cid = cprofile._id;
-              if (cprofile.avatar) {
-                this.avatarPath = `avatars/${cprofile.avatar}`;
-              }
-              this.processmerchant();
-            },
-            errormessage => {
-              console.log('user access error by email : ', errormessage);
-            });
-      } else {
-        this.message = 'email not correct or not in system!';
-        this.messageClass = 'alert alert-danger';
-      }
-     },
-     errormessage => {
-       console.log('user access error by email : ', errormessage);
-     });
+    if (!this.validuseremail()) {
+      this.message = 'Please enter a valid email';
+      this.messageClass = 'alert alert-danger';
+    } else {
+      this.authService.getUserbyemail(this.useremail)
+      .subscribe(user => {
+        if (user) {
+          this.customername = user.firstname + ' ' + user.lastname;
+          this.useremail = user.email;
+          this.username = user.username;
+          this.profileService.getCProfile(this.username)
+              .subscribe(cprofile => {
+                if (cprofile) {
+                  this.cprofile = cprofile;
+                  this._cid = cprofile._id;
+                  if (cprofile.avatar) {
+                    this.avatarPath = `avatars/${cprofile.avatar}`;
+                  }
+                  this.processmerchant();
+                  } else {
+                    this.message = 'email does not belong to customer!';
+                    this.messageClass = 'alert alert-danger';
+                  }
+              },
+              errormessage => {
+                console.log('user access error by email : ', errormessage);
+              });
+        } else {
+          this.message = 'email not correct or not in system!';
+          this.messageClass = 'alert alert-danger';
+        }
+       },
+       errormessage => {
+         console.log('user access error by email : ', errormessage);
+       });
+    }
+  }
+
+  validuseremail() {
+    if (!this.useremail) {
+      return false;
+    } else {
+      const regExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+      // Test email against regular expression
+      return (regExp.test(this.useremail));
+    }
   }
 
   mobileentry() {
-    console.log('mobile: ', this.usermobile);
-    this.authService.getUserbymobile(this.usermobile)
-    .subscribe(user => {
-      if (user) {
-        this.customername = user.firstname + ' ' + user.lastname;
-        this.useremail = user.email;
-        this.username = user.username;
-        this.profileService.getCProfile(this.username)
-            .subscribe(cprofile => {
-              if (cprofile) {
-                this.cprofile = cprofile;
-                this._cid = cprofile._id;
-                if (cprofile.avatar) {
-                  this.avatarPath = `avatars/${cprofile.avatar}`;
-                }
-                this.processmerchant();
-                } else {
-                  this.message = 'mobile does not belong to customer!';
-                  this.messageClass = 'alert alert-danger';
-                }
-              },
-              errormessage => {
-                console.log('user access error by mobile : ', errormessage);
-              });
-      } else {
-        this.message = 'mobile not correct or not in system!';
-        this.messageClass = 'alert alert-danger';
-      }
-     },
-     errormessage => {
-       console.log('user access error by mobile : ', errormessage);
-     });
+    if (!this.validusermobile()) {
+      this.message = 'Please enter a valid mobile';
+      this.messageClass = 'alert alert-danger';
+    } else {
+      this.authService.getUserbymobile(this.usermobile)
+      .subscribe(user => {
+        if (user) {
+          this.customername = user.firstname + ' ' + user.lastname;
+          this.useremail = user.email;
+          this.username = user.username;
+          this.profileService.getCProfile(this.username)
+              .subscribe(cprofile => {
+                if (cprofile) {
+                  this.cprofile = cprofile;
+                  this._cid = cprofile._id;
+                  if (cprofile.avatar) {
+                    this.avatarPath = `avatars/${cprofile.avatar}`;
+                  }
+                  this.processmerchant();
+                  } else {
+                    this.message = 'mobile does not belong to customer!';
+                    this.messageClass = 'alert alert-danger';
+                  }
+                },
+                errormessage => {
+                  console.log('user access error by mobile : ', errormessage);
+                });
+        } else {
+          this.message = 'mobile not correct or not in system!';
+          this.messageClass = 'alert alert-danger';
+        }
+       },
+       errormessage => {
+         console.log('user access error by mobile : ', errormessage);
+       });
+    }
+  }
+
+  validusermobile() {
+    if (!this.usermobile) {
+      return false;
+    } else {
+      const regExp = new RegExp(/^(?:[1-9]\d*|\d)$/);
+      // Test email against regular expression
+      return (regExp.test(this.usermobile));
+    }
   }
 
   processmerchant() {
@@ -648,8 +682,7 @@ export class CartComponent implements OnInit {
     };
     for (let x = 0; x < this.dp.length; x++) {
       if (this.dp[x].applied) {
-          if (this.promotions[x].timing === 'hourly' ||
-              this.promotions[x].timing === 'daily' ||
+          if (this.promotions[x].timing === 'daily' ||
               this.promotions[x].timing === 'weekly' ||
               this.promotions[x].timing === 'weekly' ) {
                     if (this.crm[this.CRMINDEX]._id === '' &&
@@ -900,9 +933,7 @@ export class CartComponent implements OnInit {
     for (let x = 0; x < this.crm[this.CRMINDEX].timedpromotions.length; x++) {
       for (let y = 0; y < this.originalpromotions.length; y++) {
         if (this.crm[this.CRMINDEX].timedpromotions[x]._pid === this.originalpromotions[y]._id) {
-          if (this.originalpromotions[y].timing = 'hourly') {
-            days2pass = 1;
-          } else if (this.originalpromotions[y].timing = 'daily') {
+          if (this.originalpromotions[y].timing = 'daily') {
             days2pass = 1;
           } else if (this.originalpromotions[y].timing = 'weekly') {
             days2pass = 7;

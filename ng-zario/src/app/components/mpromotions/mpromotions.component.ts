@@ -33,6 +33,7 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
   promotion: Promotion;
   subscription: Subscription;
   username: string = undefined;
+  userrole: string = undefined;
   realname: string = undefined;
   merchant_id: string;
   NEWPROMOTION = true;
@@ -41,7 +42,6 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
   messageClass: string;
   notUpdated = true;
   commentNotUpdated = true;
-  showMerchantsBox = false;
   showPromotionEntry = false;
   _mid = '';
   _pid = '';
@@ -50,6 +50,7 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
   avatarPath = '../../../assets/img/avatardefault.png';
   avatarChanged = false;
   generated: boolean;
+  duplicatable: boolean;
   ADDFLAG = false;
   komments: Array<string> = []; // since i am displaying all the promotions for the _mid then i need a field for each comment box in the display so i am using this field for that
 
@@ -73,14 +74,12 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.generated = false;    // if the promotion created date is the same as the mprofile created date.
     this.timings = [
-      {timeCode: 'initial'},
-      {timeCode: 'hourly'},
       {timeCode: 'daily'},
       {timeCode: 'weekly'},
       {timeCode: 'monthly'},
       {timeCode: 'day2day'}
     ];
-    this.actions = [
+    this.actions = [                // action selection not available to merchant
       {actionCode: 'treasurehunt'},
       {actionCode: 'purchase'},
       {actionCode: 'transition'},
@@ -99,7 +98,7 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
     this.categories = [
       {categoryCode: 'product'},
       {categoryCode: 'service'},
-      {categoryCode: 'application'},
+      {categoryCode: 'application'},          // available only for admin and not for merchant
       {categoryCode: 'membership'}
     ];
     this.authService.loadUserCredentials();
@@ -128,6 +127,7 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
                 this.router.navigate(['/']);
               }, 1500);
             }
+            this.userrole = user.role;
             if (user.role === 'MERCHANT') {
               this.profileService.getMProfile(this.username)
               .subscribe(mprofiles => {
@@ -204,7 +204,6 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
         this.router.navigate(['/']);
       }, 1500);
     } else if (this.mprofiles.length > 0) {
-      this.showMerchantsBox = true;
       for (let i = 0; i < this.mprofiles.length; i++) {
         console.log('merchant i name ', i, this.mprofiles[i].name);
         this.merchants.push({
@@ -244,10 +243,12 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
     this.notUpdated = true;
     this.fp.controls['name'].enable();
     this.fp.controls['narrative'].enable();
-    this.fp.controls['timing'].enable();
     this.fp.controls['level'].enable();
-    this.fp.controls['category'].enable();
-    this.fp.controls['action'].enable();
+    if (this.userrole === 'ADMIN') {
+      this.fp.controls['category'].enable();
+      this.fp.controls['action'].enable();
+      this.fp.controls['timing'].enable();
+    }
     this.generated = false;
     this.ADDFLAG = false;
   }
@@ -363,11 +364,15 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
   }
 
   onfpSubmit() {
-
+    if (this.userrole !== 'ADMIN') {
+      this.fp.controls['category'].enable();
+      this.fp.controls['action'].enable();
+      this.fp.controls['timing'].enable();
+    }
     this.promotion = this.fp.value;
     this.promotion._mid = this._mid;
     this.promotion.avatar = this.avatarPath;
-    console.log(this.promotion);
+    console.log('promotion and formValues', this.promotion, this.fp.value);
 
     if (this.avatarChanged) {
       const fd = new FormData();
@@ -468,9 +473,9 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
   editPromotion(i) {
     // get the index value for the promotion and set the form to its values from the array
     // allow for change and update when requested.
-    console.log('promotion index : ', i);
     this._pid = this.promotions[i]._id;
     this.generated = this.promotions[i].generated;
+    this.duplicatable = this.promotions[i].duplicatable;
     if (this.promotions[i].avatar) {
       this.avatarPath = this.promotions[i].avatar;
     } else {
@@ -503,7 +508,6 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
       this.fp.controls['category'].disable();
       this.fp.controls['action'].disable();
     }
-    console.log('date range : ', this.fp.value.daterange);
     this.NEWPROMOTION = false;
     this.notUpdated = true;
     this.showPromotionEntry = true;

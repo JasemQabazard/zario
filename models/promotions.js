@@ -38,6 +38,10 @@ const Promotions = new Schema({
             type: Boolean,
             default: false,
       },
+      duplicatable: {
+            type: Boolean,
+            default: false,
+      },
       activity: {
             type: Boolean,
             default: false,
