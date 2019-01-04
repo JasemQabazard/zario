@@ -21,6 +21,8 @@ import { WalletComponent } from './components/wallet/wallet.component';
 import { CartComponent } from './components/cart/cart.component';
 import { GroupComponent } from './components/group/group.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { AstatuschangeComponent } from './components/astatuschange/astatuschange.component';
+import {FileuploadComponent } from './components/fileupload/fileupload.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -43,6 +45,8 @@ const routes: Routes = [
   {path: 'cart/:menuoption', component: CartComponent},
   {path: 'group', component: GroupComponent},
   {path: 'settings', component: SettingsComponent},
+  {path: 'statuschange', component: AstatuschangeComponent},
+  {path: 'upload', component: FileuploadComponent},
   {path: '**', component: HomeComponent}
 ];
 

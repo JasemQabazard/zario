@@ -110,16 +110,32 @@ next we envisage that the app admin staff will need promotions data entry to
 - no access to timing, actions or category tab for merchant ===>DONE
 - no access to add new promotion to merchant ===>DONE
 =================================================================================
-===  branchName:users == start:01June2018== Completed: 99 June 2018 ====
+===  branchName:users == start:28Dec2018== Completed: 99 June 2018 ====
 ================================================================================= 
-- user role creation granularity select user role = {customer or merchant}
-- for customer sending his id to put on file is optional put gives zarios
-- for merchants sending his registration and papers is a must before approval.
-- customer portfolio must be created when the user is created and for every customer. 
-- allow merchant creation right at the start and allow for credentials and paper trail upload for proof of being a merchant.
-- on set up of user dont accept mobiles that are already in system. treatr mobiles like email and user name.
+====> DONE <====
+- on set up of user dont accept mobiles that are already in system. 
+treat mobiles like email and user name.
+- user role creation granularity select user role = {customer or merchant}.
 - on customer and merchant creation update the number of merchants and number of customers in the settings record
-- images and avatars must be totally changed to use aws strorage everywhere!
+- customer portfolio must be created when the user is created and for every customer.
+- merchant role is 'PENDING' allow him to upload documents only, then change role to 'MERCHANT'
+- email merchant / customer to upload his cid and other docs to complete registration
+- email customer to upload cid and receive 100 app merit points 
+- new admin function:
+      1 merchant approval
+      2 when customers send id document then credit an amount of zarios to their account + give merit points. Its a promotion. can be a specific promotion record used for this purpose to indicate the amount of zarios and the amount of merits credited to customer.
+- for merchants sending his registration and papers is a must before approval.
+- functions to upload documented images of:
+      1 user id for merchant and customer, these 2 document uploads are in a new function for document uploads to aws.
+==========================
+
+- images and avatars must be totally changed to use aws strorage everywhere!:
+   1 settings
+   2 cprofile maintenance
+   3 mprofile maintenance
+   4 promotions
+   5 group
+   6 new function to upload user cid/ passport/ merchant registration docs with monitoring expire dates. ====> DONE <====
 =================================================================================
 ===  branchName:Design == start:01June2018== Completed: 99 June 2018 ====
 ================================================================================= 

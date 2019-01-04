@@ -69,6 +69,18 @@ export class AuthService {
     .catch(error => this.processHttpmsgService.handleError(error));
   }
 
+  // MERCHANT mailer to ask merchant for id/ passport and documentation to complete registration
+  merchantmailer(mailerBody) {
+    return this.http.post(baseURL + '/users/merchantmailer', mailerBody)
+    .catch(error => this.processHttpmsgService.handleError(error));
+  }
+
+  // CUSTOMER mailer to ask user for cid / passport and complete profile data and make 100 app merits
+  customermailer(mailerBody) {
+    return this.http.post(baseURL + '/users/customermailer', mailerBody)
+    .catch(error => this.processHttpmsgService.handleError(error));
+  }
+
   // Function to check if username is taken, used in registration
   checkUsername(username): Observable<any> {
     return this.http.get(baseURL + '/users/checkUsername/' + username)
@@ -86,11 +98,24 @@ export class AuthService {
       .catch(error => this.processHttpmsgService.handleError(error));
   }
 
+  // Functions to get user using status, used by admin to change user status from pending band submitted to MERCHANT and change pendingstatus to approved
+  // may use updateUser function to amend user
+  getbystatus(status): Observable<any> {
+    return this.http.get(baseURL + '/users/bystatus/' + status)
+    .catch(error => this.processHttpmsgService.handleError(error));
+  }
+
   // Function to check if e-mail is taken, used in registration
   checkEmail(email): Observable<any> {
     return this.http.get(baseURL + '/users/checkEmail/' + email)
     .catch(error => this.processHttpmsgService.handleError(error));
   }
+
+    // Function to check if mobile is already in data base, used in registration
+    checkMobile(mobile): Observable<any> {
+      return this.http.get(baseURL + '/users/getUserbymobile/' + mobile)
+      .catch(error => this.processHttpmsgService.handleError(error));
+    }
 
   // Function to getUser by e-mail address used in cart transaction processing
   getUserbyemail(email): Observable<any> {

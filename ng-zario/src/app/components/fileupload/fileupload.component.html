@@ -1,0 +1,42 @@
+<div class="row mt-5">
+  <div class="col-md-5 mx-auto">
+    <div class="card card-form border-warning mb-5">
+      <div class="card-header">
+          <h3 *ngIf="userrole === 'PENDING' || userrole === 'MERCHANT'" class="text-center">Merchant File Upload</h3>
+          <h3 *ngIf="userrole === 'CUSTOMER'" class="text-center">Customer File Upload</h3>
+      </div>
+      <div class="card-body">
+        <div class="row show-hide-message">
+            <div [ngClass]="messageClass" class="col-sm-9 border-warning h-50 mx-auto text-center">
+              <strong>{{message}}</strong>
+            </div>
+        </div>
+        <div *ngIf="userrole === 'PENDING'" >
+          <p>Please Upload your Official Company Registration Documents. Once you complete this upload, our support team will review and approve your status. Once approved we will change your status where you may fully utilize the 'Zario and The Black Diamond Loyalty Application'. This function will allways be available to you in order to renew your documents if they pass their expire dates. Although you can upload as many documents as you want, we will only display the last upload. Thank You for your support.</p>
+        </div>
+        <div *ngIf="userrole === 'MERCHANT'" >
+          <p>Please Upload your Official Company Registration Documents, if the current document on file expires. This function is allways available to you in order to renew your documents and keep them up to date. Although you can upload as many documents as you want, we will only display the last upload. Thank You for your support.</p>
+        </div>
+        <div *ngIf="userrole === 'CUSTOMER'" >
+          <p>Please Upload a copy of your Official ID Documents or your passport. As you complete this upload we will review the document and reward you 100 application merit points. This function is allways available to you in order to keep up to date. Although you can upload as many documents as you want, we will only display the last upload. Thank You for your support.</p>
+        </div>
+        <hr>
+        <div class="row">
+          <label class="center-block bg-light mx-auto">
+            <strong>{{selectedMediaFileName}}</strong>
+          </label>
+        </div>
+        <input type="file" name="mediaFile" style="display:none" accept="image/*" (change)="mediaFileSelected($event)" #mediaFile>
+        <button class="btn btn-secondary btn-small border-dark btn-block mt-1" (click)="mediaFile.click()">Select Document Image
+        </button>
+        <button class="btn btn-primary btn-small border-dark btn-block" [disabled]="!mediaChanged" (click)="uploadMediaFile()">Upload Document Image
+        </button>
+        <hr>
+        <div class="row imageContainer mx-auto">
+          <img class="border-warning img-fluid mx-auto imagePreview" [src]="mediaPath" alt="default Media">
+        </div>
+        <hr>
+      </div>
+    </div>
+  </div>
+</div>

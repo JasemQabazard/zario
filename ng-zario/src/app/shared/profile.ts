@@ -62,6 +62,8 @@ export class Settings {
       countrycode: string;
       mobile: string;
       phone: string;
+      nocustomers: number;
+      nomerchants: number;
       bronze: number; // merchasnt application bands
       silver: number;
       gold: number;

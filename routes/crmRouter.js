@@ -45,7 +45,7 @@ crmRouter.route('/')
 });
 
   /* ===============================================================
-     Route to get all CRM records for a customer by _cid from CProfile 
+     Route to get all CRM records for a customer by _cid from CProfile
   =============================================================== */
   crmRouter.route('/bycid/:cid')
   .get(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {

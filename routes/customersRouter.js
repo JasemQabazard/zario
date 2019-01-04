@@ -20,7 +20,7 @@ customersRouter.route('/')
    }, (err) => next(err))
    .catch((err) => next(err));
 })
-.post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
+.post(cors.corsWithOptions, (req, res, next) => {
     console.log("req.body: ", req.body);
    Customers.create(req.body)
    .then((customer) => {

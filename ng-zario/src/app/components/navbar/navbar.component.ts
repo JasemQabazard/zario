@@ -14,6 +14,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   CUSTOMER: Boolean = false;
   MERCHANT: Boolean = false;
   merchant: Boolean = false;
+  PENDING: Boolean = false;
   USER: Boolean = true;
 
   username: string = undefined;
@@ -36,6 +37,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.CUSTOMER = false;
         this.MERCHANT = false;
         this.merchant = false;
+        this.PENDING = false;
         this.USER = false;
 
         if (this.userrole === 'CUSTOMER' ) {
@@ -46,10 +48,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
           this.merchant = true;
         } else if (this.userrole === 'ADMIN' ) {
           this.ADMIN = true;
-        } else if (!this.ADMIN && !this.MERCHANT && !this.CUSTOMER && !this.merchant) {
+        } else if (this.userrole === 'PENDING' ) {
+          this.PENDING = true;
+        } else if (!this.ADMIN && !this.MERCHANT && !this.CUSTOMER && !this.merchant && !this.PENDING) {
           this.USER = true;
         }
-        console.log('CUSTOMER, MERCHANT, merchant, ADMIN, USER : ', this.CUSTOMER, this.MERCHANT, this.merchant, this.ADMIN, this.USER);
+        console.log('CUSTOMER, MERCHANT, merchant, PENDING, ADMIN, USER : ', this.CUSTOMER, this.MERCHANT, this.merchant, this.PENDING, this.ADMIN, this.USER);
       });
   }
 

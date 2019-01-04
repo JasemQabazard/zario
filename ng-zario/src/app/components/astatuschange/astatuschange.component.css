@@ -1,0 +1,27 @@
+/* Tabs*/
+section {
+  padding: 30px 0;
+  border: 1px solid #ffc107;
+}
+
+section .section-title {
+  text-align: center;
+  color: #f7f7f7;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.box-link {
+ color:rgb(108, 117, 201);
+}
+input.ng-invalid.ng-touched {
+border: 1px solid red;
+}
+
+input, select, textarea {
+background-color : #f1f7fc;
+}
+
+.slectionBox {
+ background-color: rgb(248, 245, 245);
+}

@@ -47,6 +47,8 @@ import { MAddCustomerComponent } from './components/maddcustomer/maddcustomer.co
 import { CPromotionsComponent } from './components/cpromotions/cpromotions.component';
 import { CDashboardComponent } from './components/cdashboard/cdashboard.component';
 import { MDashboardComponent } from './components/mdashboard/mdashboard.component';
+import { FileuploadComponent } from './components/fileupload/fileupload.component';
+import { AstatuschangeComponent } from './components/astatuschange/astatuschange.component';
 
 
 @NgModule({
@@ -73,7 +75,9 @@ import { MDashboardComponent } from './components/mdashboard/mdashboard.componen
     MAddCustomerComponent,
     CPromotionsComponent,
     CDashboardComponent,
-    MDashboardComponent
+    MDashboardComponent,
+    FileuploadComponent,
+    AstatuschangeComponent
   ],
   imports: [
     BrowserModule,

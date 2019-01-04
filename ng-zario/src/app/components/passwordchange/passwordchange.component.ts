@@ -32,7 +32,7 @@ export class PasswordchangeComponent implements OnInit {
     this.authService.loadUserCredentials();
     this.subscription = this.authService.getUsername()
       .subscribe(name => { console.log(name); this.username = name; });
-    console.log("user name: ", this.username);
+    console.log('user name: ', this.username);
   }
 
   createForm() {
@@ -64,7 +64,7 @@ export class PasswordchangeComponent implements OnInit {
         return { 'validatePassword': true } // Return as invalid password
       }
     }
-  
+
     passwordChangeSubmit() {
       this.user.username = this.username;
       this.user.password = this.form.get('npassword').value;
@@ -103,7 +103,7 @@ export class PasswordchangeComponent implements OnInit {
         } else {
           this.oldPasswordValid = true; // Return username as valid
         }
-      }, 
+      },
       errormessage => {
         this.message = <any>errormessage;
         this.messageClass= "alert alert-danger";

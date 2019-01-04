@@ -1,0 +1,42 @@
+<div class="row mt-5">
+  <div class="col-md-5 mx-auto">
+    <div class="card card-form border-warning mb-5">
+      <div class="card-header">
+          <h3 class="text-center">Merchant & Customer Status Update</h3>
+      </div>
+      <div class="card-body">
+        <div class="row show-hide-message">
+            <div [ngClass]="messageClass" class="col-sm-9 border-warning h-50 mx-auto text-center">
+              <strong>{{message}}</strong>
+            </div>
+        </div>
+      </div>
+      <!-- forms -->
+      <div class="m-5 slectionBox">
+        <form [formGroup]="fu">
+            <h4 class="m-3">Select a User</h4>
+            <select id="user" class="form-control bg-primary text-white" formControlName="user">
+                <option *ngFor="let u of users" [value]="u.username">{{u.username}}</option>
+            </select>
+        </form>
+      </div>
+        <hr>
+        <h4 class="mx-auto">Selected User Section</h4>
+        <hr>
+        <!-- fd form will contain
+          username
+          first and last name
+          user email address
+          mobile no
+        -->
+        <div class="mx-5 my-3">
+          <p><strong>user name : </strong>{{users[NDX].username}} <strong>mobile : </strong>{{users[NDX].mobile}}</p>
+          <p><strong>name : </strong>{{users[NDX].firstname}} {{users[NDX].lastname}}</p>
+          <p><strong>email : </strong>{{users[NDX].email}}</p>
+          <p><strong>role : </strong>{{users[NDX].role}}</p>
+          <button type="button" *ngIf="users[NDX].role === 'PENDING'" class="btn btn-primary btn-block mt-3" (click)="changeStatus()">Change Status to Approved MERCHANT</button>
+          <button type="button" *ngIf="users[NDX].role === 'CUSTOMER'" class="btn btn-primary btn-block mt-3" (click)="changeStatus()">Change Status to Approved CUSTOMER</button>
+        </div>
+    </div>
+  </div>
+</div>

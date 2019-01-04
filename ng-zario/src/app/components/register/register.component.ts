@@ -3,8 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../services/auth.service';
+import { ProfileService } from '../../services/profile.service';
 import { CommonRoutinesService } from '../../services/common-routines.service';
-import { User, Codes } from '../../shared/security';
+import { User, Codes, ROLES } from '../../shared/security';
+import { CProfile, Settings} from '../../shared/profile';
 
 @Component({
   selector: 'app-register',
@@ -16,13 +18,18 @@ export class RegisterComponent implements OnInit {
   form: FormGroup;
   vrifyemailform: FormGroup;
   codes: Codes[];
+  roles: ROLES[];
   user: User;
+  cprofile: CProfile;
+  settings: Settings = null;
   message: string;
   messageClass: string;
   emailValid = false;
   emailMessage: string;
   usernameValid = false;
   usernameMessage: string;
+  mobileValid = false;
+  mobileMessage: string;
   timeleft: number;
   showverifyemail = false;
   processing = false;
@@ -31,6 +38,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private profileService: ProfileService,
     private commonRoutinesService: CommonRoutinesService,
     private router: Router,
     @Inject('BaseURL') private BaseURL
@@ -41,8 +49,8 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.codes = [
-      {countryCode:'+973 Bahrain'},
-      {countryCode:'+966 KSA'},
+      {countryCode: '+973 Bahrain'},
+      {countryCode: '+966 KSA'},
       {countryCode: '+965 Kuwait'},
       {countryCode: '+968 Oman'},
       {countryCode: '+974 Qatar'},
@@ -50,6 +58,19 @@ export class RegisterComponent implements OnInit {
       {countryCode: '+971 UAE'},
       {countryCode: '+1 USA'}
     ];
+    this.roles = [
+      {name: 'CUSTOMER'},
+      {name: 'MERCHANT'}
+    ];
+    this.profileService.getSettings()
+    .subscribe(settings => {
+      if (settings) {
+        this.settings = settings[0];
+      }
+    },
+    errormessage => {
+      console.log('settings data base access error : ', errormessage);
+    });
   }
 
   createForm2() {
@@ -95,6 +116,7 @@ export class RegisterComponent implements OnInit {
         Validators.maxLength(35),
         this.validatePassword
       ])],
+      role: 'CUSTOMER',
       firstname: ['', Validators.compose([
         Validators.required,
         Validators.minLength(2),
@@ -211,16 +233,62 @@ export class RegisterComponent implements OnInit {
   onVerifyClick() {
     this.enableForm();
     this.user = this.form.value;
-    console.log(this.user);
+    if (this.user.role === 'MERCHANT') {
+      this.user.role = 'PENDING';
+    }
+    const codeData = {
+      email: this.user.email,
+      name: this.user.firstname + ' ' + this.user.lastname,
+      username: this.user.username,
+      password: this.user.password
+    };
     this.authService.registerUser(this.user).subscribe(
       data => {
         this.messageClass = 'alert alert-success';
         this.message = 'User Log Successfull';
+        /////////////////////////////
+        // settings update after implementing user roile selection
+        ////////////////////////////
+        if (this.settings) {
+          if (this.user.role === 'PENDING') {
+            this.settings.nomerchants++;
+            // send merchant email
+            this.authService.merchantmailer(codeData).subscribe(
+              data => {
+
+              });
+          } else if (this.user.role === 'CUSTOMER') {
+            this.settings.nocustomers++;
+            const cprofile = {
+              username: this.user.username,
+              gender: 'Male'
+            };
+            this.profileService.addCProfile(cprofile).subscribe(
+              data => {
+                // send customer email
+                this.authService.customermailer(codeData).subscribe(
+                  data => {
+
+                  });
+              },
+              errormessage => {
+                console.log('errormessage transaction add service ', errormessage);
+              });
+          }
+          this.profileService.updateSettings(this.settings._id, this.settings).subscribe(
+            data => {
+              console.log('updated settings data : ', data);
+            },
+            errormessage => {
+              console.log('errormessage transaction add service ', errormessage);
+            }
+          );
+        }
         this.form.reset();
         this.form.controls['countrycode'].setValue('+965 Kuwait');
         setTimeout(() => {
           this.router.navigate(['/login']); // Redirect to login page
-        }, 2000);
+        }, 1500);
       },
       errormessage => {
         this.message = <any>errormessage;
@@ -235,6 +303,7 @@ export class RegisterComponent implements OnInit {
     this.form.controls['username'].enable();
     this.form.controls['password'].enable();
     this.form.controls['email'].enable();
+    this.form.controls['role'].enable();
     this.form.controls['firstname'].enable();
     this.form.controls['lastname'].enable();
     this.form.controls['countrycode'].enable();
@@ -245,6 +314,7 @@ export class RegisterComponent implements OnInit {
     this.form.controls['username'].disable();
     this.form.controls['password'].disable();
     this.form.controls['email'].disable();
+    this.form.controls['role'].disable();
     this.form.controls['firstname'].disable();
     this.form.controls['lastname'].disable();
     this.form.controls['countrycode'].disable();
@@ -292,5 +362,26 @@ export class RegisterComponent implements OnInit {
         this.messageClass = 'alert alert-danger';
       }
     );
+  }
+
+  // Function to check if mobile number is not previously used  is unique
+  checkMobile() {
+      // Function from authentication file to check if username is taken
+      if (this.form.get('mobile').value === '') { return; }
+      this.authService.checkMobile(this.form.get('mobile').value).subscribe(
+        user => {
+        // Check user exists then mobile is used already
+          if (user) {
+            this.mobileValid = false; // Return mobile as invalid
+            this.mobileMessage = 'user mobile number already in system. Please enter another mobile';
+          } else {
+            this.mobileValid = true; // Return mobile as valid
+          }
+        },
+        errormessage => {
+          this.message = <any>errormessage;
+          this.messageClass = 'alert alert-danger';
+        }
+      );
   }
 }

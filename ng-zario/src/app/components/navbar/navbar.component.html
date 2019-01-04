@@ -108,6 +108,12 @@
             <a routerLink="/settings" class="dropdown-item" *ngIf="ADMIN">
               <i class="fas fa-cogs"></i> Settings
             </a>
+            <a routerLink="/statuschange" class="dropdown-item" *ngIf="ADMIN">
+              <i class="fa fa-wrench" aria-hidden="true"></i> Status Change
+            </a>
+            <a routerLink="/upload" class="dropdown-item" *ngIf="PENDING || CUSTOMER || MERCHANT">
+              <i class="fa fa-upload" aria-hidden="true"></i> Documents Upload
+            </a>
             <a routerLink="/useramend" class="dropdown-item">
               <i class="fas fa-user"></i> User Data Change
             </a>

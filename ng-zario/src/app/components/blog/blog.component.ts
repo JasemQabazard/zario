@@ -324,7 +324,7 @@ export class BlogComponent implements OnInit, OnDestroy {
                   this.changeNotUpdated();
                 },
                 errormessage => {
-                  console.log('error--->message', errormessage);
+                  console.log('postAWSMediaURL error--->message', errormessage);
                 });
         });
   }

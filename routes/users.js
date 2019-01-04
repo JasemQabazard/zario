@@ -20,7 +20,18 @@ router.route('/')
          res.json(users);
    }, (err) => next(err))
    .catch((err) => next(err));
-})
+});
+
+router.route('/bystatus/:approvalstatus') // by approvalstatus
+.get(cors.corsWithOptions, (req, res, next) => {
+   User.find({approvalstatus: req.params.approvalstatus})
+   .then((users) => {
+         res.statusCode = 200;
+         res.setHeader('Content-Type', 'application/json');
+         res.json(users);
+   }, (err) => next(err))
+   .catch((err) => next(err));
+});
 
   /* ===============================================================
      Route to get user by username  for user data update 
@@ -270,10 +281,69 @@ router.post('/passwordcodemailer', function (req, res, next) {
     });
 });
 
+/* ==========================================================================
+     Route to send merchant email informing him of his registration event and that his status is pending uploading cid/ passport and company registration documents
+  =========================================================================== */
+  router.post('/merchantmailer', function (req, res, next) {
+    var transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'successarchitecture@gmail.com',
+            pass: 'pbdqtlxogbdjonru'
+        }
+    });
+    var mailOptions = {
+        from: 'successarchitecture@gmail.com',
+        to: req.body.email,
+        subject: 'Your Registration Status',
+        text: 'You are receiving this email because the merchant:'+ req.body.name +  'registered you to zario.io and the black diamond loyalty program. Your username is: ' +req.body.username + 'and your password is: '+ req.body.password+ 'Please visit our application at: www.zario.io.com and sign on to complete the registration process. You are requested to submit your company registration official documents and the civil id or the passport copies for company officers. Once you upload your documents please allow us to verify the documents and hence we will activate your status. Thank you for adding value to our community.',
+        html: '<p>You are receiving this email because the merchant: </p>' + req.body.name + '<p>registered you to zario.io and the black diamond loyalty program. Your username is: </p>' + req.body.username + '<p>and your password is: </p>' +req.body.password + '<p>Please visit our application at: www.zario.io.com and sign on to complete the registration process. You are requested to submit your company registration official documents and the civil id or the passport copies for company officers. Once you upload your documents please allow us to verify the documents and hence we will activate your status. Thank you for adding value to our community.</p>'
+    };
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            next(error);
+        } else {
+            res.status(200).json({
+                status: 'MERCHANT Registration email Sent' + info.response,
+                success: true
+            });
+        }
+    });
+});
 
-  /* ============================================================
-     Route to check if user's email is available for registration
-  ============================================================ */
+/* ==========================================================================
+     Route to send customer email with the registration status and username, password 
+  =========================================================================== */
+  router.post('/customermailer', function (req, res, next) {
+    var transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'successarchitecture@gmail.com',
+            pass: 'pbdqtlxogbdjonru'
+        }
+    });
+    var mailOptions = {
+        from: 'successarchitecture@gmail.com',
+        to: req.body.email,
+        subject: 'Your Registration Status',
+        text: 'You are receiving this email because you:'+ req.body.name +  'registered to zario.io and the black diamond loyalty program. Your username is: ' +req.body.username + 'and your password is: '+ req.body.password+ 'Please visit our application at: www.zario.io.com and sign on to complete the registration process. You can start by completing your customer profile records and gain 100 application merit points in the process.',
+        html: '<p>You are receiving this email because you: </p>' + req.body.name + '<p>registered to zario.io and the black diamond loyalty program. Your username is: </p>' + req.body.username + '<p>and your password is: </p>' +req.body.password + '<p>Please visit our application at: www.zario.io.com and sign on to complete the registration process. You can start by completing your customer profile records and gain 100 application merit points in the process.</p>'
+    };
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            next(error);
+        } else {
+            res.status(200).json({
+                status: 'Customer Registration email Sent' + info.response,
+                success: true
+            });
+        }
+    });
+});
+
+/* ============================================================
+    Route to check if user's email is available for registration
+============================================================ */
   router.get('/checkEmail/:email', (req, res) => {
     // Check if email was provided in paramaters
     if (!req.params.email) {

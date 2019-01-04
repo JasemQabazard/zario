@@ -27,6 +27,10 @@ const User = new Schema({
         type: String, 
         unique: true
     },
+    documentlocation: {                                     // document is either the merchants official registration or the customers CID/PASSPORT. documentlocation field is the address to the location of the documents image at AWS Storage.
+        type: String, 
+        default: ''
+    },
     // set if there is a recruiting merchant for the user
     twofactorauth: {
         type: Boolean, 
@@ -47,6 +51,10 @@ const User = new Schema({
     _mid: { 
         type: mongoose.Schema.Types.ObjectId,
         default: null
+    },
+    approvalstatus: {           // the values are 'pending' for merchants pending b4 document submission. 'submit' for after submitting documents & 'approved'  after document submit and verify the admin will approve the merchant for day2day operations. for customers if he does not send id it is 'pending' and 'submit' when he sends id and 'approved' after uploading cid or passport. for customer it is required only if he wants to buy zarios directly.
+        type: String,
+        default: 'pending'
     },
     lastsignondate: {
           type: Date,
