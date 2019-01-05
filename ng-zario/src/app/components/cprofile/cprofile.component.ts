@@ -6,6 +6,8 @@ import { AuthService } from '../../services/auth.service';
 import { ProfileService } from '../../services/profile.service';
 import { CProfile, Genders, Socials } from '../../shared/profile';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { awsMediaPath } from '../../shared/blog';
+import { BlogService } from '../../services/blog.service';
 
 import { Subscription } from 'rxjs/Subscription';
 
@@ -28,6 +30,7 @@ export class CProfileComponent implements OnInit, OnDestroy {
   messageClass: string;
   notUpdated = false;
   _pid = '';
+  _uid = '';
   selectedImageFile: File = null;
   selectedImageFileName = 'No New Image Selected';
   avatarPath = '../../../assets/img/avatardefault.png';
@@ -40,6 +43,7 @@ export class CProfileComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private profileService: ProfileService,
+    private blogService: BlogService,
     private router: Router
   ) {
     console.log(this.min, this.max);
@@ -75,7 +79,10 @@ export class CProfileComponent implements OnInit, OnDestroy {
           this.profileService.getCProfile(this.username)
           .subscribe(cprofile => {
             this.cprofile = cprofile;
-            console.log('profiles : ', this.cprofile);
+            this.authService.getUser(this.username)
+            .subscribe(user => {
+              this._uid = user._id;
+            });
             if (!cprofile) {
               this.notUpdated = false;
               this.fp.patchValue({
@@ -85,7 +92,8 @@ export class CProfileComponent implements OnInit, OnDestroy {
             } else {
               this._pid = cprofile._id;
               if (this.cprofile.avatar) {
-                this.avatarPath = `avatars/${this.cprofile.avatar}`;
+                this.avatarPath = awsMediaPath + this.cprofile.avatar;
+                this.selectedImageFileName = 'Image Selected from file';
               } else {
                 this.avatarPath = '../../../assets/img/avatardefault.png';
               }
@@ -145,34 +153,56 @@ export class CProfileComponent implements OnInit, OnDestroy {
 
   imageFileSelected(event: any) {
     if (event.target.files && event.target.files[0]) {
-      this.selectedImageFile = <File>event.target.files[0];
-      this.selectedImageFileName = `Selected Image: ${this.selectedImageFile.name}`;
-      this.avatarChanged = true;
-      this.notUpdated = false;
-      const reader = new FileReader();
-      reader.onload = (event: any) => {
-        this.avatarPath = event.target.result;
-      };
-      reader.readAsDataURL(event.target.files[0]);
+      this.selectedImageFile = event.target.files[0];
+      this.displayMediaFile();
     }
+  }
+
+  displayMediaFile() {
+    this.avatarChanged = true;
+    this.notUpdated = false;
+    this.selectedImageFileName = `Selected Image: ${this.selectedImageFile.name}`;
+    function imageExists(url, callback) {
+      const img = new Image();
+      img.onload = function() { callback(true); };
+      img.onerror = function() { callback(false); };
+      img.src = url;
+    }
+    const reader = new FileReader();
+    reader.onload = (event: any) => {
+      imageExists(event.target.result, (exists) => {
+        if (exists) {
+          this.avatarPath = event.target.result;
+        } else {
+          this.selectedImageFileName = 'Your selection is not an Image File';
+          this.avatarPath = '../../../assets/img/avatardefault.png';
+        }
+      });
+    };
+    reader.readAsDataURL(this.selectedImageFile);
   }
 
   onfpSubmit() {
     this.cprofile = this.fp.value;
     this.cprofile.username = this.username;
     if (this.avatarChanged) {
-      const fd = new FormData();
-      fd.append('imageFile', this.selectedImageFile);
-      this.profileService.imageUpload(fd).subscribe(
-        imageData => {
-          this.cprofile.avatar = imageData.filename;
-          this.cProfileDataBaseChange();
-        },
-        errormessage => {
-          this.message = 'Accepts image files less than 500KB ONLY, Please try another image';
-          this.messageClass = 'alert alert-danger';
-        }
-      );
+      const fileext = this.selectedImageFile.type.slice(this.selectedImageFile.type.indexOf('/') + 1);
+      const specs = this._uid + fileext;
+      this.blogService.postAWSMediaURL(specs)
+                .subscribe(uploadConfig => {
+                  this.blogService.putAWSMedia(uploadConfig.url , this.selectedImageFile)
+                  .subscribe(resp => {
+                    this.avatarPath = awsMediaPath + uploadConfig.key;
+                    this.cprofile.avatar = uploadConfig.key;
+                    this.selectedImageFileName = '';
+                    this.avatarChanged = false;
+                    this.cProfileDataBaseChange();
+                  },
+                  errormessage => {
+                    this.message = errormessage;
+                    this.messageClass = 'alert alert-danger';
+                  });
+          });
     } else {
       this.cProfileDataBaseChange();
     }

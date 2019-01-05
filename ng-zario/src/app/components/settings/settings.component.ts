@@ -7,6 +7,8 @@ import { ProfileService } from '../../services/profile.service';
 import { PromotionService } from '../../services/promotion.service';
 import { Settings, Codes } from '../../shared/profile';
 import { apppromotions } from '../../shared/promotions';
+import { awsMediaPath } from '../../shared/blog';
+import { BlogService } from '../../services/blog.service';
 
 import { Subscription } from 'rxjs/Subscription';
 
@@ -32,12 +34,14 @@ export class SettingsComponent implements OnInit, OnDestroy {
   avatarShow = false;
   avatarChanged = false;
   _sid = '';
+  _uid = '';
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private profileService: ProfileService,
     private promotionService: PromotionService,
+    private blogService: BlogService,
     private router: Router
   ) {
     this.createfs();
@@ -63,13 +67,17 @@ export class SettingsComponent implements OnInit, OnDestroy {
           this.profileService.getSettings()
           .subscribe(settings => {
             this.settings = settings[0];
-            console.log('settings : ', settings);
+            this.authService.getUser(this.username)
+            .subscribe(user => {
+              this._uid = user._id;
+            });
             if (!this.settings) {
               this.notUpdated = false;
             } else {
               this._sid = this.settings._id;
               if (this.settings.avatar) {
-                this.avatarPath = `avatars/${this.settings.avatar}`;
+                this.avatarPath = awsMediaPath + this.settings.avatar;
+                this.selectedImageFileName = 'Image Selected from file';
               } else {
                 this.avatarPath = '../../../assets/img/avatardefault.png';
               }
@@ -95,7 +103,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
                 cblackdiamond: this.settings.cblackdiamond,
                 zariosprice: this.settings.zariosprice,
                 zariosdistributionratio: this.settings.zariosdistributionratio,
-                commision: this.settings.commission
+                commission: this.settings.commission
               });
               this.SETTINGS = true;
               this.notUpdated = true;
@@ -225,16 +233,33 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   imageFileSelected(event: any) {
     if (event.target.files && event.target.files[0]) {
-      this.selectedImageFile = <File>event.target.files[0];
-      this.selectedImageFileName = `Selected Image: ${this.selectedImageFile.name}`;
-      this.avatarChanged = true;
-      this.notUpdated = false;
-      const reader = new FileReader();
-      reader.onload = (event: any) => {
-        this.avatarPath = event.target.result;
-      };
-      reader.readAsDataURL(event.target.files[0]);
+      this.selectedImageFile = event.target.files[0];
+      this.displayMediaFile();
     }
+  }
+
+  displayMediaFile() {
+    this.avatarChanged = true;
+    this.notUpdated = false;
+    this.selectedImageFileName = `Selected Image: ${this.selectedImageFile.name}`;
+    function imageExists(url, callback) {
+      const img = new Image();
+      img.onload = function() { callback(true); };
+      img.onerror = function() { callback(false); };
+      img.src = url;
+    }
+    const reader = new FileReader();
+    reader.onload = (event: any) => {
+      imageExists(event.target.result, (exists) => {
+        if (exists) {
+          this.avatarPath = event.target.result;
+        } else {
+          this.selectedImageFileName = 'Your selection is not an Image File';
+          this.avatarPath = '../../../assets/img/avatardefault.png';
+        }
+      });
+    };
+    reader.readAsDataURL(this.selectedImageFile);
   }
 
   validateNumericFloat(controls) {
@@ -334,18 +359,23 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.settings.username = this.username;
     console.log('avatarChanged flag : ', this.avatarChanged);
     if (this.avatarChanged) {
-      const fd = new FormData();
-      fd.append('imageFile', this.selectedImageFile);
-      this.profileService.imageUpload(fd).subscribe(
-        imageData => {
-          this.settings.avatar = imageData.filename;
-          this.settingsDataBaseChange();
-        },
-        errormessage => {
-          this.message = 'Accepts image files less than 500KB ONLY, Please try another image';
-          this.messageClass = 'alert alert-danger';
-        }
-      );
+      const fileext = this.selectedImageFile.type.slice(this.selectedImageFile.type.indexOf('/') + 1);
+      const specs = this._uid + fileext;
+      this.blogService.postAWSMediaURL(specs)
+                .subscribe(uploadConfig => {
+                  this.blogService.putAWSMedia(uploadConfig.url , this.selectedImageFile)
+                  .subscribe(resp => {
+                    this.avatarPath = awsMediaPath + uploadConfig.key;
+                    this.settings.avatar = uploadConfig.key;
+                    this.selectedImageFileName = '';
+                    this.avatarChanged = false;
+                    this.settingsDataBaseChange();
+                  },
+                  errormessage => {
+                    this.message = errormessage;
+                    this.messageClass = 'alert alert-danger';
+                  });
+          });
     } else {
       this.settingsDataBaseChange();
     }

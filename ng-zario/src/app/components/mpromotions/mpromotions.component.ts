@@ -10,6 +10,8 @@ import { Promotion, Timing, Action, Level, Category } from '../../shared/promoti
 import { MProfile, Merchant } from '../../shared/profile';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { awsMediaPath } from '../../shared/blog';
+import { BlogService } from '../../services/blog.service';
 
 import { Subscription } from 'rxjs/Subscription';
 
@@ -45,6 +47,7 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
   showPromotionEntry = false;
   _mid = '';
   _pid = '';
+  _uid = '';
   selectedImageFile: File = null;
   selectedImageFileName = 'No New Image Selected';
   avatarPath = '../../../assets/img/avatardefault.png';
@@ -59,6 +62,7 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private promotionService: PromotionService,
     private profileService: ProfileService,
+    private blogService: BlogService,
     private router: Router
   ) {
     this.datePickerConfig = Object.assign( {},
@@ -115,7 +119,7 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
           this.subscription.unsubscribe();
           this.authService.getUser(this.username)
           .subscribe(user => {
-            console.log('user : ', user);
+            this._uid = user._id;
             if (user._gid === null || user._mid === null) {
               if (user.role === 'ADMIN') {
                 this.message = 'You must setup the System parameter option before proceeding';
@@ -175,7 +179,9 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
                   console.log('promotions : ', this.promotions);
                   for (let x = 0; x < this.promotions.length; x++) {
                     this.komments.push(' ');
-                    console.log('building komments i = ', x);
+                    if (this.promotions[x].avatar !== '../../../assets/img/avatardefault.png') {
+                      this.promotions[x].avatar = awsMediaPath + this.promotions[x].avatar;
+                    }
                   }
                 },
                 errormessage => {
@@ -221,7 +227,9 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
       console.log('promotions : ', this.promotions);
       for (let x = 0; x < this.promotions.length; x++) {
         this.komments.push(' ');
-        console.log('building komments i = ', x);
+        if (this.promotions[x].avatar !== '../../../assets/img/avatardefault.png') {
+          this.promotions[x].avatar = awsMediaPath + this.promotions[x].avatar;
+        }
       }
     },
     errormessage => {
@@ -266,6 +274,11 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
     this.promotionService.getPromotions(this._mid)
     .subscribe(promotions => {
       this.promotions = promotions;
+      for (let j = 0; j < this.promotions.length; j++) {
+        if (this.promotions[j].avatar !== '../../../assets/img/avatardefault.png') {
+          this.promotions[j].avatar = awsMediaPath + this.promotions[j].avatar;
+        }
+      }
       console.log('promotions : ', this.promotions);
     },
       errormessage => {
@@ -351,16 +364,33 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
 
   imageFileSelected(event: any) {
     if (event.target.files && event.target.files[0]) {
-      this.selectedImageFile = <File>event.target.files[0];
-      this.selectedImageFileName = `Selected Image: ${this.selectedImageFile.name}`;
-      this.avatarChanged = true;
-      this.notUpdated = false;
-      const reader = new FileReader();
-      reader.onload = (event: any) => {
-        this.avatarPath = event.target.result;
-      };
-      reader.readAsDataURL(event.target.files[0]);
+      this.selectedImageFile = event.target.files[0];
+      this.displayMediaFile();
     }
+  }
+
+  displayMediaFile() {
+    this.avatarChanged = true;
+    this.notUpdated = false;
+    this.selectedImageFileName = `Selected Image: ${this.selectedImageFile.name}`;
+    function imageExists(url, callback) {
+      const img = new Image();
+      img.onload = function() { callback(true); };
+      img.onerror = function() { callback(false); };
+      img.src = url;
+    }
+    const reader = new FileReader();
+    reader.onload = (event: any) => {
+      imageExists(event.target.result, (exists) => {
+        if (exists) {
+          this.avatarPath = event.target.result;
+        } else {
+          this.selectedImageFileName = 'Your selection is not an Image File';
+          this.avatarPath = '../../../assets/img/avatardefault.png';
+        }
+      });
+    };
+    reader.readAsDataURL(this.selectedImageFile);
   }
 
   onfpSubmit() {
@@ -375,18 +405,23 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
     console.log('promotion and formValues', this.promotion, this.fp.value);
 
     if (this.avatarChanged) {
-      const fd = new FormData();
-      fd.append('imageFile', this.selectedImageFile);
-      this.profileService.imageUpload(fd).subscribe(
-        imageData => {
-          this.promotion.avatar = 'avatars/' + imageData.filename;
-          this.promotionsDataBaseChange();
-        },
-        errormessage => {
-          this.message = 'Accepts image files less than 500KB ONLY, Please try another image';
-          this.messageClass = 'alert alert-danger';
-        }
-      );
+      const fileext = this.selectedImageFile.type.slice(this.selectedImageFile.type.indexOf('/') + 1);
+      const specs = this._uid + fileext;
+      this.blogService.postAWSMediaURL(specs)
+                .subscribe(uploadConfig => {
+                  this.blogService.putAWSMedia(uploadConfig.url , this.selectedImageFile)
+                  .subscribe(resp => {
+                    this.avatarPath = awsMediaPath + uploadConfig.key;
+                    this.promotion.avatar = uploadConfig.key;
+                    this.selectedImageFileName = '';
+                    this.avatarChanged = false;
+                    this.promotionsDataBaseChange();
+                  },
+                  errormessage => {
+                    this.message = errormessage;
+                    this.messageClass = 'alert alert-danger';
+                  });
+          });
     } else {
       this.promotionsDataBaseChange();
     }
@@ -462,7 +497,12 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
       this.promotionService.getPromotions(this._mid)
       .subscribe(promotions => {
         this.promotions = promotions;
-        console.log('promotions : ', this.promotions);
+        for (let j = 0; j < this.promotions.length; j++) {
+          if (this.promotions[j].avatar !== '../../../assets/img/avatardefault.png') {
+            this.promotions[j].avatar = awsMediaPath + this.promotions[j].avatar;
+          }
+        }
+        console.log('getting promotions : ', this.promotions);
       },
       errormessage => {
         this.message = <any>errormessage;
@@ -476,11 +516,8 @@ export class MPromotionsComponent implements OnInit, OnDestroy {
     this._pid = this.promotions[i]._id;
     this.generated = this.promotions[i].generated;
     this.duplicatable = this.promotions[i].duplicatable;
-    if (this.promotions[i].avatar) {
-      this.avatarPath = this.promotions[i].avatar;
-    } else {
-      this.avatarPath = '../../../assets/img/avatardefault.png';
-    }
+    this.avatarPath = this.promotions[i].avatar;
+    this.selectedImageFileName = 'Image Selected from file';
     const dates: Date[] = [
       new Date(this.promotions[i].daterange[0]),
       new Date(this.promotions[i].daterange[1])

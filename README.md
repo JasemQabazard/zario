@@ -130,12 +130,11 @@ treat mobiles like email and user name.
 ==========================
 
 - images and avatars must be totally changed to use aws strorage everywhere!:
-   1 settings
-   2 cprofile maintenance
-   3 mprofile maintenance
+   1 settings====> DONE <====
+   2 cprofile maintenance====> DONE <====
+   3 mprofile maintenance====> DONE <====
    4 promotions
-   5 group
-   6 new function to upload user cid/ passport/ merchant registration docs with monitoring expire dates. ====> DONE <====
+   5 new function to upload user cid/ passport/ merchant registration docs with monitoring expire dates. ====> DONE <====
 =================================================================================
 ===  branchName:Design == start:01June2018== Completed: 99 June 2018 ====
 ================================================================================= 

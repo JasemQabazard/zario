@@ -8,6 +8,8 @@ import { AuthService } from '../../services/auth.service';
 import { ProfileService } from '../../services/profile.service';
 import { PromotionService } from '../../services/promotion.service';
 import { MProfile, Codes, Categories, Merchant, Strategy, Position } from '../../shared/profile';
+import { awsMediaPath } from '../../shared/blog';
+import { BlogService } from '../../services/blog.service';
 import { merchantpromotions } from '../../shared/promotions';
 
 import { Subscription } from 'rxjs/Subscription';
@@ -36,6 +38,7 @@ export class MProfileComponent implements OnInit, OnDestroy {
   profileBox = false;
   _mid = '';
   _gid = '';
+  _uid = '';
   selectedImageFile: File = null;
   selectedImageFileName = 'No New Image Selected';
   avatarPath = '../../../assets/img/avatardefault.png';
@@ -49,6 +52,7 @@ export class MProfileComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private profileService: ProfileService,
     private promotionService: PromotionService,
+    private blogService: BlogService,
     private router: Router
   ) {
     this.createfp();
@@ -103,6 +107,10 @@ export class MProfileComponent implements OnInit, OnDestroy {
         name => {
           this.username = name;
           this.subscription.unsubscribe();
+          this.authService.getUser(this.username)
+          .subscribe(user => {
+            this._uid = user._id;
+          });
           // group access code
           this.profileService.getGroup(this.username)
           .subscribe(gp => {
@@ -143,7 +151,8 @@ export class MProfileComponent implements OnInit, OnDestroy {
               this._mid = mprofiles[0]._id;
               this.profileBox = true;
               if (this.mprofiles[0].avatar) {
-                this.avatarPath = `${this.mprofiles[0].avatar}`;
+                this.avatarPath = awsMediaPath + `${this.mprofiles[0].avatar}`;
+                this.selectedImageFileName = 'Image Selected from file';
               } else {
                 this.avatarPath = '../../../assets/img/avatardefault.png';
               }
@@ -313,16 +322,33 @@ export class MProfileComponent implements OnInit, OnDestroy {
 
   imageFileSelected(event: any) {
     if (event.target.files && event.target.files[0]) {
-      this.selectedImageFile = <File>event.target.files[0];
-      this.selectedImageFileName = `Selected Image: ${this.selectedImageFile.name}`;
-      this.avatarChanged = true;
-      this.notUpdated = false;
-      const reader = new FileReader();
-      reader.onload = (event: any) => {
-        this.avatarPath = event.target.result;
-      };
-      reader.readAsDataURL(event.target.files[0]);
+      this.selectedImageFile = event.target.files[0];
+      this.displayMediaFile();
     }
+  }
+
+  displayMediaFile() {
+    this.avatarChanged = true;
+    this.notUpdated = false;
+    this.selectedImageFileName = `Selected Image: ${this.selectedImageFile.name}`;
+    function imageExists(url, callback) {
+      const img = new Image();
+      img.onload = function() { callback(true); };
+      img.onerror = function() { callback(false); };
+      img.src = url;
+    }
+    const reader = new FileReader();
+    reader.onload = (event: any) => {
+      imageExists(event.target.result, (exists) => {
+        if (exists) {
+          this.avatarPath = event.target.result;
+        } else {
+          this.selectedImageFileName = 'Your selection is not an Image File';
+          this.avatarPath = '../../../assets/img/avatardefault.png';
+        }
+      });
+    };
+    reader.readAsDataURL(this.selectedImageFile);
   }
 
   bandSync(bronze, silver, gold, platinum, pearl, blackdiamond) {
@@ -397,7 +423,8 @@ export class MProfileComponent implements OnInit, OnDestroy {
     this._mid = this.mprofiles[ndx]._id;
     this.profileBox = true;
     if (this.mprofiles[ndx].avatar) {
-      this.avatarPath = `${this.mprofiles[ndx].avatar}`;
+      this.avatarPath = awsMediaPath + `${this.mprofiles[ndx].avatar}`;
+                this.selectedImageFileName = 'Image Selected from file';
     } else {
       this.avatarPath = '../../../assets/img/avatardefault.png';
     }
@@ -466,21 +493,26 @@ export class MProfileComponent implements OnInit, OnDestroy {
     this.profile._gid = this._gid;
     console.log('storing profile ', this.profile);
       if (this.avatarChanged) {
-        const fd = new FormData();
-        fd.append('imageFile', this.selectedImageFile);
-        this.profileService.imageUpload(fd).subscribe(
-          imageData => {
-            this.profile.avatar = 'avatars/' + imageData.filename;
-            this.profileDataBaseChange();
-            setTimeout(() => {
-              this.router.navigate(['/']);
-            }, 1000);
-          },
-          errormessage => {
-            this.message = 'Accepts image files less than 500KB ONLY, Please try another image';
-            this.messageClass = 'alert alert-danger';
-          }
-        );
+        const fileext = this.selectedImageFile.type.slice(this.selectedImageFile.type.indexOf('/') + 1);
+        const specs = this._uid + fileext;
+        this.blogService.postAWSMediaURL(specs)
+                  .subscribe(uploadConfig => {
+                    this.blogService.putAWSMedia(uploadConfig.url , this.selectedImageFile)
+                    .subscribe(resp => {
+                      this.avatarPath = awsMediaPath + uploadConfig.key;
+                      this.profile.avatar = uploadConfig.key;
+                      this.selectedImageFileName = '';
+                      this.avatarChanged = false;
+                      this.profileDataBaseChange();
+                      setTimeout(() => {
+                        this.router.navigate(['/']);
+                      }, 1000);
+                    },
+                    errormessage => {
+                      this.message = errormessage;
+                      this.messageClass = 'alert alert-danger';
+                    });
+            });
       } else {
         this.profileDataBaseChange();
         setTimeout(() => {

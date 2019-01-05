@@ -47,7 +47,7 @@ export class FileuploadComponent implements OnInit {
             this.realname = user.firstname + ' ' + user.lastname;
             this.user = user;
             console.log('user : ', user);
-            if (this.user.documentlocation !== '') {
+            if (this.user.documentlocation) {
               this.selectedMediaFileName = 'The Last document you uploaded is shown';
               this.mediaPath = awsMediaPath + this.user.documentlocation;
             }
