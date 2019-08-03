@@ -29,6 +29,10 @@ export class MProfile {
    notrans?: number;
    totalcommision?: number;
    totsales?: number;
+   cdistributedzarios_ytd?: number;
+   notrans_ytd?: number;
+   totalcommision_ytd?: number;
+   totsales_ytd?: number;
    createdAt?: Date;
 }
 
@@ -50,6 +54,7 @@ export class CProfile {
    zarios: number;
    ukey: string;
    rkey: string;
+   createdAt?: Date;
 }
 
 export class Settings {
@@ -108,6 +113,10 @@ export class Group {
    notrans?: number;
    totalcommision?: number;
    totsales?: number;
+   cdistributedzarios_ytd?: number;
+   notrans_ytd?: number;
+   totalcommision_ytd?: number;
+   totsales_ytd?: number;
 }
 
 export class CRM {
@@ -122,8 +131,9 @@ export class CRM {
    timedpromotions?: [{
      _id?: string,
      _pid?: string,
-     createdAt?: string
+     createdAt?: Date
    }];
+   createdAt?: Date;
 }
 
 export class Codes {

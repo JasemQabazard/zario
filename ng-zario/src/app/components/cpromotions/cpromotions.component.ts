@@ -8,6 +8,8 @@ import { ProfileService } from '../../services/profile.service';
 import { Promotion, Timing, Action, Level, Category } from '../../shared/promotions';
 import { MProfile, CProfile, CRM, Position} from '../../shared/profile';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { awsMediaPath } from '../../shared/blog';
+import { BlogService } from '../../services/blog.service';
 
 import { Subscription } from 'rxjs/Subscription';
 
@@ -58,6 +60,7 @@ export class CPromotionsComponent implements OnInit {
     private authService: AuthService,
     private profileService: ProfileService,
     private promotionService: PromotionService,
+    private blogService: BlogService,
     private router: Router
   ) {
     this.position = {
@@ -119,7 +122,7 @@ export class CPromotionsComponent implements OnInit {
                       'lat': mprofiles[i].latitude,
                       'lng': mprofiles[i].longitude,
                       'name': mprofiles[i].name,
-                      'avatar': mprofiles[i].avatar,
+                      'avatar': awsMediaPath + mprofiles[i].avatar,
                       'category': mprofiles[i].category,
                       'description': mprofiles[i].description,
                       'url': urlFollowNotFollow
@@ -171,6 +174,9 @@ export class CPromotionsComponent implements OnInit {
           this.promotions[x].activity = true;
         } else {
           this.promotions[x].activity = false;
+        }
+        if (this.promotions[x].avatar !== '../../../assets/img/avatardefault.png') {
+          this.promotions[x].avatar = awsMediaPath + this.promotions[x].avatar;
         }
       }
     },

@@ -54,11 +54,11 @@ background-color : #f1f7fc;
 }
 
 .imagePreview {
-  max-width:100%;
-  max-height:100%;
+  max-height:400px;
 }
 
 .imageContainer {
-  max-width:400px;
-  max-height:400px;
+  width:400px;
+  height:400px;
+  border: 1px solid #ffc107;
 }

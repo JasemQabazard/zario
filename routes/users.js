@@ -22,6 +22,9 @@ router.route('/')
    .catch((err) => next(err));
 });
 
+  /* ===============================================================
+     Route to get users by approval status for changing it  
+  =============================================================== */
 router.route('/bystatus/:approvalstatus') // by approvalstatus
 .get(cors.corsWithOptions, (req, res, next) => {
    User.find({approvalstatus: req.params.approvalstatus})
@@ -32,6 +35,20 @@ router.route('/bystatus/:approvalstatus') // by approvalstatus
    }, (err) => next(err))
    .catch((err) => next(err));
 });
+
+  /* ===============================================================
+     Route to get users by _mid for a certain merchant  
+  =============================================================== */
+  router.route('/bymid/:_mid') // by _mid
+  .get(cors.corsWithOptions, (req, res, next) => {
+     User.find({_mid: req.params._mid})
+     .then((users) => {
+           res.statusCode = 200;
+           res.setHeader('Content-Type', 'application/json');
+           res.json(users);
+     }, (err) => next(err))
+     .catch((err) => next(err));
+  });
 
   /* ===============================================================
      Route to get user by username  for user data update 
@@ -75,7 +92,7 @@ router.route('/bystatus/:approvalstatus') // by approvalstatus
 
 /* ============================================================
      Route user password change does not require mailer
-     requires sending teh user name and the new password 
+     requires sending the user name and the new password 
   ============================================================ */
 router.post('/passwordchange', (req, res, next) => {
   User.findByUsername(req.body.username).then(
@@ -374,7 +391,7 @@ router.post('/passwordcodemailer', function (req, res, next) {
   router.get('/getUserbyemail/:email', (req, res) => {
     // Check if email was provided in paramaters
     if (!req.params.email) {
-      res.json({ success: false, message: 'Mobile was not provided' }); // Return error
+      res.json({ success: false, message: 'email was not provided' }); // Return error
     } else {
       // Search for user's by email in database;
       User.findOne({ email: req.params.email }, (err, user) => {
@@ -401,7 +418,9 @@ router.post('/passwordcodemailer', function (req, res, next) {
       res.json({ success: false, message: 'Mobile was not provided' }); // Return error
     } else {
       // Search for user's by mobile in database;
+      console.log(req.params.mobile);
       User.findOne({ mobile: req.params.mobile }, (err, user) => {
+        console.log(user);
         if (err) {
           res.statusCode  = 500;
           res.setHeader('Content-Type', 'application/json');

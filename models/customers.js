@@ -53,7 +53,7 @@ const Customers = new Schema({
             type: Number,
             default: 0
       },
-      // set === true if created by merchant - once customer and system amends to falkse and changes the customer role ===> CUSTOMER and asks to verify user email as well 
+      // set === true if created by merchant - once customer and system amends to false and changes the customer role ===> CUSTOMER and asks to verify user email as well 
       initialflag: {
             type: Boolean,
             default: false

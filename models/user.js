@@ -25,7 +25,8 @@ const User = new Schema({
     },
     mobile:{
         type: String, 
-        unique: true
+        unique: true, 
+        trim:true
     },
     documentlocation: {                                     // document is either the merchants official registration or the customers CID/PASSPORT. documentlocation field is the address to the location of the documents image at AWS Storage.
         type: String, 

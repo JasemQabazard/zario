@@ -1,3 +1,100 @@
-<p>
-  cdashboard works!
-</p>
+<div class="container-fluid">
+    <div class="mx-auto">
+        <section id="tabs">
+            <h6 class="section-title h2">Customer Dashboard</h6>
+            <div class="row show-hide-message">
+              <div [ngClass]="messageClass" class="col-sm-9 border-warning h-50 mx-auto text-center">
+                  <strong>{{message}}</strong>
+              </div>
+          </div>
+            <div class="row mt-5">
+              <div class="col-md-9"></div>
+                <div id="zariostyle" class="text-right"><h1 class="mr-1">{{cprofile?.zarios}}</h1></div>
+                <div>
+                  <div class="imageContainer mx-auto">
+                      <img class="img-fluid" src="../../../assets/img/zario.png" alt="zario image logo">
+                  </div>
+              </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5"></div>
+              <div class="col-md-2">
+                  <div class="imageContainer mx-auto">
+                      <img class="img-fluid" [src]="caimgband" alt="loyalty image logo">
+                  </div>
+              </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-8">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped  progressText active" role="progressbar" aria-valuenow="capercentageband"
+                        [ngStyle]="{'background-color':cacolorband,'width':capercentageband + '%', 'color':cafontband}"
+                        aria-valuemin="0" aria-valuemax="100">
+                        <span>{{catextband}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2 mb-5 mx-auto">
+                <div class="col-md-5"></div>
+                <div>
+                    <h5>{{caband}} </h5>
+                </div>
+            </div>
+            <hr>
+            <hr>
+            <div class="row mt-5 mb-5">
+              <div class="col-md-2 ml-4">
+                <div class="imageContainer mx-auto">
+                    <img class="img-fluid" [src]="avatarPath" alt="Avatar">
+                </div>
+              </div>
+              <div class="col-md-3">
+                  <div class="border-dark card">
+                      <div class="card-header bg-dark">
+                          <h3 class="text-center text-white">{{user?.firstname}}<span> </span>{{user?.lastname}}</h3>
+                      </div>
+                      <div class="card-body">
+                        <br>
+                          <h5>{{cprofile?.social}}<span>   </span>{{cprofile?.gender}}</h5>
+                          <h5>{{user?.mobile}}</h5>
+                          <h5>{{user?.email}}</h5>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-5">
+                <div class="border-dark card">
+                    <div class="card-header bg-dark">
+                        <h3 class="text-center text-white">Customer States</h3>
+                    </div>
+                    <div class="card-body">
+                      <br>
+                        <h5>Number of Transactions: {{cprofile?.notrans}}</h5>
+                        <h5>Total Sales: {{cprofile?.totpurchase}}</h5>
+                        <h5>Total Commissions: {{cprofile?.totcommissions}}</h5>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <hr>
+          <hr>
+
+    </section>
+  </div>
+</div>
+
+  <ul>
+    <li><h3>he will view the merchants he is a member of only in cards and then view details as he presses on the merchant card. the merchant card displayed may show a summary of the customer status with the merchant.</h3></li>
+    <li><h3>View band status with merchant's he is a member of</h3></li>
+    <li><h3>View zario coins with merchant's he is a member of</h3></li>
+    <!--
+      <li>==========================================================</li>
+      <li><h3>Transactions that make up the application zario coins </h3></li>
+      <li><h3>Transactions that make up the application band</h3></li>
+      <li>==========================================================</li>
+      <li><h3>Transactions that make up the merchant zario coins</h3></li>
+      <li><h3>Transactions that make up the merchant band status</h3></li>
+    -->
+  </ul>

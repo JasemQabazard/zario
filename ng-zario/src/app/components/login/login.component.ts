@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router,
+    private router: Router
   ) {
     this.createForm();
    }
@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
   }
 
   createForm() {
-    this.form= this.formBuilder.group({
+    this.form = this.formBuilder.group({
       username: ['', Validators.compose([
         Validators.required,
         Validators.minLength(3),
@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
         Validators.maxLength(35),
         this.validatePassword
       ])]
-    })
+    });
   }
 
   // Function to validate username is proper format
@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
     if (regExp.test(controls.value)) {
       return null; // Return as valid username
     } else {
-      return { 'validateUsername': true } // Return as invalid username
+      return { 'validateUsername': true }; // Return as invalid username
     }
   }
 
@@ -60,29 +60,29 @@ export class LoginComponent implements OnInit {
   validatePassword(controls) {
     // Create a regular expression
     // const regExp = new RegExp(/^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])(?=.*?[\W]).{8,35}$/);
-    const regExp = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/)
+    const regExp = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/);
     // Test password against regular expression
     if (regExp.test(controls.value)) {
       return null; // Return as valid password
     } else {
-      return { 'validatePassword': true } // Return as invalid password
+      return { 'validatePassword': true }; // Return as invalid password
     }
   }
 
   loginSubmit() {
     this.user = this.form.value;
-    console.log("User: ", this.user);
+    console.log('User: ', this.user);
     this.authService.logIn(this.user).subscribe(
         data => {
-          this.messageClass= "alert alert-success";
-          this.message="Log In Successfull";
+          this.messageClass = 'alert alert-success';
+          this.message = 'Log In Successfull';
           this.form.reset();
           setTimeout(() => {
             this.router.navigate(['/']); // Redirect to Home page
           }, 1000);
       },
       error => {
-        this.messageClass = "alert alert-danger";
+        this.messageClass = 'alert alert-danger';
         this.message = error;
         // "Unatherized User, Please use correct user name/ password";
       }

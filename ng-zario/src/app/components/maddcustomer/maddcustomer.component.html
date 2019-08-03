@@ -85,7 +85,7 @@
                         </div>
                     </div>
                   </div>
-                </div>       
+                </div>
                 <div class="col-sm-6">
                   <label for="lastname">Last Name</label>
                   <div [ngClass]="{'has-error':(form.controls.lastname.errors && form.controls.lastname.dirty), 'has-success': !form.controls.lastname.errors}">
@@ -113,13 +113,13 @@
                     <select id="countrycode" class="form-control" formControlName="countrycode">
                       <option *ngFor="let code of codes" [value]="code.countryCode">{{code.countryCode}}</option>
                     </select>
-                  </div>       
+                  </div>
                   <div class="col-sm-6">
                     <label for="mobile">Mobile Number</label>
-                    <div [ngClass]="{'has-error':(form.controls.mobile.errors && form.controls.mobile.dirty), 'has-success': !form.controls.mobile.errors}">
+                    <div [ngClass]="{'has-error':(form.controls.mobile.errors && form.controls.mobile.dirty) || (!mobileValid && form.controls.mobile.dirty), 'has-success': !form.controls.mobile.errors && mobileValid}">
                       <input type="mobile" name="mobile" class="form-control"
-                      formControlName="mobile" placeholder="9xx-xxx-xxxx">
-                      <div class="help-block text-light small bg-danger pl-2" *ngIf="form.controls.mobile.errors && form.controls.mobile.dirty">
+                      formControlName="mobile" placeholder="9xx-xxx-xxxx" (blur)="checkMobile()">
+                      <div class="help-block text-light small bg-danger pl-2" *ngIf="(form.controls.mobile.errors && form.controls.mobile.dirty) || (!mobileValid && form.controls.mobile.dirty)">
                           <div *ngIf="form.controls.mobile.errors?.required">
                             Mobile Number field is required
                           </div>
@@ -129,13 +129,14 @@
                           <div *ngIf="form.controls.mobile.errors?.validateMobile">
                               Mobile Number must be in a valid format
                           </div>
+                          <div *ngIf="mobileMessage"> {{ mobileMessage }}</div>
                       </div>
                     </div>
                   </div>
                 </div>
             </div><!--/form-group-->
           </div>
-          <button [disabled]="!form.valid || !usernameValid || !emailValid" type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
+          <button [disabled]="!form.valid || !usernameValid || !emailValid || !mobileValid" type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
         </form>
       </div>
     </div>
@@ -144,29 +145,29 @@
 <!-- <h4>
   Merchant (both role === MERCHANT && merchant) can add a new customer in the shop to the application on the fly
   Usually he would take the customer id for the firstname, lastname, get his mobile number
-  then the following info is required when a merchant needs to add a customer to the user database table 
+  then the following info is required when a merchant needs to add a customer to the user database table
 
-  firstname 
+  firstname
   lastname
   mobile
   countrycode
-  email 
-  System Generated password   
+  email
+  System Generated password
   merchant _id will be placed in the user._mid  field as recruiting merchant
 
-  NOTE: 
+  NOTE:
   + MERCHANT can select adding a customer (role === customer) to any profile in his GROUP
-          OR 
+          OR
     adding another USER (role=== merchant) to work in his GROUP => this merchant role is typically a collegue.
   + Should we also build the customer profile record if we are going to record his purchases ????????????????????????????????????????????????????????????????????????
-  + merchant can only add customers to the profile he is working on 
+  + merchant can only add customers to the profile he is working on
 
-we will send the user data recorded via email informing him of the recording event 
-Obviously the email will be different between CUSTOMER and merchant roles 
-The email will also contain the password and username 
-the user will the be encouraged to change his generated password since it will be a difficulat phrase 
+we will send the user data recorded via email informing him of the recording event
+Obviously the email will be different between CUSTOMER and merchant roles
+The email will also contain the password and username
+the user will the be encouraged to change his generated password since it will be a difficulat phrase
 ================================================================
-the new user / CUSTOMER information will also be emitted to the cart program where it will record his purchases 
+the new user / CUSTOMER information will also be emitted to the cart program where it will record his purchases
 ONCE
 the recruitingmerchant field === user._mid field has been set then the CUSTOMER should be immune to other similar merchant adverts as indicated by the business category code in the merchants profile and the set flag for referal
 
@@ -175,7 +176,7 @@ the recruitingmerchant field === user._mid field has been set then the CUSTOMER 
 <!-- username: String;
 email: String;
 password: string;
-firstname: String; 
-lastname:String; 
-countrycode: String; 
+firstname: String;
+lastname:String;
+countrycode: String;
 mobile: String; -->

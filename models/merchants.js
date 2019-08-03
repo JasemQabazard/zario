@@ -123,11 +123,27 @@ const Merchants = new Schema({
             type: Number,
             default: 0
       },
-      totalcommision: {                // total commision the application earned from this merchant
+      totalcommision: {       // total commision application earned from merchant
             type: Number,
             default: 0
       },
       totsales: {                // total sales the application made by this merchant
+            type: Number,
+            default: 0
+      },
+      cdistributedzarios_ytd: {                // distributed to customers 
+            type: Number,
+            default: 0
+      },
+      notrans_ytd: {
+            type: Number,
+            default: 0
+      },
+      totalcommision_ytd: {       // total commision application earned from merchant
+            type: Number,
+            default: 0
+      },
+      totsales_ytd: {            // total sales the application made by this merchant
             type: Number,
             default: 0
       }

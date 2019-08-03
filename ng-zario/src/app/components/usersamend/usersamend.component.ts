@@ -25,6 +25,8 @@ export class UsersamendComponent implements OnInit, OnDestroy {
   messageClass: string;
   emailValid = true;
   emailMessage: string;
+  mobileValid = true;
+  mobileMessage: string;
   notUpdated = false;
   _uid = '';
   timeleft: number;
@@ -180,28 +182,48 @@ export class UsersamendComponent implements OnInit, OnDestroy {
     }
   }
 
-    // Function to check if e-mail is taken
-    checkEmail() {
-      // Function from authentication file to check if e-mail is taken
-      if (this.fu.get('email').value === '' ||
-              this.fu.get('email').value === this.existingEmail) { return; }
-      this.emailValid = false;
-      this.authService.checkEmail(this.fu.get('email').value).subscribe(
-        data => {
-          // Check if success true or false was returned from API
-          if (!data.success) {
-            this.emailValid = false; // Return email as invalid
-            this.emailMessage = data.message; // Return error message
-          } else {
-            this.emailValid = true; // Return email as valid
-          }
-        },
-        errormessage => {
-          this.message = <any>errormessage;
-          this.messageClass = 'alert alert-danger';
+  // Function to check if e-mail is taken
+  checkEmail() {
+    // Function from authentication file to check if e-mail is taken
+    if (this.fu.get('email').value === '' ||
+            this.fu.get('email').value === this.existingEmail) { return; }
+    this.emailValid = false;
+    this.authService.checkEmail(this.fu.get('email').value).subscribe(
+      data => {
+        // Check if success true or false was returned from API
+        if (!data.success) {
+          this.emailValid = false; // Return email as invalid
+          this.emailMessage = data.message; // Return error message
+        } else {
+          this.emailValid = true; // Return email as valid
         }
-      );
-    }
+      },
+      errormessage => {
+        this.message = <any>errormessage;
+        this.messageClass = 'alert alert-danger';
+      }
+    );
+  }
+  // Function to check if mobile number is not previously used  is unique
+  checkMobile() {
+    // Function from authentication file to check if username is taken
+    if (this.fu.get('mobile').value === '') { return; }
+    this.authService.checkMobile(this.fu.get('mobile').value).subscribe(
+      user => {
+      // Check user exists then mobile is used already
+        if (user) {
+          this.mobileValid = false; // Return mobile as invalid
+          this.mobileMessage = 'user mobile number already in system. Please enter another mobile';
+        } else {
+          this.mobileValid = true; // Return mobile as valid
+        }
+      },
+      errormessage => {
+        this.message = <any>errormessage;
+        this.messageClass = 'alert alert-danger';
+      }
+    );
+}
 
     onUpdateSubmit() {
       if (this.existingEmail === this.fu.get('email').value) {
@@ -276,12 +298,3 @@ export class UsersamendComponent implements OnInit, OnDestroy {
     }
 
 }
-
-// username: String;
-// password: string;
-// ========================= Amendable fields ==================
-// email: String;
-// firstname: String;
-// lastname:String;
-// countrycode: String;
-// mobile: String;

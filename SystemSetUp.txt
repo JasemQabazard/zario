@@ -1,12 +1,39 @@
-set up the ADMIN: => Register User => Change role ==== 'ADMIN' in user table 
+set up the ADMIN: => Register User with role=== 'CUSTOMER' 
+Change role ====> 'ADMIN' in user table 
+Also Change approvalstatus ====> 'approved' in user table 
+((((The Admin username is JasemQabazard, fill in the appropriate other details
+like email phone country name password))))===================================
+=============================================================================
 Sign in as ADMIN and Set up System Parameters for the entire Application.
+Settings record details 
+Venture Name: Zario and the Black Diamond Loyalty Application 
+Email: same as above
+country asnd phones: same as above
+merchant bands: 1000, 2000, 3000, 4000, 5000, 10000
+customer bands: 1000, 2000, 3000, 4000, 5000, 10000
+Zario Price: 0.5
+Zario Distribution Ratio: 0.15
+Commission: 0.035
 Sign Off as ADMIN
-Set up a Merchant: => Register User (merchantONE) => Change role === 'MERCHANT' in user table 
+Note: that when you create the settings record the application automatically creates the promotion records for you. These are the application various promotions where you can change them to siut your needs.
+Promotions must always be tested thoroughly to make sure they do what we need them to do. 
+its not a technical issue it is a precedural and taste issue as to what you are offering your customer. 
+Some new introduction to promotions, be it system or merchant, may require more testing to make sure that they fulfill our need.
+=============================================================================
+Set up a Merchant: => Register User (merchantONE) => 
+sign in as merchantONE and upload necessary documentation 
+once documentation is approved 
+sign in as admin and Change role to 'Approved MERCHANT'  
+notice that this is done in production only if merchant sends appropriate documentation. 
+Hence procedures must be adopted for this: even if we develop further allwoing admin to view submitted documents or admin can check on amazon aws image s3 storage but this will be initially only and could be hectic when many customers 
+=============================================================================
 Sign in as MERCHANT (merchantONE)
    => Create Group Record 
-   => Create Main Profile Record for yourself
+   => Create Main Profile Record for yourself. Once you create the profile record the promotions for this merchant are also generated and stored in the promotions table. these are raw promotions; as a merchant he must ensure that these promotions are relevant to his customers. do they make sense. are they active. does he wish them to be indefinitly active or according to a date range. has he tested them to make sure they are what he thinks they are. promotions is our contract with our customer and will give our customers credits to our merchendize and give bonus points rewards and money. Must be careful and thorough when doing promotions.
+   merchant can also amend the promotions that were created to a ceratin extent. he must also understand their implications.
    => Fix the location of the Main Profile Record 
-   => Create another sub main profile record 
+   => Create another sub main profile record.
+   promotions are also created for the sub main profile. remember each profile we create is a merchant in its own right. same applies for promotions as we mentioned above for the MAIN MERCHANT Profile created. 
    => create a user with small 'merchant' for the sub main profile record (merchantsmall)
    => create a customer for your main profile (customerone)
 Sign off
@@ -14,5 +41,15 @@ Fix sign on credentials for customerone and merchantsmall
 ===============
 Sign on as (merchantsmall):
    => create a (customersmall) for your submain profile
-Sign off
-Register a new (customertwo)
+Sign of
+===============
+Register a new (customerTWO).
+========================================
+========================================
+=========== RUNNING THE APP ============
+========================================
+= run this script ==> it will start the build script sequence from package.json
+= ("build": "cd ng-zario && ng build --prod && cd.. && npm start")
+= and you will be ready to connect with the secure server on 3443
+=:
+npm run build

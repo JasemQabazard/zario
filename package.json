@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "build": "copyfiles -s -f public/avatars/*.* avatars && cd ng-zario && ng build --prod && cd.. && copyfiles avatars/*.* public && npm start"
+    "build": "cd ng-zario && ng build --prod && cd.. && npm start"
   },
   "dependencies": {
     "aws-sdk": "^2.325.0",

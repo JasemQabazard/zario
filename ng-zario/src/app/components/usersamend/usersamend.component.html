@@ -52,7 +52,7 @@
                             </div>
                         </div>
                       </div>
-                    </div>       
+                    </div>
                     <div class="col-sm-6">
                       <label for="lastname">Last Name</label>
                       <div [ngClass]="{'has-error':(fu.controls.lastname.errors && fu.controls.lastname.dirty), 'has-success': !fu.controls.lastname.errors}">
@@ -80,13 +80,13 @@
                         <select id="countrycode" class="form-control" formControlName="countrycode">
                           <option *ngFor="let code of codes" [value]="code.countryCode">{{code.countryCode}}</option>
                         </select>
-                      </div>       
+                      </div>
                       <div class="col-sm-6">
                         <label for="mobile">Mobile Number</label>
-                        <div [ngClass]="{'has-error':(fu.controls.mobile.errors && fu.controls.mobile.dirty), 'has-success': !fu.controls.mobile.errors}">
+                        <div [ngClass]="{'has-error':(fu.controls.mobile.errors && fu.controls.mobile.dirty) || (!mobileValid && fu.controls.mobile.dirty), 'has-success': !fu.controls.mobile.errors && mobileValid}">
                           <input type="mobile" name="mobile" class="form-control"
-                          formControlName="mobile" placeholder="9xx-xxx-xxxx">
-                          <div class="help-block text-light small bg-danger pl-2" *ngIf="fu.controls.mobile.errors && fu.controls.mobile.dirty">
+                          formControlName="mobile" placeholder="9xx-xxx-xxxx" (blur)="checkMobile()">
+                          <div class="help-block text-light small bg-danger pl-2" *ngIf="(fu.controls.mobile.errors && fu.controls.mobile.dirty) || (!mobileValid && fu.controls.mobile.dirty)">
                               <div *ngIf="fu.controls.mobile.errors?.required">
                                 Mobile Number field is required
                               </div>
@@ -96,13 +96,14 @@
                               <div *ngIf="fu.controls.mobile.errors?.validateMobile">
                                   Mobile Number must be in a valid format
                               </div>
+                              <div *ngIf="mobileMessage"> {{ mobileMessage }}</div>
                           </div>
                         </div>
                       </div>
                     </div>
                 </div><!--/form-group-->
               </div>
-              <button [disabled]="!fu.valid || !emailValid || notUpdated || processing" type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
+              <button [disabled]="!fu.valid || !emailValid || notUpdated || processing || !mobileValid" type="submit" class="btn btn-primary btn-block mt-3">Submit</button>
         </form>
         <hr>
         <div class="row">

@@ -14,6 +14,7 @@ import { Promotion, merchantpromotions } from '../../shared/promotions';
 import { MProfile, CProfile, CRM, Merchant, Settings} from '../../shared/profile';
 import { Trans } from '../../shared/trans';
 import { Zario } from '../../shared/zario';
+import { awsMediaPath } from '../../shared/blog';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 import { Subscription } from 'rxjs/Subscription';
@@ -79,10 +80,10 @@ export class CartComponent implements OnInit {
   mBand = '';
   aBand = '';
   BAND: string[] = ['NONE', 'Bronze', 'Silver', 'Gold', 'Platinum', 'Pearl', 'Blackdiamond'];
-  zariosdistribution = {             // to customer & merchant
-    app: 0,                        // from app promotions to customer
-    merchant: 0,                   // from merchant promotions to customer
-    purchase: 0                    // based on purchase as part of commision going to customer-->
+  zariosdistribution = {              // to customer & merchant
+    app: 0,                           // from app promotions to customer
+    merchant: 0,                      // from merchant promotions to customer
+    purchase: 0                       // based on purchase as part of commision going to customer-->
   };                                  // -->/merchant/ & app (me).
   totalcommission: number;
   menuoption = '';
@@ -138,7 +139,7 @@ export class CartComponent implements OnInit {
               this.cprofile = cprofile;
               console.log(cprofile);
               if (cprofile.avatar) {
-                this.avatarPath = `avatars/${cprofile.avatar}`;
+                this.avatarPath = awsMediaPath + `${cprofile.avatar}`;
               }
               this.authService.getUser(cprofile.username)
               .subscribe(user => {
@@ -168,7 +169,7 @@ export class CartComponent implements OnInit {
                   this.cprofile = cprofile;
                   this._cid = cprofile._id;
                   if (cprofile.avatar) {
-                    this.avatarPath = `avatars/${cprofile.avatar}`;
+                    this.avatarPath = awsMediaPath + `${cprofile.avatar}`;
                   }
                   this.processmerchant();
                   } else {
@@ -205,8 +206,10 @@ export class CartComponent implements OnInit {
       this.message = 'Please enter a valid mobile';
       this.messageClass = 'alert alert-danger';
     } else {
+      console.log(this.usermobile);
       this.authService.getUserbymobile(this.usermobile)
       .subscribe(user => {
+        console.log(user);
         if (user) {
           this.customername = user.firstname + ' ' + user.lastname;
           this.useremail = user.email;
@@ -217,7 +220,7 @@ export class CartComponent implements OnInit {
                   this.cprofile = cprofile;
                   this._cid = cprofile._id;
                   if (cprofile.avatar) {
-                    this.avatarPath = `avatars/${cprofile.avatar}`;
+                    this.avatarPath = awsMediaPath + `${cprofile.avatar}`;
                   }
                   this.processmerchant();
                   } else {

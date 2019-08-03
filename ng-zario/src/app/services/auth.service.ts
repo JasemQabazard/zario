@@ -98,10 +98,16 @@ export class AuthService {
       .catch(error => this.processHttpmsgService.handleError(error));
   }
 
-  // Functions to get user using status, used by admin to change user status from pending band submitted to MERCHANT and change pendingstatus to approved
+  // Functions to get users using status, used by admin to change user status from pending band submitted to MERCHANT and change pendingstatus to approved
   // may use updateUser function to amend user
   getbystatus(status): Observable<any> {
     return this.http.get(baseURL + '/users/bystatus/' + status)
+    .catch(error => this.processHttpmsgService.handleError(error));
+  }
+
+    // Functions to get users using _mid, used in merchant dashboard to get users and customers for a certain merchant
+  getbymid(_mid): Observable<any> {
+    return this.http.get(baseURL + '/users/bymid/' + _mid)
     .catch(error => this.processHttpmsgService.handleError(error));
   }
 

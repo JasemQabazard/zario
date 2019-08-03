@@ -36,6 +36,8 @@ export class MAddCustomerComponent implements OnInit {
   emailMessage: string;
   usernameValid = false;
   usernameMessage: string;
+  mobileValid = false;
+  mobileMessage: string;
   passcode: string = this.commonRoutinesService.codeGen() + 'aM5$';
   merchantname: string;
   _mid: string;
@@ -377,5 +379,26 @@ export class MAddCustomerComponent implements OnInit {
         this.messageClass = 'alert alert-danger';
       }
     );
+  }
+
+    // Function to check if mobile number is not previously used  is unique
+    checkMobile() {
+      // Function from authentication file to check if username is taken
+      if (this.form.get('mobile').value === '') { return; }
+      this.authService.checkMobile(this.form.get('mobile').value).subscribe(
+        user => {
+        // Check user exists then mobile is used already
+          if (user) {
+            this.mobileValid = false; // Return mobile as invalid
+            this.mobileMessage = 'user mobile number already in system. Please enter another mobile';
+          } else {
+            this.mobileValid = true; // Return mobile as valid
+          }
+        },
+        errormessage => {
+          this.message = <any>errormessage;
+          this.messageClass = 'alert alert-danger';
+        }
+      );
   }
 }

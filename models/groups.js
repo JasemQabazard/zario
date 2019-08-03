@@ -92,6 +92,22 @@ const Groups = new Schema({
       totsales: {                // total sales the application made by this merchant
             type: Number,
             default: 0
+      },
+      cdistributedzarios_ytd: {                // distributed to customers 
+            type: Number,
+            default: 0
+      },
+      notrans_ytd: {
+            type: Number,
+            default: 0
+      },
+      totalcommision_ytd: {                // total commision the application earned from this merchant
+            type: Number,
+            default: 0
+      },
+      totsales_ytd: {                // total sales the application made by this merchant
+            type: Number,
+            default: 0
       }
 },{
    timestamps: true

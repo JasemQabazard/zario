@@ -83,7 +83,7 @@ next we envisage that the app admin staff will need promotions data entry to
 =================================================================================
 ===  branchName:cart == start:01Nov2018== Completed: 99 Nov 2018 ====
 ================================================================================= 
-- https://www.npmjs.com/package/qrcode is the npm module to use for qrcode generation 
+- https://www.npmjs.com/package/qrcode is the npm module to use for qrcode generation
 - cart must read QR CODE from Mobile or Paper or Card =========>DONE
 - Display customer information for the merchant =========>DONE
 - allow merchant to enter amount of purchase =========>DONE 
@@ -127,43 +127,73 @@ treat mobiles like email and user name.
 - for merchants sending his registration and papers is a must before approval.
 - functions to upload documented images of:
       1 user id for merchant and customer, these 2 document uploads are in a new function for document uploads to aws.
-==========================
-
 - images and avatars must be totally changed to use aws strorage everywhere!:
    1 settings====> DONE <====
    2 cprofile maintenance====> DONE <====
    3 mprofile maintenance====> DONE <====
-   4 promotions
+   4 promotions====> DONE <====
    5 new function to upload user cid/ passport/ merchant registration docs with monitoring expire dates. ====> DONE <====
+
+=================================================================================
+===  branchName:Dashboard == start:06Jan2019== Completed: 99 Jan 2019 ====
+================================================================================= 
+CUSTOMER
+   + Application reputation band use colors- application ranking among other customers
+   + Each MERCHANT reputation band for CUSTOMERS use colors
+   + various Zario Coin statistics: how many zarios he has how much he got from each merchant sort merchants by extent of merits and higher bands first
+   + purchase transactions sgtatement with each MERCHANT
+   +  zario transactions statement
+   + total number statitics
+MERCHANT
+   + Application reputation band use colors- application ranking among other merchants
+   +  show all customers and their transactions with him
+   + various Zario Coin statistics: how many zarios he has how much he got from each customer sort customers by extent of merits and higher bands first
+   + cart transaction statement by customer or for all customers
+   + zario transactions statement break down
+   + total number statitics
+admin
+   + zario transactions statement break down for all
+   + cart transactions statement for merchant or customer as well as any transaction break down
+   + total number statitics
+   + see any merchant pages as if admin is merchant
+   + see any customer page as if admin is customer
+   + show any submit document users for viewing
+   + 
+
+=================================================================================
+===  branchName:Wallet == start:01June2018== Completed: 99 June 2018 ====
+================================================================================= 
+Wallet design considerations and research. ZARIO COIN is an 'in app' currency for the Black diamoind loyalty program only 'currently'. The coin implementation is done in a conventional data base transactional format since the only ledger for the coin is centralized within the application. 
+At some point it is better to convert the coin to a blockchain data structure especially when m ore than one locational implementation of the loyalty program is madce. I.E. when another city established a commercial entity to pursue the loyalty program world wide. Each country or city will have its own commercial establishment and its own blockcahin implementaion.
+Nevertheless, the application wallet must envisage all possible development as-if we are already on blockchain implementing a crypto currency but in application and woithout the blockchain data structure.
+   - Wallet to allow purchase of zario coins.
+   - Show the price of zario on display according to 'in application' currency evaluation. Yet to be finalized according to xl spread sheet venture capital funding model. 
+   - customer/ merchant has a cash on hand account that can receive money from banks and we can send money to customer bank account control this as part of buying zario coins. Subject to legal requirements.
+   - Wallet to show the amount of zario and the transaction history statement for the CUSTOMER and MERCHANT that lead to this.
+   - Customer can make purchase of goods via zario coins, from merchants
+   - MERCHANT purchases of zarios can be frozen by application and be used to promote treasure hunting for MERCHANT stores and locations or generally:"such as CUSTOMER finds zario coins that belong to MERCHANT, then he has to go to the store to be eliigable to collect".
+   - currently settings.zariosdistributionratio is multiplied by the commision generated in cart transactions and the result amount is divided by the price of zarios => henece generating the number of zario coins awarded to the customer / merchant/ app(ME) as a thank you for adding value to the application. 
+   - Currently this amount is set to .15 (15%) of the commision generated by the transaction. Hence each leg receievs 15% 'customer / merchant/ app(ME)'. 
+   - The remaining 55% goes to the venture. Corporation central my doing. to spend on expenses and expansion and the way we see fit.
+   - In the future my app designated .15% is given to Success Aerchitecture company registered in Kuwait for the development of the app.===> this change is carried out immedietly upon establishing SA as a merchant in the ==========maybe===========
+   - when a new city joins and the app expands the commision will drop to .1 (10%)  going 4 ways to customer / merchant/ me / and new venture for developing the blockchain data structure.
+
+
 =================================================================================
 ===  branchName:Design == start:01June2018== Completed: 99 June 2018 ====
 ================================================================================= 
 - once design is ready must incorporate color scheme 
 - customer band progression and display of right logo for customer with the right color band
 - select the text for the home page presentation 
-=================================================================================
-===  branchName:Wallet == start:01June2018== Completed: 99 June 2018 ====
-================================================================================= 
-   - Wallet design considerations and research. Wallet to allow purc hase of zario coins as well as show price of zario, ethereum, bitcoin on display
-   - Wallet to show the amount of zarion and the transaction history for the CUSTOMER and MERCHANT that lead to this.
-   - Wallet transafer to other Wallet addresses of zario coins can be entertained offline on the ethereum platform  if the CUSTOMER or MERCHANT makes that wish
-   - MERCHANT purchases of zarios can be frozen by application and be used to promote treasure hunting for MERCHANT stores and locations or generally:"such as CUSTOMER finds zario coins that belong to MERCHANT, then he has to go to the store to be eliigable to collect".
+
    - use email double factor and OTP for contact us and sign on while extending sign on jwt to 3 months on mobile and one month on web
-   =================================================================================
-===  branchName:Dashboard == start:01June2018== Completed: 99 June 2018 ====
-================================================================================= 
-   - Dashboard menu option will show CUSTOMERS and MERCHANTS statistics such as:
-      + system reputation band
-      + Each MERCHANT reputation band for CUSTOMERS
-      + various Zario Coin statistics
-      + All CUSTOMERS for the MERCHANT with ab ility to send a message to their MY Profile page
-      + CUSTOMER transactions with ech MERCHANT and his activity on the application
-      + Achievements
-      + 
    - use email and phone for double factor authentication.
    - Trasure Hunting on mobile, wallet, dashboard only and gaming. Along with download of app and registration, sign on etc..... 
    - 
 
+=================================================================================
+===  branchName:Achievements == start:06Jan2019== Completed: 99 Jan 2019 ====
+================================================================================= 
 
 <!-- coloring console.log in chrome =============================================
 console.log('%c draftblog', 'background: #222; color: #bada55', this.draftblog);

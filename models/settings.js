@@ -108,11 +108,11 @@ const Settings = new Schema({
             default: 0.75
       },
       zariosdistributionratio: {         // distribution ratio of zarios to merchants/ customers/ & APP
-            type: Number,                // the lesser of (.15 x commision or .15 / zarioprice) 
-            default: 0.15                 // as a part of the 1$ commision or .035% of purchase 
+            type: Number,                // (.15 x commision) 
+            default: 0.15                 // commision = 1$  or commision = 0.035% x purchase which ever is less
       },
       commission: {
-            type: Number,                //  the 1$ commision or .035% of purchase which ever is less
+            type: Number,                //  the 1$ commision or (0.035% x purchase) which ever is less
             default: 0.035      
       },
       mdistributedzarios: {                // distributed to merchants 
