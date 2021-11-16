@@ -7,7 +7,7 @@
     "build": "copyfiles -s -f public/avatars/*.* avatars && cd ng-zario && ng build --prod && cd.. && copyfiles avatars/*.* public && npm start"
   },
   "dependencies": {
-    "aws-sdk": "^2.325.0",
+    "aws-sdk": "^2.814.0",
     "bluebird": "^3.5.1",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.4",
